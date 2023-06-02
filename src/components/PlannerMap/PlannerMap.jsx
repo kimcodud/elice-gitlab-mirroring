@@ -147,9 +147,16 @@ const SearchMap = () => {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
-      <button onClick={searchPlaces}>Search</button>
+      <button
+        onClick={searchPlaces}
+        class="rounded-sm bg-slate-900 bg-indigo-500 "
+      >
+        검색
+      </button>
       <div id="map" style={{ width: "1200px", height: "1000px" }} />
-      <div id="placesList">{places}</div>
+      <div id="placesList" style={{ color: "black" }}>
+        {places}
+      </div>
       <div id="pagination" />
     </div>
   );
