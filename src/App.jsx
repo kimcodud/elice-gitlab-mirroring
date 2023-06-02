@@ -1,12 +1,12 @@
-import "./App.css";
-import Header from "./components/Header/Header";
+import React from "react";
+import PlannerMap from "./Components/PlannerMap/PlannerMap";
 
-function App() {
+const App = () => {
   return (
-    <>
-      <Header />
-    </>
+    <div>
+      <PlannerMap />
+    </div>
   );
-}
+};
 
 export default App;
