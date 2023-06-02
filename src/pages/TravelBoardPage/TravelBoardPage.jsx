@@ -1,9 +1,7 @@
-import TravelBoard from '../../components/TravelBoard';
+import TravelBoard from "../../components/TravelBoardPage/TravelBoardPage";
 
-  function TravelBoardPage() {
-    return (
-      <TravelBoard />
-    )
+function TravelBoardPage() {
+  return <TravelBoard />;
 }
 
 export default TravelBoardPage;

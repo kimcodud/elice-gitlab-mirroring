@@ -24,7 +24,7 @@ const MainPageComponent = () => {
   return (
     <div>
       <img src="/src/assets/main.jpg" className="mainImg" />
-      <div className="relative">
+      <div>
         <img src={images[currentIndex]} alt="Slide" className="w-full" />
         <button
           onClick={previousSlide}
