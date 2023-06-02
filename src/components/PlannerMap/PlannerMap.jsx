@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-const SearchMap = () => {
+const PlannerMap = () => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
+  const [infowindow, setInfowindow] = useState(null);
 
   useEffect(() => {
     const mapContainer = document.getElementById("map");
     const mapOptions = {
       center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 8,
+      level: 3,
     };
 
     const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
     setMap(newMap);
+
+    const newInfowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+    setInfowindow(newInfowindow);
   }, []);
 
   const searchPlaces = () => {
@@ -27,6 +31,7 @@ const SearchMap = () => {
     ps.keywordSearch(keyword, placesSearchCB);
   };
 
+  //searchPlaces ---> placesSearchCB(data, status, pagination) --->
   const placesSearchCB = (data, status, pagination) => {
     if (status === window.kakao.maps.services.Status.OK) {
       displayPlaces(data);
@@ -39,7 +44,7 @@ const SearchMap = () => {
   };
 
   const displayPlaces = (places) => {
-    removeAllChildNodes("placesList");
+    // removeAllChildNodes('placesList');
     removeMarkers();
 
     const bounds = new window.kakao.maps.LatLngBounds();
@@ -107,22 +112,9 @@ const SearchMap = () => {
     setMarkers([]);
   };
 
-  const displayInfowindow = (marker, title) => {
-    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
-  };
-
-  const removeAllChildNodes = (elementId) => {
-    const parent = document.getElementById(elementId);
-    while (parent.firstChild) {
-      parent.firstChild.remove();
-    }
-  };
-
   const displayPagination = (pagination) => {
     const paginationEl = document.getElementById("pagination");
-    removeAllChildNodes("pagination");
+    // removeAllChildNodes('pagination');
 
     for (let i = 1; i <= pagination.last; i++) {
       const el = document.createElement("a");
@@ -139,6 +131,38 @@ const SearchMap = () => {
     }
   };
 
+  const displayInfowindow = (marker, title) => {
+    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+  };
+
+  // const removeAllChildNodes = (elementId) => {
+  //     const parent = document.getElementById(elementId);
+  //     while (parent.firstChild) {
+  //         parent.firstChild.remove();
+  //     }
+  // };
+
+  // const displayPagination = (pagination) => {
+  //     const paginationEl = document.getElementById('pagination');
+  //     removeAllChildNodes('pagination');
+
+  //     for (let i = 1; i <= pagination.last; i++) {
+  //         const el = document.createElement('a');
+  //         el.href = '#';
+  //         el.innerHTML = i;
+
+  //         if (i === pagination.current) {
+  //             el.className = 'on';
+  //         } else {
+  //             el.onclick = () => pagination.gotoPage(i);
+  //         }
+
+  //         paginationEl.appendChild(el);
+  //     }
+  // };
+
   return (
     <div>
       <input
@@ -147,13 +171,8 @@ const SearchMap = () => {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
       />
-      <button
-        onClick={searchPlaces}
-        class="rounded-sm bg-slate-900 bg-indigo-500 "
-      >
-        검색
-      </button>
-      <div id="map" style={{ width: "1200px", height: "1000px" }} />
+      <button onClick={searchPlaces}>Search</button>
+      <div id="map" style={{ width: "100%", height: "400px" }} />
       <div id="placesList" style={{ color: "black" }}>
         {places}
       </div>
@@ -162,4 +181,4 @@ const SearchMap = () => {
   );
 };
 
-export default SearchMap;
+export default PlannerMap;
