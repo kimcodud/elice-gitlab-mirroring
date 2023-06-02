@@ -1,33 +1,29 @@
+import "./Header.css";
+
 function Header() {
   return (
     <>
-      <header className="">
-        <nav className="bg-slate-50 p-3 flex justify-start h-18">
+      <header className="h-14">
+        <nav className="p-1 flex justify-start h-14">
           <a href="/">
-            <img src="/src/assets/starRoad.png" className="mr-3 h-20"></img>
+            <img
+              src="/src/assets/starRoad_2.png"
+              className="ml-6 mr-96 mb-20 h-14 w-18 "
+            ></img>
           </a>
-          {/* <img
-            src="/src/assets/starRoad2.png"
-            className="object-cover px-5"
-            alt="Logo"
-          /> */}
-          <a href="/" className="text-black p-6">
+
+          <a href="/travelDiary" className="text-zinc-400 ml-auto p-3">
             여행기
           </a>
-          <a href="/" className="text-black p-6">
+          <a href="/login" className="text-zinc-400 p-3">
             로그인
           </a>
-          <a href="/" className="text-black p-6">
+          <a href="/signup" className="text-zinc-400 mr-5 p-3">
             회원가입
           </a>
-          <div className="ml-auto flex items-center">
-            {/* <button className="text-black border border-black rounded-lg px-4 py-2 mr-2">
-              Login
-            </button>
-            <button className="text-black border border-black rounded-lg px-4 py-2">
-              Sign Up
-            </button> */}
-          </div>
+          <a href="/mypage">
+            <img src="/src/assets/user.png" className="px-4 py-2 mr-2 h-12" />
+          </a>
         </nav>
       </header>
     </>

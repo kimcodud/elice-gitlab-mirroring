@@ -1,10 +1,14 @@
-import React from "react";
-import PlannerMap from "./Components/PlannerMap/PlannerMap";
+import "./App.css";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Router from "./routes/Router";
 
 const App = () => {
   return (
     <div>
-      <PlannerMap />
+      <Header />
+      <Router />
+      <Footer />
     </div>
   );
 };
