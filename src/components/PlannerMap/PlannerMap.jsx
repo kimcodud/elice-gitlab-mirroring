@@ -60,7 +60,10 @@ const SearchMap = () => {
           onMouseOut={() => infowindow.close()}
         >
           <span className={`markerbg marker_${index + 1}`} />
-          <div className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg">
+          <div
+            className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg "
+            style={{ marginLeft: "10px" }}
+          >
             <div className="font-bold ">{place.place_name}</div>
             <span>{place.category_group_name}</span>
             {/* {place.road_address_name ? (
@@ -143,22 +146,29 @@ const SearchMap = () => {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        id="keyword"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        className="border-indigo-500/100"
-      />
-      <button onClick={searchPlaces} style={{ backgroundColor: "black" }}>
-        Search
-      </button>
+    <div style={{ display: "flex ", justifyContent: "center" }}>
       <div id="map" style={{ width: "1200px", height: "1000px" }} />
-      <div id="placesList" style={{ color: "black" }}>
-        {places}
+      <div>
+        <input
+          type="text"
+          id="keyword"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="border-indigo-500/100 rounded-md"
+          placeholder=" 장소를 검색해보세요"
+          style={{ marginLeft: "15px" }}
+        />
+        <button
+          onClick={searchPlaces}
+          className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md"
+        >
+          Search
+        </button>
+        <div id="placesList" style={{ color: "black" }}>
+          {places}
+        </div>
+        <div id="pagination" />
       </div>
-      <div id="pagination" />
     </div>
   );
 };
