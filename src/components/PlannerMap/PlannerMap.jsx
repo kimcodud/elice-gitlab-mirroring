@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const PlannerMap = () => {
+const SearchMap = () => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -23,7 +23,7 @@ const PlannerMap = () => {
 
   const searchPlaces = () => {
     if (!keyword.trim()) {
-      alert("키워드를 입력해주세요!");
+      alert("장소를 입력해주세요!");
       return;
     }
 
@@ -44,11 +44,9 @@ const PlannerMap = () => {
   };
 
   const displayPlaces = (places) => {
-    // removeAllChildNodes('placesList');
-    removeMarkers();
-
     const bounds = new window.kakao.maps.LatLngBounds();
-
+    console.log(places);
+    removeMarkers();
     const placeElements = places.map((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
       const marker = addMarker(placePosition, index);
@@ -62,17 +60,17 @@ const PlannerMap = () => {
           onMouseOut={() => infowindow.close()}
         >
           <span className={`markerbg marker_${index + 1}`} />
-          <div className="info">
-            <h5>{place.place_name}</h5>
-            {place.road_address_name ? (
-              <>
-                <span>{place.road_address_name}</span>
-                <span className="jibun gray">{place.address_name}</span>
-              </>
+          <div className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg">
+            <div className="font-bold ">{place.place_name}</div>
+            <span>{place.category_group_name}</span>
+            {/* {place.road_address_name ? (
+              <> */}
+            {/* <span className="jibun gray">{place.address_name}</span> */}
+            {/* </>
             ) : (
               <span>{place.address_name}</span>
-            )}
-            <span className="tel">{place.phone}</span>
+            )} */}
+            {/* <span className="tel">{place.phone}</span> */}
           </div>
         </div>
       );
@@ -112,9 +110,16 @@ const PlannerMap = () => {
     setMarkers([]);
   };
 
+  const removeAllChildNodes = (elementId) => {
+    const parent = document.getElementById(elementId);
+    while (parent.firstChild) {
+      parent.firstChild.remove();
+    }
+  };
+
   const displayPagination = (pagination) => {
     const paginationEl = document.getElementById("pagination");
-    // removeAllChildNodes('pagination');
+    removeAllChildNodes("pagination");
 
     for (let i = 1; i <= pagination.last; i++) {
       const el = document.createElement("a");
@@ -132,36 +137,10 @@ const PlannerMap = () => {
   };
 
   const displayInfowindow = (marker, title) => {
-    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    const content = `<div style="padding:5px;z-index:1;color:black">${title}</div>`;
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
-
-  // const removeAllChildNodes = (elementId) => {
-  //     const parent = document.getElementById(elementId);
-  //     while (parent.firstChild) {
-  //         parent.firstChild.remove();
-  //     }
-  // };
-
-  // const displayPagination = (pagination) => {
-  //     const paginationEl = document.getElementById('pagination');
-  //     removeAllChildNodes('pagination');
-
-  //     for (let i = 1; i <= pagination.last; i++) {
-  //         const el = document.createElement('a');
-  //         el.href = '#';
-  //         el.innerHTML = i;
-
-  //         if (i === pagination.current) {
-  //             el.className = 'on';
-  //         } else {
-  //             el.onclick = () => pagination.gotoPage(i);
-  //         }
-
-  //         paginationEl.appendChild(el);
-  //     }
-  // };
 
   return (
     <div>
@@ -170,9 +149,12 @@ const PlannerMap = () => {
         id="keyword"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
+        className="border-indigo-500/100"
       />
-      <button onClick={searchPlaces}>Search</button>
-      <div id="map" style={{ width: "100%", height: "400px" }} />
+      <button onClick={searchPlaces} style={{ backgroundColor: "black" }}>
+        Search
+      </button>
+      <div id="map" style={{ width: "1200px", height: "1000px" }} />
       <div id="placesList" style={{ color: "black" }}>
         {places}
       </div>
@@ -181,4 +163,4 @@ const PlannerMap = () => {
   );
 };
 
-export default PlannerMap;
+export default SearchMap;
