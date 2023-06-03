@@ -23,8 +23,10 @@ const MainPageComponent = () => {
 
   return (
     <div>
-      <img src="/src/assets/main.jpg" className="mainImg" />
       <div>
+        <img src="/src/assets/main.jpg" className="mainImg" />
+      </div>
+      <div className="relative">
         <img src={images[currentIndex]} alt="Slide" className="w-full" />
         <button
           onClick={previousSlide}
