@@ -47,6 +47,7 @@ const SearchMap = () => {
     const bounds = new window.kakao.maps.LatLngBounds();
     console.log(places);
     removeMarkers();
+
     const placeElements = places.map((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
       const marker = addMarker(placePosition, index);
@@ -61,11 +62,22 @@ const SearchMap = () => {
         >
           <span className={`markerbg marker_${index + 1}`} />
           <div
-            className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg "
+            className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg"
             style={{ marginLeft: "10px" }}
           >
             <div className="font-bold ">{place.place_name}</div>
-            <span>{place.category_group_name}</span>
+            <div style={{ display: "flex ", justifyContent: "right" }}>
+              <span>{place.category_group_name}</span>
+              <button
+                className="rounded-full bg-sky-500/100 text-sm"
+                style={{ marginLeft: "auto" }}
+              >
+                장소 정보
+              </button>
+              <button className="rounded-full bg-sky-500/100 text-sm">
+                일정 추가
+              </button>
+            </div>
             {/* {place.road_address_name ? (
               <> */}
             {/* <span className="jibun gray">{place.address_name}</span> */}
@@ -140,7 +152,7 @@ const SearchMap = () => {
   };
 
   const displayInfowindow = (marker, title) => {
-    const content = `<div style="padding:5px;z-index:1;color:black">${title}</div>`;
+    const content = `<div className="" style="padding:5px;z-index:1;color:black">${title}</div>`;
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
