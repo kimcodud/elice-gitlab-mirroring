@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Modal from './modal';
+import Modal from '../modal/modal';
 import { useModalStore } from '../../store/store';
 
 import prevBtn from './images/prev.png';
