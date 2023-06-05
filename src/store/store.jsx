@@ -1,12 +1,28 @@
-///// zustand 작성 방식 예시 코드입니다!
-// 초기 세팅단계에 더미 데이터로 넣어놓음
-
 import { create } from "zustand";
 
-const useCounter = create((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-  decrement: () => set((state) => ({ count: state.count - 1 })),
+const useModalStore = create((set) => ({
+  isOpen: false,
+  modalType: "",
+  style: {},
+  title: "",
+  content: "",
+  openModal: (modalData) => {
+    set((state) => ({
+      ...state,
+      isOpen: true,
+      modalType: modalData.modalType,
+      style: modalData.style,
+      title: modalData.title,
+      content: modalData.content,
+    }));
+  },
+  closeModal: () => {
+    set((state) => ({
+      ...state,
+      isOpen: false,
+      modalType: "",
+    }));
+  },
 }));
 
-export default useCounter;
+export { useModalStore };
