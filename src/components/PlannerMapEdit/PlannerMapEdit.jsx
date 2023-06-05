@@ -1,8 +1,14 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import mockData from '../../assets/mockdata.json';
-import PlannerLeft from '../PlannerLeft/PlannerLeft';
+import PlannerLeft from '../DestinationList/DestinationList';
 
 function PlannerMapEdit() {
+  const [list, setList] = useState(mockData);
+
+  const getList = (newList) => {
+    setList(newList);
+  };
+
   useEffect(() => {
     const mapContainer = document.getElementById('map');
     const mapOption = {
@@ -12,12 +18,12 @@ function PlannerMapEdit() {
 
     const map = new window.kakao.maps.Map(mapContainer, mapOption);
 
-    const positions = mockData; // mockdata.json 파일에서 데이터 가져오기
+    // const ps = new window.kakao.maps.services.Places(); //장소 검색 객체 생성
 
     const markers = [];
     const linePath = [];
 
-    positions.forEach((position) => {
+    list.forEach((position) => {
       const latlng = new window.kakao.maps.LatLng(
         position.latlng.lat,
         position.latlng.lng
@@ -53,11 +59,11 @@ function PlannerMapEdit() {
     });
 
     polyline.setMap(map);
-  }, []);
+  }, [list]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <PlannerLeft />
+      <PlannerLeft getList={getList} />
       <div id="map" style={{ width: '1200px', height: '1000px' }}></div>
     </div>
   );
