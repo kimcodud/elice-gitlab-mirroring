@@ -6,20 +6,11 @@ const SearchMap = () => {
   const [markers, setMarkers] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
+  const [infowindow, setInfowindow] = useState(null);
 
-  useEffect(() => {
-    const mapContainer = document.getElementById("map");
-    const mapOptions = {
-      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3,
-    };
-
-    const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
-    setMap(newMap);
-  }, []);
-
-  const displayInfowindow = (marker, title) => {
+  const handleDisplayInfowindow = (marker, title) => {
     const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    console.log("handleDisplayInfowindow", marker);
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
@@ -36,7 +27,7 @@ const SearchMap = () => {
   // searchPlaces ---> placesSearchCB(data, status, pagination) ---> displayPalces, dsiplayPagination
 
   const placesSearchCB = (data, status, pagination) => {
-    console.log("placesSearchCB", { data, status, pagination });
+    // console.log("placesSearchCB", { data, status, pagination });
     if (status === window.kakao.maps.services.Status.OK) {
       displayPlaces(data);
       displayPagination(pagination);
@@ -49,19 +40,37 @@ const SearchMap = () => {
 
   const displayPlaces = (_places) => {
     // removeAllChildNodes("placesList");
-    console.log("리스트 제거완료");
-    removeMarkers();
+    // console.log("리스트 제거완료");
+    console.log("prev removeMarkers", markers);
+    removeMarkers(); // marker-state []
 
     const bounds = new window.kakao.maps.LatLngBounds();
-
     _places.forEach((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
       addMarker(placePosition, index);
       bounds.extend(placePosition);
+    }); // marker-state [....]
+
+    const markerList = createMakerList(_places);
+    const newPlaces = _places.map((placeData, index) => {
+      return {
+        ...placeData,
+        marker: markerList[index],
+      };
     });
 
-    setPlaces(_places || []);
+    // places ==> { ...data,  marker }
+    console.log("next removeMarkers", markers);
+    setPlaces(newPlaces || []);
     map.setBounds(bounds);
+  };
+
+  const createMakerList = (places) => {
+    return places?.map((place, index) => {
+      const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
+      const maker = addMarker(placePosition, index);
+      return maker;
+    });
   };
 
   const addMarker = (position, index) => {
@@ -84,9 +93,10 @@ const SearchMap = () => {
       position: position,
       image: markerImage,
     });
+    console.log(marker);
 
     marker.setMap(map);
-    setMarkers((prevMarkers) => [...prevMarkers, marker]);
+    setMarkers((prevMarkers) => [...prevMarkers, ...[marker]]);
 
     return marker;
   };
@@ -123,8 +133,40 @@ const SearchMap = () => {
   };
 
   const PlaceListComponent = useMemo(() => {
-    return <PlaceList places={places} />;
+    return (
+      <PlaceList
+        places={places}
+        infowindow={infowindow}
+        handleDisplayInfowindow={handleDisplayInfowindow}
+      />
+    );
   }, [places]);
+
+  const attachMapSdkScript = () => {
+    const script = document.createElement("script");
+    script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?appkey=eec99942e44a51ac0fdcd9917ab97da9&libraries=services&autoload=false";
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      kakao.maps.load(() => {
+        const mapContainer = document.getElementById("map");
+        const mapOptions = {
+          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+          level: 3,
+        };
+        const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
+        setMap(newMap);
+        const newInfowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        setInfowindow(newInfowindow);
+      });
+    };
+  };
+  useEffect(() => {
+    attachMapSdkScript();
+  }, []);
 
   return (
     <div style={{ display: "flex ", justifyContent: "center" }}>
