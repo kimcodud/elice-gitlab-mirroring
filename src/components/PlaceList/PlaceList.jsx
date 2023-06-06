@@ -3,27 +3,7 @@ import { useModalStore } from "../../store/store";
 import Modal from "../modal/modal";
 
 const PlaceList = (props) => {
-  const [infowindow, setInfowindow] = useState(null);
-
-  // const openInfoModal = () => {
-  //   const { openModal } = useModalStore();
-
-  //   openModal({
-  //     modalType: "info",
-  //     style: {
-  //       backgroundColor: "green",
-  //       width: "40%",
-  //       height: "100%",
-  //       top: "50%",
-  //       left: "50%",
-  //       transform: "translate(-50%, -50%)",
-  //     },
-  //     title: "test",
-  //     content: "1",
-  //   });
-  // };
-
-  const { places } = props;
+  const { places, infowindow, handleDisplayInfowindow } = props;
   return (
     <div style={{ color: "black" }}>
       {places?.map((place, index) => {
@@ -32,7 +12,9 @@ const PlaceList = (props) => {
           <div
             key={index}
             className="item"
-            onMouseOver={() => displayInfowindow(marker, place.place_name)}
+            onMouseOver={() =>
+              handleDisplayInfowindow(place.marker, place.place_name)
+            }
             onMouseOut={() => infowindow.close()}
           >
             <span className={`markerbg marker${index + 1}`} />
