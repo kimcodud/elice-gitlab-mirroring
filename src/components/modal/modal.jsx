@@ -1,19 +1,21 @@
-import { useModalStore } from '../../store/store';
-import closeIcon from './images/close.png'
+import { useModalStore } from "../../store/store";
+import closeIcon from "./images/close.png";
 function Modal() {
-  const { isOpen, closeModal, modalType, style, title, content } = useModalStore();
+  const { isOpen, closeModal, modalType, style, title, content } =
+    useModalStore();
 
   const renderContent = () => {
-    switch(modalType) {
-      case 'schedule':
+    switch (modalType) {
+      case "schedule":
         return <div>{content}</div>;
-      case 'comment':
+      case "comment":
+        return <div>{content}</div>;
+      case "info":
         return <div>{content}</div>;
       default:
         return null;
     }
   };
-  
 
   return (
     <>
@@ -73,17 +75,25 @@ function Modal() {
             }
             `}
           </style>
-          <div className="modal" style={{...style}}>
+          <div className="modal" style={{ ...style }}>
             <div className="modalContent">
-              <div className='modalhead'>
-                <div className='modaltitle text-center font-bold'>{title}</div>
+              <div className="modalhead">
+                <div className="modaltitle text-center font-bold">{title}</div>
                 <button className="modalCloseBtn" onClick={closeModal}>
-                <img src={closeIcon} alt="Close" />
-              </button>
+                  <img src={closeIcon} alt="Close" />
+                </button>
               </div>
               <div className="modalBody">
                 <div className="modalScrollable">
-                  <div className="modalInner" style={{width:'100%', height:'100%', color: 'black', overflowY: 'auto' }}>
+                  <div
+                    className="modalInner"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      color: "black",
+                      overflowY: "auto",
+                    }}
+                  >
                     {renderContent()}
                   </div>
                 </div>
