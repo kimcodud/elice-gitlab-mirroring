@@ -8,7 +8,7 @@ function SignUpPage() {
   const [user, setUser] = useState({
     email: "",
     name: "",
-    nickName: "",
+    userId: "",
     password: "",
     passwordConfirm: "",
   });
@@ -27,21 +27,14 @@ function SignUpPage() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/signup", {
+      const response = await axios.post("/signup", {
         email: user.email,
         name: user.name,
-        nickName: user.nickName,
+        userId: user.userId,
         password: user.password,
       });
       console.log(response.data);
       alert("회원가입을 축하합니다");
-      setUser({
-        nickName: "",
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-      });
     } catch (error) {
       console.error(error);
     }
@@ -73,10 +66,10 @@ function SignUpPage() {
       />
 
       <InputField
-        label="닉네임"
+        label="아이디"
         type="text"
-        value={user.nickName}
-        onChange={(e) => setUser({ ...user, nickName: e.target.value })}
+        value={user.userId}
+        onChange={(e) => setUser({ ...user, userId: e.target.value })}
         required
       />
 
