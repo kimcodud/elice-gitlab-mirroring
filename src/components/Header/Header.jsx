@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import "./Header.css";
+import { Link } from 'react-router-dom';
+import './Header.css';
 
 const Header = () => {
   return (
@@ -13,6 +13,9 @@ const Header = () => {
         </a>
         <a href="/plannerMap" className="text-zinc-400 ml-auto p-3">
           일정만들기(임시)
+        </a>
+        <a href="/plannerMapEdit" className="text-zinc-400 ml-auto p-3">
+          일정 수정(임시)
         </a>
         <a href="/travelBoard" className="text-zinc-400 ml-auto p-3">
           여행기

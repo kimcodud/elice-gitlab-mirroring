@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import mockData from '../../assets/mockdata.json';
+import mockData from '../../assets/mockData.json';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function PlannerLeft({ getList }) {

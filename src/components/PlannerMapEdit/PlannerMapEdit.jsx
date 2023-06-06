@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import mockData from '../../assets/mockdata.json';
-import PlannerLeft from '../DestinationList/DestinationList';
+import mockData from '../../assets/mockData.json';
+import DestinationList from '../DestinationList/DestinationList';
 
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
@@ -63,7 +63,7 @@ function PlannerMapEdit() {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-      <PlannerLeft getList={getList} />
+      <DestinationList getList={getList} />
       <div id="map" style={{ width: '1200px', height: '1000px' }}></div>
     </div>
   );
