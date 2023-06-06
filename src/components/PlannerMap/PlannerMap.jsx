@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const PlannerMap = () => {
+const SearchMap = () => {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -23,7 +23,7 @@ const PlannerMap = () => {
 
   const searchPlaces = () => {
     if (!keyword.trim()) {
-      alert("키워드를 입력해주세요!");
+      alert("장소를 입력해주세요!");
       return;
     }
 
@@ -44,10 +44,9 @@ const PlannerMap = () => {
   };
 
   const displayPlaces = (places) => {
-    // removeAllChildNodes('placesList');
-    removeMarkers();
-
     const bounds = new window.kakao.maps.LatLngBounds();
+    console.log(places);
+    removeMarkers();
 
     const placeElements = places.map((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
@@ -62,17 +61,31 @@ const PlannerMap = () => {
           onMouseOut={() => infowindow.close()}
         >
           <span className={`markerbg marker_${index + 1}`} />
-          <div className="info">
-            <h5>{place.place_name}</h5>
-            {place.road_address_name ? (
-              <>
-                <span>{place.road_address_name}</span>
-                <span className="jibun gray">{place.address_name}</span>
-              </>
+          <div
+            className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg"
+            style={{ marginLeft: "10px" }}
+          >
+            <div className="font-bold ">{place.place_name}</div>
+            <div style={{ display: "flex ", justifyContent: "right" }}>
+              <span>{place.category_group_name}</span>
+              <button
+                className="rounded-full bg-sky-500/100 text-sm"
+                style={{ marginLeft: "auto" }}
+              >
+                장소 정보
+              </button>
+              <button className="rounded-full bg-sky-500/100 text-sm">
+                일정 추가
+              </button>
+            </div>
+            {/* {place.road_address_name ? (
+              <> */}
+            {/* <span className="jibun gray">{place.address_name}</span> */}
+            {/* </>
             ) : (
               <span>{place.address_name}</span>
-            )}
-            <span className="tel">{place.phone}</span>
+            )} */}
+            {/* <span className="tel">{place.phone}</span> */}
           </div>
         </div>
       );
@@ -112,9 +125,16 @@ const PlannerMap = () => {
     setMarkers([]);
   };
 
+  const removeAllChildNodes = (elementId) => {
+    const parent = document.getElementById(elementId);
+    while (parent.firstChild) {
+      parent.firstChild.remove();
+    }
+  };
+
   const displayPagination = (pagination) => {
     const paginationEl = document.getElementById("pagination");
-    // removeAllChildNodes('pagination');
+    removeAllChildNodes("pagination");
 
     for (let i = 1; i <= pagination.last; i++) {
       const el = document.createElement("a");
@@ -132,53 +152,37 @@ const PlannerMap = () => {
   };
 
   const displayInfowindow = (marker, title) => {
-    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    const content = `<div className="" style="padding:5px;z-index:1;color:black">${title}</div>`;
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
 
-  // const removeAllChildNodes = (elementId) => {
-  //     const parent = document.getElementById(elementId);
-  //     while (parent.firstChild) {
-  //         parent.firstChild.remove();
-  //     }
-  // };
-
-  // const displayPagination = (pagination) => {
-  //     const paginationEl = document.getElementById('pagination');
-  //     removeAllChildNodes('pagination');
-
-  //     for (let i = 1; i <= pagination.last; i++) {
-  //         const el = document.createElement('a');
-  //         el.href = '#';
-  //         el.innerHTML = i;
-
-  //         if (i === pagination.current) {
-  //             el.className = 'on';
-  //         } else {
-  //             el.onclick = () => pagination.gotoPage(i);
-  //         }
-
-  //         paginationEl.appendChild(el);
-  //     }
-  // };
-
   return (
-    <div>
-      <input
-        type="text"
-        id="keyword"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-      />
-      <button onClick={searchPlaces}>Search</button>
-      <div id="map" style={{ width: "100%", height: "400px" }} />
-      <div id="placesList" style={{ color: "black" }}>
-        {places}
+    <div style={{ display: "flex ", justifyContent: "center" }}>
+      <div id="map" style={{ width: "1200px", height: "1000px" }} />
+      <div>
+        <input
+          type="text"
+          id="keyword"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="border-indigo-500/100 rounded-md"
+          placeholder=" 장소를 검색해보세요"
+          style={{ marginLeft: "15px" }}
+        />
+        <button
+          onClick={searchPlaces}
+          className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md"
+        >
+          Search
+        </button>
+        <div id="placesList" style={{ color: "black" }}>
+          {places}
+        </div>
+        <div id="pagination" />
       </div>
-      <div id="pagination" />
     </div>
   );
 };
 
-export default PlannerMap;
+export default SearchMap;

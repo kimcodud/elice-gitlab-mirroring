@@ -27,7 +27,7 @@ const MainPageComponent = () => {
         <img src="/src/assets/main.jpg" className="mainImg" />
       </div>
       <div className="relative">
-        <img src={images[currentIndex]} alt="Slide" className="w-full" />
+        <img src={images[currentIndex]} alt="Slide" className="w-1/2 h-1/2" />
         <button
           onClick={previousSlide}
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded-l"

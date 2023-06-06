@@ -11,6 +11,9 @@ const Header = () => {
             className="ml-6 mr-96 mb-20 h-14 w-18 "
           ></img>
         </a>
+        <a href="/plannerMap" className="text-zinc-400 ml-auto p-3">
+          일정만들기(임시)
+        </a>
         <a href="/travelBoard" className="text-zinc-400 ml-auto p-3">
           여행기
         </a>
