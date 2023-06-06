@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import addButton from './images/addIcon.png';
 import deletButton from './images/deletIcon.png';
-
-const tempImage = []
+const userImage = [deletButton, deletButton]; // 더미데이터
 function TravelWrite() {
   const AddORDeleteImage = () => {
     const [tempImage, setTempImage] = useState([]);
   
     useEffect(() => {
       const initialImages = Array(4).fill(""); // 게시글 수정시 기존 이미지를 불러올 부분
-      for (let i = 0; i < tempImage.length; i++) {
-        initialImages[i] = tempImage[i];
+      for (let i = 0; i < userImage.length; i++) {
+        initialImages[i] = userImage[i];
       }
       setTempImage(initialImages);
+      console.log(initialImages); // 디버그 용
+      console.log(initialImages.length); // 디버그용
+
     }, []);
   
     const handleImageDelete = (index) => {
@@ -54,14 +56,18 @@ function TravelWrite() {
       <div style={{width:'30%', height: '100%', margin:'2%'}}>
         <style>
           {`
-            .image-box {
-              width:100%;
-              height: 100%;
+            .imageBox {
+              display: flex; justify-content: center; align-items: center;
+              width: calc(95% - 14px);
+              height: 95%;
+              background-color: #DCDCDC;
+              border-radius: 33px;
               position: relative;
               cursor: pointer;
+              overflow: hidden;
             }
   
-            .image-box:before {
+            .imageBox::before {
               content: "";
               position: absolute;
               top: 0;
@@ -71,13 +77,14 @@ function TravelWrite() {
               border-radius: 5%;
             }
   
-            .image-box.no-image:before {
-              border: 2px dashed gray;
+            .imageBox.emptyImage::before {
+              background-color: #DCDCDC;
             }
   
             .image {
               width: 100%;
               height: 100%;
+              object-fit: cover;
             }
   
             .delete-button,
@@ -96,11 +103,11 @@ function TravelWrite() {
           `}
         </style>
   
-        <div className="grid grid-cols-2 w-full h-full">
+        <div className="grid grid-cols-2 grid-rows-2 w-full h-full">
           {[...Array(4)].map((_, index) => (
             <div
               key={index}
-              className={`image-box ${tempImage[index] ? "" : "no-image"}`}
+              className={`imageBox ${tempImage[index] ? "" : "emptyImage"}`}
               onClick={() => handleImageClick(index)}
             >
               {tempImage[index] && (
