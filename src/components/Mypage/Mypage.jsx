@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import Modal from '../modal/modal';
+import { useModalStore } from '../../store/store';
 
 import basicUserImage from '../../assets/user.png';
 import prevBtn from '../../assets/prev.png';
@@ -37,6 +39,7 @@ const travelSchedule = [{
 
 function UserInfoPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { openModal } = useModalStore();
 
   const handleClickNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % travelSchedule.length);
@@ -60,6 +63,23 @@ function UserInfoPage() {
     alert(travelSchedule[currentIndex].koPlaceName + " 일정이 삭제되었습니다.");
   };
 
+  const openEditUserInfoModal = () => {
+    openModal({
+      modalType: '모달타입',
+      style: { /*자유롭게 꾸며보세요!*/
+        backgroundColor: ' #F1F5F9',
+        width: '100%',
+        height: '100%',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+      title: <div className='text-center font-bold text-4xl'>회원정보 수정</div>,
+      content: <div className=''>
+        dfsdfs
+      </div>,
+    });
+  };
 
   return (
     <div className='flex flex-col justify-center items-center text-center w-full' style={{ height: 'calc(100vh - 7rem)' }}>
@@ -67,17 +87,17 @@ function UserInfoPage() {
         <img className='h-full' src={basicUserImage} alt="유저이미지" />
       </div>
       <div className='text-gray-500 text-lg m-3'>{userName}님 안녕하세요</div>
-      <button style={{ backgroundColor: "#B09FCE" }}
-        className='text-white font-bold text-lg px-4 py-2 rounded-xl'
+      <button onClick={openEditUserInfoModal} style={{ backgroundColor: "#B09FCE" }}
+        className='text-white font-bold text-lg px-4 py-2 rounded'
       >프로필 수정</button>
       <div className='flex flex-row w-1/5 h-1/5'>
-        <div className='flex flex-col bg-gray-100 w-1/2 h- m-6 p-2 rounded-2xl'>
+        <div className='flex flex-col bg-gray-100 w-1/2 h- m-4 p-2 rounded-2xl'>
           <div className='py-1 text-slate-500' >나의 일정</div>
-          <div className='text-5xl py-2 font-bold' style={{ color: "#6645B9" }}>{travelSchedule.length}</div> {/*임시*/}
+          <div className='text-4xl py-2 font-bold' style={{ color: "#6645B9" }}>{travelSchedule.length}</div> {/*임시*/}
         </div>
-        <div className='flex flex-col bg-gray-100 w-1/2 m-6 p-2 rounded-2xl'>
+        <div className='flex flex-col bg-gray-100 w-1/2 m-4 p-2 rounded-2xl'>
           <div className='py-1 text-slate-500' >나의 여행기</div>
-          <div className='text-5xl py-2 font-bold' style={{ color: "#6645B9" }}>0</div> {/*임시*/}
+          <div className='text-4xl py-2 font-bold' style={{ color: "#6645B9" }}>0</div> {/*임시*/}
         </div>
       </div>
       <div id='box' className='flex flex-col justify-center items-center m-4 bg-gray-100 w-7/12 h-72 relative'>
@@ -137,6 +157,7 @@ function UserInfoPage() {
       <div>
         - {currentIndex + 1} -
       </div>
+      <Modal />
     </div>
   )
 }
