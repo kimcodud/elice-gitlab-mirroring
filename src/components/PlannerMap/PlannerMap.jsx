@@ -10,7 +10,7 @@ const SearchMap = () => {
 
   const handleDisplayInfowindow = (marker, title) => {
     const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
-    console.log("handleDisplayInfowindow", marker);
+    // console.log("handleDisplayInfowindow", marker);
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
@@ -41,7 +41,7 @@ const SearchMap = () => {
   const displayPlaces = (_places) => {
     // removeAllChildNodes("placesList");
     // console.log("리스트 제거완료");
-    console.log("prev removeMarkers", markers);
+    // console.log("prev removeMarkers", markers);
     removeMarkers(); // marker-state []
 
     const bounds = new window.kakao.maps.LatLngBounds();
@@ -60,7 +60,7 @@ const SearchMap = () => {
     });
 
     // places ==> { ...data,  marker }
-    console.log("next removeMarkers", markers);
+    // console.log("next removeMarkers", markers);
     setPlaces(newPlaces || []);
     map.setBounds(bounds);
   };
@@ -69,6 +69,7 @@ const SearchMap = () => {
     return places?.map((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
       const maker = addMarker(placePosition, index);
+      // console.log(places);
       return maker;
     });
   };
@@ -93,7 +94,7 @@ const SearchMap = () => {
       position: position,
       image: markerImage,
     });
-    console.log(marker);
+    // console.log(marker);
 
     marker.setMap(map);
     setMarkers((prevMarkers) => [...prevMarkers, ...[marker]]);
@@ -188,7 +189,7 @@ const SearchMap = () => {
           Search
         </button>
         <div id="placesList">{PlaceListComponent}</div>
-        <div id="pagination" />
+        <div id="pagination" style={{ marginLeft: "10px" }} />
       </div>
     </div>
   );
