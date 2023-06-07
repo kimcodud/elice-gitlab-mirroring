@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Modal from '../modal/modal';
+import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from '../../store/store';
+
 
 import basicUserImage from '../../assets/user.png';
 import prevBtn from '../../assets/prev.png';
@@ -157,7 +159,9 @@ function UserInfoPage() {
       <div>
         - {currentIndex + 1} -
       </div>
-      <Modal />
+      <ModalPortal>
+        <Modal />
+      </ModalPortal>
     </div>
   )
 }
