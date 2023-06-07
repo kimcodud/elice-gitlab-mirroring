@@ -94,7 +94,7 @@ function TravelWrite() {
               }
             `}
           </style>
-          <div className="flex flex-row items-center h-16 mb-6">
+          <div className="flex flex-row items-center w-40 h-16 mb-12 "  style={{ cursor: 'pointer' }} onClick={''}>
             <img src={goBackIcon} className="w-6 h-6 mr-6" alt="go back to mypage" />
             <span className="text-2xl">마이페이지</span>
           </div>
