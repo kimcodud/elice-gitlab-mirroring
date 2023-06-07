@@ -4,62 +4,91 @@ import DestinationList from '../DestinationList/DestinationList';
 
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
+  const [map, setMap] = useState(null);
+  const [markers, setMarkers] = useState([]);
+  const [polyline, setPolyline] = useState(null);
 
   const getList = (newList) => {
     setList(newList);
   };
 
-  useEffect(() => {
-    const mapContainer = document.getElementById('map');
-    const mapOption = {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+  const attachMapSdkScript = () => {
+    const script = document.createElement('script');
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
+      import.meta.env.VITE_APP_KAKAOMAP_KEY
+    }&libraries=services&autoload=false`;
+    script.defer = true;
+    script.async = true;
+
+    script.onload = () => {
+      window.kakao.maps.load(() => {
+        const mapContainer = document.getElementById('map');
+        const mapOptions = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+        };
+        const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
+        setMap(newMap);
+      });
     };
 
-    const map = new window.kakao.maps.Map(mapContainer, mapOption);
+    document.head.appendChild(script);
+  };
 
-    // const ps = new window.kakao.maps.services.Places(); //장소 검색 객체 생성
+  useEffect(() => {
+    attachMapSdkScript();
+  }, []);
 
-    const markers = [];
-    const linePath = [];
+  useEffect(() => {
+    if (map) {
+      // 이전에 표시된 마커 및 경로 삭제
+      markers.forEach((marker) => marker.setMap(null));
+      if (polyline) polyline.setMap(null);
 
-    list.forEach((position) => {
-      const latlng = new window.kakao.maps.LatLng(
-        position.latlng.lat,
-        position.latlng.lng
-      );
+      const newMarkers = [];
+      const linePath = [];
 
-      const marker = new window.kakao.maps.Marker({
-        map: map,
-        position: latlng,
+      list.forEach((position) => {
+        const latlng = new window.kakao.maps.LatLng(
+          position.latlng.lat,
+          position.latlng.lng
+        );
+
+        const marker = new window.kakao.maps.Marker({
+          map: map,
+          position: latlng,
+        });
+
+        const infowindow = new window.kakao.maps.InfoWindow({
+          content: position.content,
+        });
+
+        window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+          infowindow.open(map, marker);
+        });
+
+        window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+          infowindow.close();
+        });
+
+        newMarkers.push(marker);
+        linePath.push(latlng);
       });
 
-      const infowindow = new window.kakao.maps.InfoWindow({
-        content: position.content,
+      const newPolyline = new window.kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight: 2,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.7,
+        strokeStyle: 'solid',
       });
 
-      window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-        infowindow.open(map, marker);
-      });
+      newPolyline.setMap(map);
 
-      window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-        infowindow.close();
-      });
-
-      markers.push(marker);
-      linePath.push(latlng);
-    });
-
-    const polyline = new window.kakao.maps.Polyline({
-      path: linePath,
-      strokeWeight: 2,
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.7,
-      strokeStyle: 'solid',
-    });
-
-    polyline.setMap(map);
-  }, [list]);
+      setMarkers(newMarkers);
+      setPolyline(newPolyline);
+    }
+  }, [list, map]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
