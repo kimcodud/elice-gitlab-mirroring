@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./MainPage.css";
 
 const MainPageComponent = () => {
@@ -21,13 +21,23 @@ const MainPageComponent = () => {
     );
   };
 
+  const movePoint = useRef();
+  const scrollBtn = () => {
+    movePoint.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div>
       <div>
-        <img src="/src/assets/main.jpg" className="mainImg" />
+        <button onClick={scrollBtn}>dddddddddddddddddd</button>
+        <img
+          src="/src/assets/main.jpg"
+          className="mainImg"
+          style={{ marginBottom: "10rem" }}
+        />
       </div>
-      <div className="relative">
-        <img src={images[currentIndex]} alt="Slide" className="w-1/2 h-1/2" />
+      <div className="relative" ref={movePoint}>
+        <img src={images[currentIndex]} alt="Slide" className="w-full" />
         <button
           onClick={previousSlide}
           className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-500 hover:bg-gray-700 text-white py-2 px-4 rounded-l"

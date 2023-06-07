@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import PlaceList from "../PlaceList/PlaceList";
 
 const SearchMap = () => {
   const [map, setMap] = useState(null);
@@ -7,32 +8,26 @@ const SearchMap = () => {
   const [places, setPlaces] = useState([]);
   const [infowindow, setInfowindow] = useState(null);
 
-  useEffect(() => {
-    const mapContainer = document.getElementById("map");
-    const mapOptions = {
-      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3,
-    };
-
-    const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
-    setMap(newMap);
-
-    const newInfowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
-    setInfowindow(newInfowindow);
-  }, []);
+  const handleDisplayInfowindow = (marker, title) => {
+    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    // console.log("handleDisplayInfowindow", marker);
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+  };
 
   const searchPlaces = () => {
     if (!keyword.trim()) {
-      alert("장소를 입력해주세요!");
+      alert("키워드를 입력해주세요!");
       return;
     }
 
     const ps = new window.kakao.maps.services.Places();
-    ps.keywordSearch(keyword, placesSearchCB);
+    ps.keywordSearch(keyword, placesSearchCB); // =>
   };
+  // searchPlaces ---> placesSearchCB(data, status, pagination) ---> displayPalces, dsiplayPagination
 
-  //searchPlaces ---> placesSearchCB(data, status, pagination) --->
   const placesSearchCB = (data, status, pagination) => {
+    // console.log("placesSearchCB", { data, status, pagination });
     if (status === window.kakao.maps.services.Status.OK) {
       displayPlaces(data);
       displayPagination(pagination);
@@ -43,56 +38,40 @@ const SearchMap = () => {
     }
   };
 
-  const displayPlaces = (places) => {
+  const displayPlaces = (_places) => {
+    // removeAllChildNodes("placesList");
+    // console.log("리스트 제거완료");
+    // console.log("prev removeMarkers", markers);
+    removeMarkers(); // marker-state []
+
     const bounds = new window.kakao.maps.LatLngBounds();
-    console.log(places);
-    removeMarkers();
-
-    const placeElements = places.map((place, index) => {
+    _places.forEach((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
-      const marker = addMarker(placePosition, index);
+      addMarker(placePosition, index);
       bounds.extend(placePosition);
+    }); // marker-state [....]
 
-      return (
-        <div
-          key={index}
-          className="item"
-          onMouseOver={() => displayInfowindow(marker, place.place_name)}
-          onMouseOut={() => infowindow.close()}
-        >
-          <span className={`markerbg marker_${index + 1}`} />
-          <div
-            className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg"
-            style={{ marginLeft: "10px" }}
-          >
-            <div className="font-bold ">{place.place_name}</div>
-            <div style={{ display: "flex ", justifyContent: "right" }}>
-              <span>{place.category_group_name}</span>
-              <button
-                className="rounded-full bg-sky-500/100 text-sm"
-                style={{ marginLeft: "auto" }}
-              >
-                장소 정보
-              </button>
-              <button className="rounded-full bg-sky-500/100 text-sm">
-                일정 추가
-              </button>
-            </div>
-            {/* {place.road_address_name ? (
-              <> */}
-            {/* <span className="jibun gray">{place.address_name}</span> */}
-            {/* </>
-            ) : (
-              <span>{place.address_name}</span>
-            )} */}
-            {/* <span className="tel">{place.phone}</span> */}
-          </div>
-        </div>
-      );
+    const markerList = createMakerList(_places);
+    const newPlaces = _places.map((placeData, index) => {
+      return {
+        ...placeData,
+        marker: markerList[index],
+      };
     });
 
-    setPlaces(placeElements);
+    // places ==> { ...data,  marker }
+    // console.log("next removeMarkers", markers);
+    setPlaces(newPlaces || []);
     map.setBounds(bounds);
+  };
+
+  const createMakerList = (places) => {
+    return places?.map((place, index) => {
+      const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
+      const maker = addMarker(placePosition, index);
+      // console.log(places);
+      return maker;
+    });
   };
 
   const addMarker = (position, index) => {
@@ -104,18 +83,21 @@ const SearchMap = () => {
       spriteOrigin: new window.kakao.maps.Point(0, index * 46 + 10),
       offset: new window.kakao.maps.Point(13, 37),
     };
+
     const markerImage = new window.kakao.maps.MarkerImage(
       imageSrc,
       imageSize,
       imgOptions
     );
+
     const marker = new window.kakao.maps.Marker({
       position: position,
       image: markerImage,
     });
+    // console.log(marker);
 
     marker.setMap(map);
-    setMarkers((prevMarkers) => [...prevMarkers, marker]);
+    setMarkers((prevMarkers) => [...prevMarkers, ...[marker]]);
 
     return marker;
   };
@@ -151,11 +133,41 @@ const SearchMap = () => {
     }
   };
 
-  const displayInfowindow = (marker, title) => {
-    const content = `<div className="" style="padding:5px;z-index:1;color:black">${title}</div>`;
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
+  const PlaceListComponent = useMemo(() => {
+    return (
+      <PlaceList
+        places={places}
+        infowindow={infowindow}
+        handleDisplayInfowindow={handleDisplayInfowindow}
+      />
+    );
+  }, [places]);
+
+  const attachMapSdkScript = () => {
+    const script = document.createElement("script");
+    script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?appkey=eec99942e44a51ac0fdcd9917ab97da9&libraries=services&autoload=false";
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      kakao.maps.load(() => {
+        const mapContainer = document.getElementById("map");
+        const mapOptions = {
+          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+          level: 3,
+        };
+        const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
+        setMap(newMap);
+        const newInfowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        setInfowindow(newInfowindow);
+      });
+    };
   };
+  useEffect(() => {
+    attachMapSdkScript();
+  }, []);
 
   return (
     <div style={{ display: "flex ", justifyContent: "center" }}>
@@ -176,10 +188,8 @@ const SearchMap = () => {
         >
           Search
         </button>
-        <div id="placesList" style={{ color: "black" }}>
-          {places}
-        </div>
-        <div id="pagination" />
+        <div id="placesList">{PlaceListComponent}</div>
+        <div id="pagination" style={{ marginLeft: "10px" }} />
       </div>
     </div>
   );
