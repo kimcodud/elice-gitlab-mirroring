@@ -12,6 +12,8 @@ function Modal() {
         return <div>{content}</div>;
       case "info":
         return <div>{content}</div>;
+      case 'updateUserInfo':
+        return <div>{content}</div>;
       default:
         return null;
     }

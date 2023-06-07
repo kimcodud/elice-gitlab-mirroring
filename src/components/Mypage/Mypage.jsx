@@ -65,20 +65,22 @@ function UserInfoPage() {
     alert(travelSchedule[currentIndex].koPlaceName + " 일정이 삭제되었습니다.");
   };
 
-  const openEditUserInfoModal = () => {
+  const openuUpdateUserInfoModal = () => {
     openModal({
-      modalType: '모달타입',
+      modalType: 'updateUserInfo',
       style: { /*자유롭게 꾸며보세요!*/
         backgroundColor: ' #F1F5F9',
-        width: '100%',
-        height: '100%',
+        width: '60%',
+        height: '60%',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
       },
       title: <div className='text-center font-bold text-4xl'>회원정보 수정</div>,
-      content: <div className=''>
-        dfsdfs
+      content: <div>
+        <div className=''>이름</div>
+        <div className=''>이메일</div>
+        <div className=''>비밀번호</div>
       </div>,
     });
   };
@@ -89,7 +91,7 @@ function UserInfoPage() {
         <img className='h-full' src={basicUserImage} alt="유저이미지" />
       </div>
       <div className='text-gray-500 text-lg m-3'>{userName}님 안녕하세요</div>
-      <button onClick={openEditUserInfoModal} style={{ backgroundColor: "#B09FCE" }}
+      <button onClick={openuUpdateUserInfoModal} style={{ backgroundColor: "#B09FCE" }}
         className='text-white font-bold text-lg px-4 py-2 rounded'
       >프로필 수정</button>
       <div className='flex flex-row w-1/5 h-1/5'>
