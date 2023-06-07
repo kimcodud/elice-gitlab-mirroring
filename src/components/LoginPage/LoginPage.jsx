@@ -11,7 +11,7 @@ function LoginPageComponent() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3306/users/login", {
+      const response = await axios.post("http://localhost:3000/users/login", {
         user_id: user.userId,
         password: user.password,
       });
