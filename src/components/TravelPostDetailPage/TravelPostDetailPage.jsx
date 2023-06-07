@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Modal from '../modal/modal';
 import { useModalStore } from '../../store/store';
 
-import prevBtn from './images/prev.png';
-import nextBtn from './images/next.png';
+import prevBtn from '../../assets/prev.png';
+import nextBtn from '../../assets/next.png';
 
 import image1 from './images/image-1.jpg';
 import image2 from './images/image-2.jpg';
@@ -29,7 +29,10 @@ function TravelPostDetail() {
         transform: 'translate(-50%, -50%)',
       },
       title: <div className='text-center font-bold text-4xl'>여행 일정</div>,
-      content: tempText.repeat(6),
+      content: <div > 
+          <div style={{color:'red'}}>안               녕</div>
+          <div className='text-blue-400'>하세요</div>
+        </div>,
     });
   };
 
@@ -122,84 +125,82 @@ function TravelPostDetail() {
     );
   }
 
+
   return (
     <div>
-      <style>
-        {`
-          .bg-lightPurple {
-            background-color: #B09FCE;
-          }
-          .text-darkPurple {
-            color: #6645B9;
-          }
-          #main {
-            height: 80vh;
-          }
+  <style>
+    {`
+      .bg-lightPurple {
+        background-color: #B09FCE;
+      }
+      .text-darkPurple {
+        color: #6645B9;
+      }
+      #main {
+        height: 85vh;
+      }
 
-          #mainText {
-            white-space: pre-wrap;
-            overflow-x: auto;
-            overflow-y: scroll;
-            width: 90%;
-            height: 49%;
-            padding: 1% 2%;
-          }
+      #mainText {
+        white-space: pre-wrap;
+        overflow-x: auto;
+        overflow-y: scroll;
+        width: 90%;
+        height: 49%;
+        padding: 1% 2%;
+      }
 
-          .containers {
-            width: 30%;
-            height: 100%;
-            padding: 1%;
-          }
-        `}
-      </style>
-      <div id="main" className="flex flex-row justify-center relative">
-        <PhotoGallery />
-        <div className="containers">
-          <div className="flex flex-row justify-between w-100% border-b border-gray-400 pb-4 pt-4">
-            <div className="box-content w-96 text-3xl font-bold text-darkPurple">
-              <p>{tempTitle}</p>
-            </div>
-            <button onClick={openScheduleModal}
-              className="rounded-lg bg-lightPurple p-2 w-20 h-10 text-white"
-            >
-              일정보기
+      .containers {
+        width: 30%;
+        padding: 1%;
+      }
+    `}
+  </style>
+  <div id="main" className="flex flex-row justify-center relative">
+    <PhotoGallery />
+    <div className="containers h-full">
+      <div className="flex flex-row justify-between w-100% border-b border-gray-400 pb-4 pt-4">
+        <div className="box-content w-96 text-3xl font-bold text-darkPurple">
+          <p>{tempTitle}</p>
+        </div>
+        <button onClick={openScheduleModal} className="rounded-lg bg-lightPurple p-2 w-20 h-10 text-white">
+          일정보기
+        </button>
+      </div>
+      <div id="mainText" className="box-content text-xl mt-5 mb-5">
+        {tempText}
+      </div>
+      <div className="flex flex-row justify-between border-t border-gray-400 pt-5 pb-3">
+        <button onClick={openCommentModal} style={{ alignSelf: 'flex-start' }}>
+          댓글보기
+        </button>
+        <div>
+          작성일 : 2020-02-20
+          <div className="flex flex-row justify-end">
+            <button style={{ display: 'none' }}>수정</button>
+            <button style={{ display: 'none' }} className="ml-3">
+              삭제
             </button>
-          </div>
-          <div id="mainText" className="box-content text-xl mt-5 mb-5">
-            {tempText}
-          </div>
-          <div className="flex flex-row justify-between border-t border-gray-400 pt-5 pb-3">
-            <button onClick={openCommentModal} 
-              style={{ alignSelf: 'flex-start' }}>
-              댓글보기
-            </button>
-            <div>
-              작성일 : 2020-02-20
-              <div className="flex flex-row justify-end">
-                <button style={{ display: 'none' }}>수정</button>
-                <button style={{ display: 'none' }} className="ml-3">
-                  삭제
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-[1fr,10fr,1.5fr] gap-2 items-center box-content bg-slate-100 p-3 mt-5">
-            <div className="box-content bg-lightPurple h-8 w-8 rounded-full align-middle"></div>
-            <input
-              type="text"
-              placeholder={'댓글을 작성해주세요.'}
-              className="bg-transparent"
-            />
-            <input
-              type="submit"
-              value="입력"
-              className="box-content bg-lightPurple text-white rounded-lg p-1 cursor-pointer"
-            />
           </div>
         </div>
-        <Modal />
+      </div>
+      <div className="grid grid-cols-[1fr,10fr,1.5fr] gap-2 items-center box-content bg-slate-100 p-3 mt-5">
+        <div className="box-content bg-lightPurple h-8 w-8 rounded-full align-middle"></div>
+        <input
+          type="text"
+          placeholder={'댓글을 작성해주세요.'}
+          className="bg-transparent"
+        />
+        <input
+          type="submit"
+          value="입력"
+          className="box-content bg-lightPurple text-white rounded-lg p-1 cursor-pointer"
+        />
       </div>
     </div>
+    <Modal />
+  </div>
+</div>
+
   );
 }
 
