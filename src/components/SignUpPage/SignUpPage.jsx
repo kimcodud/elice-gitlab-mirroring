@@ -14,26 +14,39 @@ function SignUpPageComponent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (user.password !== user.passwordConfirm) {
-      alert("비밀번호가 올바르지 않습니다.");
-      return;
-    }
     const passwordRegex =
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/;
-    if (!passwordRegex.test(user.password)) {
-      alert("비밀번호에 문자,숫자,특수문자를 포함해 주세요");
-      return;
-    }
 
     try {
-      const response = await axios.post("http://localhost:3000/users/signup", {
-        email: user.email,
-        name: user.name,
-        user_id: user.userId,
-        password: user.password,
-      });
-      console.log(response);
-      alert("회원가입을 축하합니다");
+      if (
+        user.email === "" ||
+        user.name === "" ||
+        user.userId === "" ||
+        user.password === ""
+      ) {
+        alert("각 항목을 공백없이 입력하십시오");
+      } else if (!passwordRegex.test(user.password)) {
+        alert("비밀번호에 문자,숫자,특수문자를 포함해 주세요");
+        return;
+      } else if (user.password !== user.passwordConfirm) {
+        alert("비밀번호가 올바르지 않습니다.");
+        return;
+      } else if (user.userId.length > 20 || user.userId.length < 6) {
+        alert("아이디는 6자이상 20자 이하로 작성해주세요");
+        return;
+      } else {
+        const response = await axios.post(
+          "http://localhost:3000/users/signup",
+          {
+            email: user.email,
+            name: user.name,
+            username: user.userId,
+            password: user.password,
+          }
+        );
+        console.log(response.data);
+        alert("회원가입을 축하합니다");
+      }
     } catch (error) {
       console.error(error);
     }
