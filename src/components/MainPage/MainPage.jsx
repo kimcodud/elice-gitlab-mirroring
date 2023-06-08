@@ -3,9 +3,11 @@ import "./MainPage.css";
 
 const MainPageComponent = () => {
   const images = [
-    "/src/assets/main.jpg",
-    "/src/assets/starRoad_2.png",
     "/src/assets/main2.webp",
+    "/src/assets/main.webp",
+    "/src/assets/seoul.webp",
+    "/src/assets/busan.webp",
+    "/src/assets/seoul2.webp",
   ]; // 임시 데이터
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -92,7 +94,7 @@ const MainPageComponent = () => {
         <img
           src={images[currentIndex]}
           alt="Slide"
-          className=""
+          className="h-[500px] sm:h-[655px] lg:w-screen lg:h-[700px]"
           style={{
             animation: "bannermove 5s linear infinite",
             width: "80%",
