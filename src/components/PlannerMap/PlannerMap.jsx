@@ -145,8 +145,9 @@ const SearchMap = () => {
 
   const attachMapSdkScript = () => {
     const script = document.createElement("script");
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=eec99942e44a51ac0fdcd9917ab97da9&libraries=services&autoload=false";
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
+      import.meta.env.VITE_APP_KAKAOMAP_KEY
+    }&libraries=services&autoload=false`;
     script.defer = true;
     script.async = true;
     document.head.appendChild(script);
