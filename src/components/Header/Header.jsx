@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import './Header.css';
+import { Link } from "react-router-dom";
+import "./Header.css";
 
 const Header = () => {
   return (
@@ -8,7 +8,7 @@ const Header = () => {
         <a href="/">
           <img
             src="/src/assets/starRoad_2.png"
-            className="ml-6 mr-96 mb-20 h-14 w-18 "
+            className="ml-6 mr-96 h-20 w-18 "
           ></img>
         </a>
         <a href="/plannerMap" className="text-zinc-400 ml-auto p-3">
@@ -17,13 +17,22 @@ const Header = () => {
         <a href="/plannerMapEdit" className="text-zinc-400 ml-auto p-3">
           일정 수정(임시)
         </a>
-        <a href="/travelBoard" className="text-zinc-400 ml-auto p-3">
+        <a
+          href="/travelBoard"
+          className="text-zinc-400 ml-auto p-3 bg-white hover:bg-gray-100"
+        >
           여행기
         </a>
-        <a href="/login" className="text-zinc-400 p-3">
+        <a
+          href="/login"
+          className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
+        >
           로그인
         </a>
-        <a href="/signup" className="text-zinc-400 mr-5 p-3">
+        <a
+          href="/signup"
+          className="text-zinc-400 mr-5 p-3 bg-white hover:bg-gray-100"
+        >
           회원가입
         </a>
         <a href="/mypage">
