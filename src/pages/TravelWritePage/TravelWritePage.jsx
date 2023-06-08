@@ -1,4 +1,4 @@
-import TravelWrite from '../../components/TravelWritePage';
+import TravelWrite from '../../components/TravelWritePage/TravelWritePage';
 
   function TravelWritePage() {
     return (
