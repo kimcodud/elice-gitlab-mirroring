@@ -7,10 +7,10 @@ const SearchMap = () => {
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
   const [infowindow, setInfowindow] = useState(null);
+  // const [list, setList] = useState([]);
 
   const handleDisplayInfowindow = (marker, title) => {
     const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
-    // console.log("handleDisplayInfowindow", marker);
     infowindow.setContent(content);
     infowindow.open(map, marker);
   };
@@ -22,12 +22,12 @@ const SearchMap = () => {
     }
 
     const ps = new window.kakao.maps.services.Places();
-    ps.keywordSearch(keyword, placesSearchCB); // =>
+    ps.keywordSearch(keyword, placesSearchCB);
   };
-  // searchPlaces ---> placesSearchCB(data, status, pagination) ---> displayPalces, dsiplayPagination
 
-  const placesSearchCB = (data, status, pagination) => {
-    // console.log("placesSearchCB", { data, status, pagination });
+  const placesSearchCB = (data, status, pagination, place) => {
+    // console.log({ data, status, pagination });
+
     if (status === window.kakao.maps.services.Status.OK) {
       displayPlaces(data);
       displayPagination(pagination);
@@ -37,13 +37,10 @@ const SearchMap = () => {
       alert("검색 결과 중 오류가 발생했습니다.");
     }
   };
-
+  console.log(places);
   const displayPlaces = (_places) => {
-    // removeAllChildNodes("placesList");
-    // console.log("리스트 제거완료");
-    // console.log("prev removeMarkers", markers);
     removeMarkers(); // marker-state []
-
+    console.log(_places);
     const bounds = new window.kakao.maps.LatLngBounds();
     _places.forEach((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
@@ -51,7 +48,7 @@ const SearchMap = () => {
       bounds.extend(placePosition);
     }); // marker-state [....]
 
-    const markerList = createMakerList(_places);
+    const markerList = createMarkerList(_places);
     const newPlaces = _places.map((placeData, index) => {
       return {
         ...placeData,
@@ -59,18 +56,14 @@ const SearchMap = () => {
       };
     });
 
-    // places ==> { ...data,  marker }
-    // console.log("next removeMarkers", markers);
     setPlaces(newPlaces || []);
     map.setBounds(bounds);
   };
-
-  const createMakerList = (places) => {
+  const createMarkerList = (places) => {
     return places?.map((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
-      const maker = addMarker(placePosition, index);
-      // console.log(places);
-      return maker;
+      const marker = addMarker(placePosition, index);
+      return marker;
     });
   };
 
@@ -94,7 +87,6 @@ const SearchMap = () => {
       position: position,
       image: markerImage,
     });
-    // console.log(marker);
 
     marker.setMap(map);
     setMarkers((prevMarkers) => [...prevMarkers, ...[marker]]);
@@ -115,6 +107,7 @@ const SearchMap = () => {
   };
 
   const displayPagination = (pagination) => {
+    console.log(markers);
     const paginationEl = document.getElementById("pagination");
     removeAllChildNodes("pagination");
 
@@ -126,9 +119,13 @@ const SearchMap = () => {
       if (i === pagination.current) {
         el.className = "on";
       } else {
-        el.onclick = () => pagination.gotoPage(i);
+        el.onclick = () => {
+          removeMarkers();
+          pagination.gotoPage(i);
+        };
       }
-
+      el.style.marginRight = "10px";
+      el.style.fontSize = "20px";
       paginationEl.appendChild(el);
     }
   };
@@ -170,30 +167,53 @@ const SearchMap = () => {
     attachMapSdkScript();
   }, []);
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      searchPlaces();
+    }
+  };
+
   return (
     <div style={{ display: "flex ", justifyContent: "center" }}>
-      <div id="map" style={{ width: "1200px", height: "1000px" }} />
+      <div id="map" style={{ width: "1200px", height: "920px" }} />
       <div>
         <input
           type="text"
           id="keyword"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          className="border-indigo-500/100 rounded-md"
+          className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
+          onKeyPress={handleKeyPress}
           placeholder=" 장소를 검색해보세요"
-          style={{ marginLeft: "15px" }}
+          style={{
+            marginLeft: "10px",
+            // borderWidth: "2px",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
         />
-        <button
-          onClick={searchPlaces}
-          className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-md"
+        <div
+          className="drag-box"
+          // style={{ height: "920px", overflowY: "scroll" }}
         >
-          Search
-        </button>
-        <div id="placesList">{PlaceListComponent}</div>
-        <div id="pagination" style={{ marginLeft: "10px" }} />
+          <div
+            id="placesList"
+            style={{
+              height: "890px",
+              whiteSpace: "nowrap",
+              overflow: "auto",
+            }}
+          >
+            {PlaceListComponent}
+          </div>
+          <div
+            id="pagination"
+            className="drop-shadow-md cursor-pointer"
+            style={{ display: "flex", justifyContent: "center" }}
+          />
+        </div>
       </div>
     </div>
   );
 };
-
 export default SearchMap;

@@ -12,7 +12,7 @@ function LoginPageComponent() {
 
     try {
       const response = await axios.post("http://localhost:3000/users/login", {
-        user_id: user.userId,
+        username: user.userId,
         password: user.password,
       });
       console.log(response);

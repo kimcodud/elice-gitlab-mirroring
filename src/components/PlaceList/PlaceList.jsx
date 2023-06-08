@@ -9,8 +9,12 @@ const PlaceList = (props) => {
   return (
     <div style={{ color: "black" }}>
       {places?.map((place, index) => {
-        console.log({ place });
-        console.log(place.address_name);
+        {
+          /* console.log({ place }); */
+        }
+        {
+          /* console.log(place.address_name); */
+        }
 
         const openInfoModal = () => {
           openModal({
@@ -86,18 +90,21 @@ const PlaceList = (props) => {
           >
             <span className={`markerbg marker${index + 1}`} />
             <div
-              className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg"
+              className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
               style={{ marginLeft: "10px" }}
             >
-              <div className="font-bold">{place.place_name}</div>
+              <div className="font-bold text-sm">{place.place_name}</div>
               <div style={{ display: "flex ", justifyContent: "right" }}>
-                <span>{place.category_group_name}</span>
+                <span className="text-xs">{place.category_group_name}</span>
                 <img
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/info/v1/24px.svg"
                   alt="info icon"
                   onClick={() => openInfoModal()}
                   className="cursor-pointer"
-                  style={{ marginLeft: "auto", marginRight: "5px" }}
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "5px",
+                  }}
                 />
                 <img
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/add_circle/v1/24px.svg"
