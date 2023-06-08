@@ -2,8 +2,7 @@ import React from "react";
 
 const Google = () => {
   const handleLogin = () => {
-    const clientId =
-      "967078246054-hjffdp6i565eor8l6b0390gm18uuvn60.apps.googleusercontent.com";
+    const clientId = import.meta.env.VITE_APP_CLIENT_ID;
     const scope =
       "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid";
     const redirectUri = "http://localhost:3000/auth/callback";
