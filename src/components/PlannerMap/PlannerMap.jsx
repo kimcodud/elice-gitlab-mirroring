@@ -7,7 +7,9 @@ const SearchMap = () => {
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
   const [infowindow, setInfowindow] = useState(null);
-  // const [list, setList] = useState([]);
+
+  // var zoomControl = new kakao.maps.ZoomControl();
+  // map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
   const handleDisplayInfowindow = (marker, title) => {
     const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
@@ -25,9 +27,7 @@ const SearchMap = () => {
     ps.keywordSearch(keyword, placesSearchCB);
   };
 
-  const placesSearchCB = (data, status, pagination, place) => {
-    // console.log({ data, status, pagination });
-
+  const placesSearchCB = (data, status, pagination) => {
     if (status === window.kakao.maps.services.Status.OK) {
       displayPlaces(data);
       displayPagination(pagination);
@@ -37,17 +37,16 @@ const SearchMap = () => {
       alert("검색 결과 중 오류가 발생했습니다.");
     }
   };
-  console.log(places);
+
   const displayPlaces = (_places) => {
     removeMarkers(); // marker-state []
-    console.log(_places);
+
     const bounds = new window.kakao.maps.LatLngBounds();
     _places.forEach((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
       addMarker(placePosition, index);
       bounds.extend(placePosition);
     }); // marker-state [....]
-
     const markerList = createMarkerList(_places);
     const newPlaces = _places.map((placeData, index) => {
       return {
@@ -59,6 +58,7 @@ const SearchMap = () => {
     setPlaces(newPlaces || []);
     map.setBounds(bounds);
   };
+
   const createMarkerList = (places) => {
     return places?.map((place, index) => {
       const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
@@ -107,10 +107,9 @@ const SearchMap = () => {
   };
 
   const displayPagination = (pagination) => {
-    console.log(markers);
     const paginationEl = document.getElementById("pagination");
     removeAllChildNodes("pagination");
-
+    // removeMarkers()
     for (let i = 1; i <= pagination.last; i++) {
       const el = document.createElement("a");
       el.href = "#";
@@ -163,6 +162,7 @@ const SearchMap = () => {
       });
     };
   };
+
   useEffect(() => {
     attachMapSdkScript();
   }, []);
@@ -187,15 +187,11 @@ const SearchMap = () => {
           placeholder=" 장소를 검색해보세요"
           style={{
             marginLeft: "10px",
-            // borderWidth: "2px",
             justifyContent: "center",
             textAlign: "center",
           }}
         />
-        <div
-          className="drag-box"
-          // style={{ height: "920px", overflowY: "scroll" }}
-        >
+        <div className="drag-box">
           <div
             id="placesList"
             style={{
