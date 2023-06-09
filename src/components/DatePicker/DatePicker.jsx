@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function DatePicker() {
-  // const [selectedDate, setSelectedDate] = useState(null); //선택 날짜 저장
+const DatePicker = ({ getDateList }) => {
+  // const [selectedDate, setSelectedDate] = useState([]); //선택 날짜 저장
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date()); //현재 표시되는 달
+
+  useEffect(() => {
+    // 시작일과 완료일이 모두 선택되었을 때에만 날짜 목록을 전달합니다.
+    if (selectedStartDate !== null && selectedEndDate !== null) {
+      const dates = getDatesBetween(selectedStartDate, selectedEndDate);
+      getDateList(dates);
+    }
+  }, [selectedStartDate, selectedEndDate]);
 
   //날짜 관련된 데이터 계산 함수
   const getNewDateObj = (newDate) => {
@@ -71,28 +79,6 @@ function DatePicker() {
     };
   };
 
-  const handleDateClick = (date) => {
-    //시작일 선택되지 않은 경우
-    if (selectedStartDate === null) {
-      setSelectedStartDate(date);
-      setSelectedEndDate(null); //완료일 초기화
-    } else if (selectedEndDate === null) {
-      //시작일이 선택되고 완료일이 선택되지 않은 경우
-      if (date >= selectedStartDate) {
-        //선택 날짜가 시작일 이후인 경우에만 완료일 지정
-        setSelectedEndDate(date);
-      } else {
-        //선택한 날짜가 시작일보다 빠른 경우 시작일 초기화
-        setSelectedStartDate(date);
-        setSelectedEndDate(null);
-      }
-    } else {
-      //시작일과 완료일 이미 선택 경우 새로운 시작일 설정하고 완료일 초기화
-      setSelectedStartDate(date);
-      setSelectedEndDate(null);
-    }
-  };
-
   const handlePrevMonth = () => {
     setCurrentMonth((prevMonth) => {
       const prevMonthDate = new Date(
@@ -115,6 +101,54 @@ function DatePicker() {
     });
   };
 
+  const handleDateClick = (date) => {
+    //시작일 선택되지 않은 경우
+    if (selectedStartDate === null) {
+      setSelectedStartDate(date);
+      setSelectedEndDate(null); //완료일 초기화
+    } else if (selectedEndDate === null) {
+      //시작일이 선택되고 완료일이 선택되지 않은 경우
+      if (date >= selectedStartDate) {
+        //선택 날짜가 시작일 이후인 경우에만 완료일 지정
+        setSelectedEndDate(date);
+
+        // 시작일부터 완료일까지의 날짜 목록 생성
+        const dates = getDatesBetween(selectedStartDate, date);
+        console.log('시작일부터 완료일까지 날짜 목록:', dates);
+      } else {
+        //선택한 날짜가 시작일보다 빠른 경우 시작일 초기화
+        setSelectedStartDate(date);
+        setSelectedEndDate(null);
+      }
+    } else {
+      //시작일과 완료일 이미 선택 경우 새로운 시작일 설정하고 완료일 초기화
+      setSelectedStartDate(date);
+      setSelectedEndDate(null);
+    }
+  };
+
+  const getDatesBetween = (startDate, endDate) => {
+    const dates = [];
+    let currentDate = new Date(
+      startDate.year,
+      startDate.month - 1,
+      startDate.date
+    );
+
+    while (
+      currentDate <= new Date(endDate.year, endDate.month - 1, endDate.date)
+    ) {
+      dates.push({
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1,
+        date: currentDate.getDate(),
+      });
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  };
+
   //datepicker 렌더링 함수
   //getMonthDate 함수 이용하여 현재 월에 대한 날짜 데이터 가져온 후, 해당 데이터 바탕으로 달력 생성, 선택 날짜 표시
   const renderDatePicker = () => {
@@ -124,7 +158,7 @@ function DatePicker() {
       year: currentYear,
       month: currentMonthValue,
     });
-    console.log('monthData', monthData);
+    // console.log('monthData', monthData);
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -213,6 +247,6 @@ function DatePicker() {
       </div>
     </div>
   );
-}
+};
 
 export default DatePicker;
