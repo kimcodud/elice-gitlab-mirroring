@@ -1,4 +1,4 @@
-import TravelPostDetail from '../../components/TravelPostDetailPage';
+import TravelPostDetail from '../../components/TravelPostDetailPage/TravelPostDetailPage';
 
   function TravelPostDetailPage() {
     return (

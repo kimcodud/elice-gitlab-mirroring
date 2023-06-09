@@ -1,19 +1,20 @@
 import Modal from "../modal/modal";
+import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
 
 const PlaceList = (props) => {
   const { places, infowindow, handleDisplayInfowindow } = props;
   const { openModal } = useModalStore();
-  const placeInfoImage =
-    "https://fonts.gstatic.com/s/i/materialiconsoutlined/info/v24/24px.svg";
-  const addScheduleImage =
-    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200";
 
   return (
     <div style={{ color: "black" }}>
       {places?.map((place, index) => {
-        console.log({ place });
-        console.log(place.address_name);
+        {
+          /* console.log({ place }); */
+        }
+        {
+          /* console.log(place.address_name); */
+        }
 
         const openInfoModal = () => {
           openModal({
@@ -89,25 +90,27 @@ const PlaceList = (props) => {
           >
             <span className={`markerbg marker${index + 1}`} />
             <div
-              className="info box-sizing: border-box h-22 w-50 p-4 border-4 shadow-lg rounded-lg"
+              className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
               style={{ marginLeft: "10px" }}
             >
-              <div className="font-bold">{place.place_name}</div>
+              <div className="font-bold text-sm">{place.place_name}</div>
               <div style={{ display: "flex ", justifyContent: "right" }}>
-                <span>{place.category_group_name}</span>
+                <span className="text-xs">{place.category_group_name}</span>
                 <img
-                  src={placeInfoImage} // 장소 정보 이미지 URL로 변경
-                  alt="Place Info"
-                  onClick={() => openInfoModal()} // 이미지 클릭 시 모달 열기
-                  className="rounded-md bg-purple-500/25 text-xs cursor-pointer" // 필요한 스타일 클래스 추가
-                  style={{ marginLeft: "auto", marginRight: "5px" }} // 필요한 스타일 추가
+                  src="https://fonts.gstatic.com/s/i/materialiconsoutlined/info/v1/24px.svg"
+                  alt="info icon"
+                  onClick={() => openInfoModal()}
+                  className="cursor-pointer"
+                  style={{
+                    marginLeft: "auto",
+                    marginRight: "5px",
+                  }}
                 />
                 <img
-                  src={addScheduleImage} // 일정 추가 이미지 URL로 변경
-                  alt="Add Schedule"
-                  className="rounded-md bg-purple-500/25 text-xs cursor-pointer" // 필요한 스타일 클래스 추가
+                  src="https://fonts.gstatic.com/s/i/materialiconsoutlined/add_circle/v1/24px.svg"
+                  alt="add_circle icon"
+                  className="cursor-pointer"
                 />
-
                 {/* <button
                   onClick={() => openInfoModal()}
                   className="rounded-md bg-purple-500/25 text-xs"
@@ -131,7 +134,9 @@ const PlaceList = (props) => {
           </div>
         );
       })}
-      <Modal />
+      <ModalPortal>
+        <Modal />
+      </ModalPortal>
     </div>
   );
 };

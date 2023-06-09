@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Modal from '../modal/modal';
+import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from '../../store/store';
+
 
 import prevBtn from '../../assets/prev.png';
 import nextBtn from '../../assets/next.png';
@@ -9,10 +11,11 @@ import image1 from './images/image-1.jpg';
 import image2 from './images/image-2.jpg';
 import image3 from './images/image-3.jpg';
 import image4 from './images/image-4.jpg';
+import {commentsData, contentText, contentTitle} from './temp'
 
-const tempImages = [image1, image2, image3, image4];
-const tempText = '제          주           도\n제주도 여행은 멋진 자연 경관과 풍부한 문화를 경험할 수 있는 최고의 목적지입니다. 저는 최근 제주도를 방문하고 놀라움을 경험했습니다. 제주도는 아름다운 해변과 푸른 바다, 그리고 화산 풍경으로 유명합니다. 제주의 해안을 따라 걸으면 파도 소리와 함께 찾아오는 해풍을 느낄 수 있어 정말 상쾌했습니다. \n\n또한, 제주도에는 다양한 관광 명소가 있습니다. 성산일출봉에서는 아름다운 일출을 볼 수 있었고, 우도에서는 맑은 바다와 함께 자전거를 타며 휴식을 즐길 수 있었습니다. 한라산은 제주도의 상징적인 산으로, 등반을 통해 힘든 여정이었지만 정상에서 바라본 경치는 너무 멋있었습니다. \n\n제주도의 문화와 음식도 매력적이었습니다. 한라산 근처에 위치한 성읍민속마을에서는 제주의 전통 문화와 건축물을 경험할 수 있었습니다. 제주 흑돼지는 꼭 먹어봐야 할 음식이었는데, 부드럽고 풍부한 맛으로 제주도의 맛을 느낄 수 있었습니다. \n\n좋은 숙소도 찾을 수 있었습니다. 제주에는 다양한 호텔과 펜션, 게스트하우스 등 다양한 숙소가 있어서 편안하게 머무를 수 있었습니다. 직원들의 친절한 서비스와 편안한 시설은 여행의 피로를 풀어주었습니다. \n\n제주도 여행은 자연과 문화를 동시에 즐길 수 있는 멋진 장소입니다. 다음에 또 제주도를 방문하고 싶은 마음이 들 정도로 즐거웠습니다.';
-const tempTitle = '제주도 힐링 여행기';
+import userImg from '../../assets/user.png';
+const contentImages = [image1, image2, image3, image4];
+
 
 function TravelPostDetail() {
   const { openModal } = useModalStore();
@@ -51,17 +54,15 @@ function TravelPostDetail() {
       content: tempText,
     });
   };
-
-  function PhotoGallery() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handleClickNext = () => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % tempImages.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % contentImages.length); // 임시 데이터 이미지
     };
 
     const handleClickPrev = () => {
       setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? tempImages.length - 1 : prevIndex - 1
+        prevIndex === 0 ? contentImages.length - 1 : prevIndex - 1 // 임시 데이터 이미지
       );
     };
 
@@ -69,107 +70,61 @@ function TravelPostDetail() {
       setCurrentIndex(index);
     };
 
-    return (
-      <div className="flex flex-col containers">
-        <style>
-          {`
-            #prevBtn,
-            #nextBtn {
-              display: none;
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              width: 50%;
-              hight: 50%;
-            }
-            .btn:hover #prevBtn,
-            .btn:hover #nextBtn {
-              display: block;
-            }
-          `}
-        </style>
-        <div
-          className="flex flex-row relative"
-          style={{ width: '100%', height: '100%' }}
-        >
-          <div
-            className="btn bg-transparent h-full w-1/5 hover:bg-gray-200 hover:bg-opacity-40 absolute top-1/2 px-3 left-0 transform -translate-y-1/2"
-            onClick={handleClickPrev}
-          >
-            <img id="prevBtn" src={prevBtn} alt="이전" />
-          </div>
-          <img
-            className="mainImg box-content w-full h-full object-cover"
-            src={tempImages[currentIndex]}
-            alt="Main"
-          />
-          <div
-            className="btn bg-transparent h-full w-1/5 hover:bg-gray-400 hover:bg-opacity-40 absolute top-1/2 px-3 right-0 transform -translate-y-1/2 flex flex-row justify-end"
-            onClick={handleClickNext}
-          >
-            <img id="nextBtn" src={nextBtn} alt="다음" />
-          </div>
-        </div>
-        <div className="flex flex-row justify-between mt-3 ">
-          {tempImages.map((image, index) => (
-            <img
-              className="box-content h-24 w-24"
-              key={index}
-              src={image}
-              alt={`Thumbnail ${index}`}
-              onClick={() => handleClickThumbnail(index)}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-
   return (
-    <div>
+    <div id="main" className="w-full h-screen flex justify-center items-center overflow-hidden" style={{height:'85vh'}}>
   <style>
     {`
-      .bg-lightPurple {
-        background-color: #B09FCE;
+      .btn:hover #prevBtn,
+      .btn:hover #nextBtn {
+        display: block;
       }
-      .text-darkPurple {
-        color: #6645B9;
-      }
-      #main {
-        height: 85vh;
-      }
-
-      #mainText {
-        white-space: pre-wrap;
-        overflow-x: auto;
-        overflow-y: scroll;
-        width: 90%;
-        height: 49%;
-        padding: 1% 2%;
-      }
-
-      .containers {
-        width: 30%;
-        padding: 1%;
+      #Imgbox:hover #imgCategory {
+        display: flex;
       }
     `}
   </style>
-  <div id="main" className="flex flex-row justify-center relative">
-    <PhotoGallery />
-    <div className="containers h-full">
-      <div className="flex flex-row justify-between w-100% border-b border-gray-400 pb-4 pt-4">
-        <div className="box-content w-96 text-3xl font-bold text-darkPurple">
-          <p>{tempTitle}</p>
+
+  <div className="flex flex-row items-center gap-12 relative h-full w-2/3">
+    
+    <div className="flex flex-col w-full h-4/5">
+      <div id='Imgbox' className="flex flex-row relative" style={{ width: '100%', height: '100%' }}>
+        <div onClick={handleClickPrev}
+        className="btn bg-transparent h-full w-1/6 hover:bg-gray-200 hover:bg-opacity-20 absolute top-1/2 px-3 left-0 transform -translate-y-1/2 select-none">
+          <img id='prevBtn' className='hidden absolute top-1/2 w-1/2' style={{ transform: 'translateY(-50%)' }} src={prevBtn} alt="이전" />
         </div>
-        <button onClick={openScheduleModal} className="rounded-lg bg-lightPurple p-2 w-20 h-10 text-white">
+        <img id='mainImg' className="box-content w-full h-full object-cover rounded-2xl select-none" src={contentImages[currentIndex]} alt="Main" />  {/*임시 데이터 이미지*/}
+        <div onClick={handleClickNext}
+        className="btn bg-transparent h-full w-1/6 hover:bg-gray-200 hover:bg-opacity-20 absolute top-1/2 px-3 right-0 transform -translate-y-1/2 flex flex-row justify-end select-none">
+          <img id='nextBtn' className='hidden absolute top-1/2 w-1/2' style={{ transform: 'translateY(-50%)' }} src={nextBtn} alt="다음" />
+        </div>
+        <div id='imgCategory' className='hidden flex-row justify-center absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-50 rounded-2xl select-none mb-3 px-3 py-1'>
+          {contentImages.map((image, index) => ( //{/* 임시 본문 이미지 */}
+            <div className={`w-${4 / contentImages.length}  p-1 hover:bg-gray-200 hover:bg-opacity-80  rounded-xl `} key={index} // 임시 데이터 이미지
+            onClick={() => handleClickThumbnail(index)}>
+              <img
+                className="box-content  w-6 h-6 rounded-xl"
+                src={image}
+                alt={`Thumbnail ${index}`}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div className="flex flex-col justify-between items-center  w-full h-4/5">
+      <div className="flex flex-row justify-between w-full h-20 border-b border-gray-400 py-6 px-3">
+        <div className="box-content w-full text-3xl font-bold" style={{color: '#6645B9'}}>
+        <p>{contentTitle}</p> {/* 임시 제목 */}
+        </div>
+        <button onClick={openScheduleModal} className="rounded-lg p-2 w-28 h-10 text-white" style={{ backgroundColor: '#B09FCE'}}>
           일정보기
         </button>
       </div>
-      <div id="mainText" className="box-content text-xl mt-5 mb-5">
-        {tempText}
+      <div id="mainText" className="whitespace-pre-wrap overflow-x-auto overflow-scroll w-full h-full px-5 text-xl m-5">
+        {contentText} {/* 임시 본문 */}
       </div>
-      <div className="flex flex-row justify-between border-t border-gray-400 pt-5 pb-3">
+      <div className="flex flex-row justify-between  w-full border-t border-gray-400 pt-5 pb-3 px-3 ">
         <button onClick={openCommentModal} style={{ alignSelf: 'flex-start' }}>
           댓글보기
         </button>
@@ -183,21 +138,25 @@ function TravelPostDetail() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-[1fr,10fr,1.5fr] gap-2 items-center box-content bg-slate-100 p-3 mt-5">
-        <div className="box-content bg-lightPurple h-8 w-8 rounded-full align-middle"></div>
+      <div className="grid grid-cols-[1fr,10fr,1.5fr] gap-2 justify-items-center items-center bg-gray-100 w-full p-3 mt-3 rounded-2xl bottom-0">
+        <div className="box-content bg-white h-8 w-8 rounded-full align-middle shadow-2xl">
+          <img src={userImg} alt="유저이미지" />
+        </div>
         <input
           type="text"
           placeholder={'댓글을 작성해주세요.'}
-          className="bg-transparent"
+          className="bg-transparent justify-self-center w-full h-8 px-4 bg-white rounded-2xl hide-input-focus outline-none"
         />
         <input
           type="submit"
           value="입력"
-          className="box-content bg-lightPurple text-white rounded-lg p-1 cursor-pointer"
+          className="box-content text-white rounded w-16 py-1 mr-2 cursor-pointer" style={{ backgroundColor: '#B09FCE'}}
         />
       </div>
     </div>
-    <Modal />
+    <ModalPortal>
+      <Modal />
+    </ModalPortal>
   </div>
 </div>
 
