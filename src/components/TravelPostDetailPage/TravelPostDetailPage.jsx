@@ -4,8 +4,8 @@ import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from '../../store/store';
 
 
-import prevBtn from '../../assets/prev.png';
-import nextBtn from '../../assets/next.png';
+import prevBtn from '../../assets/prev.webp';
+import nextBtn from '../../assets/next.webp';
 
 import image1 from './images/image-1.jpg';
 import image2 from './images/image-2.jpg';

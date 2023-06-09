@@ -5,9 +5,9 @@ import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from '../../store/store';
 
 
-import basicUserImage from '../../assets/user.png';
-import prevBtn from '../../assets/prev.png';
-import moveBtn from '../../assets/goBackIcon.png';
+import basicUserImage from '../../assets/user.webp';
+import prevBtn from '../../assets/prev.webp';
+import moveBtn from '../../assets/goBackIcon.webp';
 
 import tempImage from '../../assets/main.jpg'
 
