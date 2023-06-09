@@ -90,21 +90,23 @@ const MainPageComponent = () => {
           />
         </div>
       </div>
-      <div className="relative" ref={movePoint}>
-        <img
-          src={images[currentIndex]}
-          alt="Slide"
-          className="h-[500px] sm:h-[655px] lg:w-screen lg:h-[700px]"
-          style={{
-            animation: "bannermove 5s linear infinite",
-            width: "80%",
-            height: "20rem",
-            objectFit: "cover",
-            margin: "auto",
-            boxShadow: "1px 4px 4px black",
-            borderRadius: "4px",
-          }}
-        />
+      <div className="relative">
+        <a href="/travelBoard">
+          <img
+            src={images[currentIndex]}
+            alt="Slide"
+            className=""
+            style={{
+              animation: "bannermove 5s linear infinite",
+              width: "80%",
+              height: "20rem",
+              objectFit: "cover",
+              margin: "auto",
+              boxShadow: "1px 4px 4px black",
+              borderRadius: "4px",
+            }}
+          />
+        </a>
         <button
           onClick={previousSlide}
           className="absolute left-40 top-1/2 transform -translate-y-1/2 "
@@ -118,38 +120,53 @@ const MainPageComponent = () => {
           <img src="/src/assets/next.png" />
         </button>
       </div>
+      <div
+        style={{
+          maxWidth: "100%",
+          position: "relative",
+          display: "inline-block",
+        }}
+      >
+        <input
+          className=""
+          type="text"
+          style={{
+            maxWidth: "600px",
+            margin: "auto",
+            border: "0.5px solid #e0e0e0",
+            marginTop: "3rem",
+          }}
+          placeholder="검색어를 입력하세요"
+        />
+        <span>dd</span>
+      </div>
       <div>
         <div style={{ width: "90%" }} className="flex flex-col items-center">
           <div className="w-full grid grid-cols-4 my-5">
             <div>
-              <style>
-                {`
-          .postCard {
-            padding-top: 80%;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 3px;
-            background: #D9D9D9;
-          }
-          .postCard:hover {
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            background: gray;
-          }
-          .postInfo {
-            width: 100%;
-            height: 30%;
-            background: #FFFFFF;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 3px;
-          }
-          .postWriter {
-            color: #6645B9;
-          }
-          `}
-              </style>
-              <div className="postCard flex flex-col justify-end items-center m-5">
-                <div className="postInfo flex flex-col justify-center items-center">
-                  <div className="postTittle text-xl">SEOUL</div>
-                  <div className="postWriter">대한민국 서울</div>
+              <div
+                className="postCard flex flex-col justify-end items-center m-5"
+                style={{
+                  paddingTop: "80%",
+                  border: "1px solid rgba(0,0,0,0.05)",
+                  borderRadius: "2px",
+                  background: "#d9d9d9",
+                }}
+                ref={movePoint}
+              >
+                <div
+                  className="postInfo flex flex-col justify-center items-center"
+                  style={{
+                    width: "100%",
+                    height: "30%",
+                    backgroundColor: "#ffffff",
+                    boxShadow: "0px 2px 4px rgba(0,0,0,0.25) ",
+                  }}
+                >
+                  <div className="text-xl">SEOUL</div>
+                  <div className="cardTitle" style={{ color: "#6645b9" }}>
+                    대한민국 서울
+                  </div>
                 </div>
               </div>
             </div>

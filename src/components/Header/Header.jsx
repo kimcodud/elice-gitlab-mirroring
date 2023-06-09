@@ -8,7 +8,7 @@ const Header = () => {
         <a href="/">
           <img
             src="/src/assets/starRoad_2.png"
-            className="ml-6 mr-96 h-20 w-18 "
+            className="ml-6 mr-96 h-20 w-18 -mt-3"
           ></img>
         </a>
         <a href="/plannerMap" className="text-zinc-400 ml-auto p-3">
