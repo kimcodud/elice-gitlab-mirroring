@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Modal from '../modal/modal';
+import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from '../../store/store';
+
 
 import prevBtn from '../../assets/prev.png';
 import nextBtn from '../../assets/next.png';
@@ -197,7 +199,9 @@ function TravelPostDetail() {
         />
       </div>
     </div>
-    <Modal />
+    <ModalPortal>
+      <Modal />
+    </ModalPortal>
   </div>
 </div>
 
