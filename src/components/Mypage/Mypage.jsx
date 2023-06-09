@@ -129,10 +129,10 @@ function UserInfoPage() {
           <img className='h-full' src={basicUserImage} alt="유저이미지" />
         </div>
         <div className='grid grid-cols-none grid-rows-4 gap-2 w-5/12 p-5 border-solid grid-underline text-center'>
-          <div className='grid grid-cols-[1fr,2fr] p-5 gap-3' style={{ borderBottom: "1px solid #6645B9" }} >
-            <div className='text-lg cursor-pointer select-none' >이름</div>
-            <div className='text-lg select-none text-left'>{userInfo.name}</div>
-          </div>
+        <div className='grid grid-cols-[1fr,2fr] p-5 gap-3' style={{ borderBottom: "1px solid #6645B9" }} >
+          <div className='text-lg cursor-pointer select-none' >이름</div>
+          <div className='text-lg select-none text-left'>{userInfo.name}</div>
+        </div>
           <div className='grid grid-cols-[1fr,2fr] p-5 gap-3' style={{ borderBottom: "1px solid #6645B9" }} >
             <div className='text-lg select-none'>이메일</div>
             <input 
@@ -213,8 +213,8 @@ function UserInfoPage() {
               className="w-2/5  object-contain"
             />
           </div>
-          <div di='content' className='grid grid-cols-[1fr,1fr,2fr] grid-rows-1 h-5/6 w-11/12 bg-white rounded-2xl shadow-xl'>
-            <div className='flex items-center justify-center p-5'><img className=' h-full full' src={travelSchedule[currentIndex].image} alt="여행지 이미지" /></div>{/* 임시 */}
+          <div id='content' className='grid grid-cols-[1fr,1fr,2fr] grid-rows-1 h-5/6 w-11/12 bg-white rounded-2xl shadow-xl'>
+            <div className='flex items-center justify-center p-5'><img className='h-full' src={travelSchedule[currentIndex].image} alt="여행지 이미지" /></div>{/* 임시 */}
             <div className='flex flex-col justify-center'>
               <div className='text-4xl py-2 font-bold' style={{ color: "#6645B9" }}>{travelSchedule[currentIndex].egPlaceName}</div>{/* 임시 */}
               <div className='text-2xl py-2 font-bold text-gray-500'>대한민국 {travelSchedule[currentIndex].koPlaceName}</div>{/* 임시 */}
@@ -232,13 +232,13 @@ function UserInfoPage() {
 
               <div className='flex flex-row justify-between mb-8 mx-7'>
                 <button onClick={handleEditSchedule} style={{ backgroundColor: "#B09FCE" }}
-                  className='text-white font-normal text-lg w-1/3 h-12 p-2 rounded shadow-md'
+                  className='text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md'
                 >일정 수정</button>
                 <button onClick={handleWrite} style={{ backgroundColor: "#B09FCE" }}
-                  className='text-white font-normal text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md'
+                  className='text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md'
                 >여행기 작성</button>
                 <button onClick={handleDeletSchedule} style={{ backgroundColor: "#B09FCE" }}
-                  className='text-white font-normal text-lg w-1/3 h-12 p-2 rounded  shadow-md'
+                  className='text-white  text-lg w-1/3 h-12 p-2 rounded  shadow-md'
                 >삭제</button>
               </div>
             </div>
