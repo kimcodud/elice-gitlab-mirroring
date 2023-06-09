@@ -53,6 +53,7 @@ function UserInfoPage() {
     passwordConfirm: "",
   });
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const passwordRegex =
@@ -84,10 +85,10 @@ function UserInfoPage() {
     }
   };
   
-  useEffect(() => {
-    console.log(user.email);
-    console.log(user.password);
-  }, [user.email , user.password]);
+  // useEffect(() => {
+    
+  //   console.log(user.password);
+  // }, [user.email , user.password]);
 
   const handleClickNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % travelSchedule.length);
@@ -137,9 +138,9 @@ function UserInfoPage() {
             <div className='text-lg select-none'>이메일</div>
             <input 
             type="email"
-            value={user.email}
             onChange={(e) => {
-              setUser({...user, email: e.target.value});
+              console.log(e.target.value);
+              setUser({...user, email: e.target.value});//
             }}
             placeholder={'이메일을 입력해주세요.'}
             className='hide-input-focus outline-none w-full rounded border border-gray-100' 
@@ -149,8 +150,7 @@ function UserInfoPage() {
             <div className='text-lg select-none'>비밀번호</div>
             <input 
               type="password"
-              value= {user.password}
-              onChange={(e) => setUser({...user, password: e.target.value})}
+              onChange={(e) => setUser({...user, password: e.target.value})}//
               minLength={10}
               maxLength={20}
               placeholder={'비밀번호를 입력해주세요.'}
@@ -168,8 +168,7 @@ function UserInfoPage() {
             <div className='text-lg select-none'>비밀번호 확인</div>
             <input  
             type="password"
-            value={user.passwordConfirm}
-            onChange={(e) => setUser({...user, passwordConfirm: e.target.value})}
+            onChange={(e) => setUser({...user, passwordConfirm: e.target.value})}//
             minLength={10}
             maxLength={20}
             placeholder={'비밀번호를 다시 입력해주세요.'}
