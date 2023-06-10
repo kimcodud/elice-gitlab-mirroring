@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import addButton from '../../assets/addIcon.png';
-import deletButton from '../../assets/deletIcon.png';
-import goBackIcon from '../../assets/goBackIcon.png';
+import addButton from '../../assets/addIcon.webp';
+import deletButton from '../../assets/deletIcon.webp';
+import goBackIcon from '../../assets/goBackIcon.webp';
 
 const userImage = [deletButton, deletButton]; // 더미데이터
 
