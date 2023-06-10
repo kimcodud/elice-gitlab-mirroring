@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPageComponent() {
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,9 +18,16 @@ function LoginPageComponent() {
         password: user.password,
       });
       console.log(response);
-      alert("로그인되었습니다.");
+      if (response.status === 200) {
+        alert("로그인되었습니다.");
+        navigate("/");
+
+        // axios로 서버에서 전송된 헤더값 받기
+        // console.log(response.headers.get("Date"));
+        console.log(response.headers.cookies);
+      }
     } catch (error) {
-      console.error(error);
+      console.log(error);
       alert("로그인에 실패하였습니다.");
     }
   };
