@@ -13,10 +13,16 @@ function LoginPageComponent() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/users/login", {
-        username: user.userId,
-        password: user.password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/users/login",
+        {
+          username: user.userId,
+          password: user.password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       console.log(response);
       if (response.status === 200) {
         alert("로그인되었습니다.");
