@@ -1,24 +1,12 @@
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
+
 import image from "../../assets/seoul2.webp";
 
 function TravelBoard() {
-  const posts = [
-    {
-      id: 2,
-      username: "sh5080",
-      plan_id: 11,
-      title: "2023-02-04T17:09:29.000",
-      content: "ㅁㄴㅇㄹ",
-      image: image,
-      destination: "서울",
-      created_at: "2023-02-04T17:09:29.000Z",
-      updated_at: "2023-05-04T17:09:29.000Z",
-    },
-  ];
-
   const [selectedFilter, setSelectedFilter] = useState("전체");
   const [selectedNavIndex, setSelectedNavIndex] = useState(null);
-  const [chosenPosts, setChosenPosts] = useState(posts);
+  const [chosenPosts, setChosenPosts] = useState([]);
   const [selectedDropdown, setSelectedDropdown] = useState("기본값");
 
   const handleFilterClick = (filter, index) => {
@@ -49,6 +37,40 @@ function TravelBoard() {
   };
 
   const sortedPosts = sortPosts(chosenPosts, selectedDropdown);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const accessToken = await getAccessTokenFromCookie(); // 액세스 토큰 설정해야함
+        const header = {
+          header: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCrendentials: true,
+        };
+        const body = {
+          id: 2,
+          username: posts.username,
+          plan_id: posts.title,
+          title: posts.title,
+          content: posts.content,
+          image: posts.image,
+          destination: posts.destination,
+          created_at: posts.created_at,
+          updated_at: posts.updated_at,
+        };
+        const uri = "http://localhost:3000/users/";
+        const getResponse = await axios.get(uri, body, header);
+
+        const posts = getResponse.data;
+        setChosenPosts(posts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("데이터를 가져오는 중에 오류가 발생했습니다.");
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div
