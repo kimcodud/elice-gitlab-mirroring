@@ -26,21 +26,31 @@ const AdminPageComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // FormData 객체를 사용하여 이미지와 텍스트 데이터를 전송
-    const formData = new FormData();
-    formData.append("image", image, image.filename);
-    formData.append("name_en", name_en);
-    formData.append("name_ko", name_ko);
-    formData.append("introduction", introduction);
 
     try {
-      // API 호출
-      const response = await axios.post(
-        "http://localhost:3000/admin/locations",
-        formData
-      );
-      console.log(formData);
+      const formData = new FormData();
+      formData.append("image", image);
+      const url = "http://localhost:3000/admin/locations";
+      // const url = "/api/admin/locations";
+      const header = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+        // withCredentials: true,
+      };
+      const body = {
+        name_en: name_en,
+        name_ko: name_ko,
+        introduction: introduction,
+      };
+      formData.append("body", body);
+      for (const key in body) {
+        formData.append(key, body[key]);
+      }
+      console.log("ddddddddd");
+      const response = await axios.post(url, formData, header);
+      console.log("ddddddddd");
 
       // 성공적으로 등록되었을 때 처리
       if (response.status === 200) {
@@ -49,15 +59,16 @@ const AdminPageComponent = () => {
         console.log("등록에 실패했습니다.");
       }
     } catch (error) {
-      console.log(response);
       console.log("API 호출 중 오류가 발생했습니다:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="max-w-md mx-auto mt-4" onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="image">이미지 업로드:</label>
+        <label htmlFor="image" className="mr-6">
+          이미지 업로드:
+        </label>
         <input
           type="file"
           id="image"
