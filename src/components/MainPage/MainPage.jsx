@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./MainPage.css";
+import axios from "axios";
 
 const MainPageComponent = () => {
   const images = [
@@ -27,6 +28,16 @@ const MainPageComponent = () => {
   const scrollBtn = () => {
     movePoint.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const [destination, setDestination] = useState([]);
+  const getLocation = async () => {
+    const result = await axios.get("http://localhost:3000/destinations");
+    console.log(result.data.data.destinations);
+    setDestination(result.data.data.destinations);
+  };
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   return (
     <div>
@@ -141,37 +152,46 @@ const MainPageComponent = () => {
         <span>dd</span>
       </div>
       <div>
-        <div style={{ width: "90%" }} className="flex flex-col items-center">
-          <div className="w-full grid grid-cols-4 my-5">
-            <div>
-              <div
-                className="postCard flex flex-col justify-end items-center m-5"
-                style={{
-                  paddingTop: "80%",
-                  border: "1px solid rgba(0,0,0,0.05)",
-                  borderRadius: "2px",
-                  background: "#d9d9d9",
-                }}
-                ref={movePoint}
-              >
+        {destination.map((item, idx) => (
+          <div
+            style={{ width: "90%" }}
+            className="flex flex-col items-center"
+            key={idx}
+          >
+            <div className="w-full my-5">
+              <div>
                 <div
-                  className="postInfo flex flex-col justify-center items-center"
+                  className="postCard flex justify-end items-center m-5"
                   style={{
-                    width: "100%",
-                    height: "30%",
-                    backgroundColor: "#ffffff",
-                    boxShadow: "0px 2px 4px rgba(0,0,0,0.25) ",
+                    paddingTop: "80%",
+                    border: "1px solid rgba(0,0,0,0.05)",
+                    borderRadius: "2px",
+                    background: "#d9d9d9",
                   }}
+                  ref={movePoint}
                 >
-                  <div className="text-xl">SEOUL</div>
-                  <div className="cardTitle" style={{ color: "#6645b9" }}>
-                    대한민국 서울
+                  <img src={item.image} />
+
+                  <div
+                    className="postInfo flex justify-center items-center"
+                    style={{
+                      width: "100%",
+                      height: "30%",
+                      backgroundColor: "#ffffff",
+                      boxShadow: "0px 2px 4px rgba(0,0,0,0.25) ",
+                    }}
+                  >
+                    <div className="text-xl">{item.name_en}</div>
+                    <div
+                      className="cardTitle"
+                      style={{ color: "#6645b9" }}
+                    ></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
