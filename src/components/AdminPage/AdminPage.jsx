@@ -37,20 +37,18 @@ const AdminPageComponent = () => {
         headers: {
           "content-type": "multipart/form-data",
         },
-        // withCredentials: true,
+        withCredentials: true,
       };
       const body = {
         name_en: name_en,
         name_ko: name_ko,
         introduction: introduction,
       };
-      formData.append("body", body);
+      // formData.append("body", body);
       for (const key in body) {
         formData.append(key, body[key]);
       }
-      console.log("ddddddddd");
       const response = await axios.post(url, formData, header);
-      console.log("ddddddddd");
 
       // 성공적으로 등록되었을 때 처리
       if (response.status === 200) {

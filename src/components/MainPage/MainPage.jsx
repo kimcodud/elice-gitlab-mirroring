@@ -80,7 +80,7 @@ const MainPageComponent = () => {
                 fontSize: "1rem",
                 fontWeight: "700",
                 textAlign: "center",
-                marginLeft: "9rem",
+                marginLeft: "29%",
                 color: "white",
                 width: "15rem",
                 // border: "1px solid black",
@@ -122,13 +122,13 @@ const MainPageComponent = () => {
           onClick={previousSlide}
           className="absolute left-40 top-1/2 transform -translate-y-1/2 "
         >
-          <img src="/src/assets/prev.png" />
+          <img src="/src/assets/prev.webp" />
         </button>
         <button
           onClick={nextSlide}
           className="absolute right-40 top-1/2 transform -translate-y-1/2 "
         >
-          <img src="/src/assets/next.png" />
+          <img src="/src/assets/next.webp" />
         </button>
       </div>
       <div
@@ -151,7 +151,7 @@ const MainPageComponent = () => {
         />
         <span>dd</span>
       </div>
-      <div>
+      <div ref={movePoint}>
         {destination.map((item, idx) => (
           <div
             style={{ width: "90%" }}
@@ -168,7 +168,6 @@ const MainPageComponent = () => {
                     borderRadius: "2px",
                     background: "#d9d9d9",
                   }}
-                  ref={movePoint}
                 >
                   <img src={item.image} />
 
