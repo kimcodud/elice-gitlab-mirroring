@@ -4,7 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function DestinationList({ getList, getDateList }) {
   const [items, setItems] = useState(mockData);
-  const [dateList, setDateList] = useState([]);
+  const [dates, setDates] = useState([]);
 
   const handleEnd = (result) => {
     if (!result.destination) return; //드랍 발생하지 않은 경우
@@ -39,9 +39,10 @@ function DestinationList({ getList, getDateList }) {
   }, [items]);
 
   useEffect(() => {
-    getDateList(dateList);
-    console.log('destination dateList', dateList);
-  }, [dateList]);
+    getDateList(dates);
+    console.log('destination dateList', dates);
+    setDates(dates);
+  }, [dates]);
 
   return (
     <div
@@ -110,7 +111,7 @@ function DestinationList({ getList, getDateList }) {
         </Droppable>
       </DragDropContext>
       <ul>
-        {dateList.map((date, index) => (
+        {dates.map((date, index) => (
           <li key={index}>{date}</li>
         ))}
       </ul>
