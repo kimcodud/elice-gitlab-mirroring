@@ -1,8 +1,15 @@
 import { useModalStore } from "../../store/store";
 import closeIcon from "./images/close.png";
 function Modal() {
-  const { isOpen, closeModal, modalType, style, title, content } =
-    useModalStore();
+  const {
+    isOpen,
+    closeModal,
+    modalType,
+    style,
+    title,
+    content,
+    onClose = closeModal,
+  } = useModalStore();
 
   const renderContent = () => {
     switch (modalType) {
@@ -12,7 +19,7 @@ function Modal() {
         return <div>{content}</div>;
       case "info":
         return <div>{content}</div>;
-      case 'updateUserInfo':
+      case "updateUserInfo":
         return <div>{content}</div>;
       default:
         return null;
@@ -81,7 +88,7 @@ function Modal() {
             <div className="modalContent">
               <div className="modalhead">
                 <div className="modaltitle text-center font-bold">{title}</div>
-                <button className="modalCloseBtn" onClick={closeModal}>
+                <button className="modalCloseBtn" onClick={onClose}>
                   <img src={closeIcon} alt="Close" />
                 </button>
               </div>
