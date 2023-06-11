@@ -25,7 +25,6 @@ function LoginPageComponent() {
       );
       console.log(response);
       if (response.status === 200) {
-        alert("로그인되었습니다.");
         navigate("/");
 
         // axios로 서버에서 전송된 헤더값 받기
@@ -33,7 +32,7 @@ function LoginPageComponent() {
         console.log(response.headers.cookies);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.error.status);
       alert("로그인에 실패하였습니다.");
     }
   };

@@ -29,12 +29,17 @@ const MainPageComponent = () => {
     movePoint.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const [destination, setDestination] = useState([]);
   const getLocation = async () => {
     const result = await axios.get("http://localhost:3000/destinations");
     console.log(result.data.data.destinations);
     setDestination(result.data.data.destinations);
   };
+
   useEffect(() => {
     getLocation();
   }, []);
@@ -152,45 +157,31 @@ const MainPageComponent = () => {
         <span>dd</span>
       </div>
       <div ref={movePoint}>
-        {destination.map((item, idx) => (
-          <div
-            style={{ width: "90%" }}
-            className="flex flex-col items-center"
-            key={idx}
-          >
-            <div className="w-full my-5">
-              <div>
+        <div className="grid grid-cols-4 gap-4">
+          {destination.map((item, idx) => (
+            <div className="w-full my-5" key={idx}>
+              <div className="relative">
                 <div
-                  className="postCard flex justify-end items-center m-5"
-                  style={{
-                    paddingTop: "80%",
-                    border: "1px solid rgba(0,0,0,0.05)",
-                    borderRadius: "2px",
-                    background: "#d9d9d9",
-                  }}
+                  className="aspect-w-10 aspect-h-7 bg-violet-200 hover:bg-violet-300 transition-colors duration-300 rounded-md overflow-hidden"
+                  style={{ paddingBottom: "70%" }}
                 >
-                  <img src={item.image} />
-
-                  <div
-                    className="postInfo flex justify-center items-center"
-                    style={{
-                      width: "100%",
-                      height: "30%",
-                      backgroundColor: "#ffffff",
-                      boxShadow: "0px 2px 4px rgba(0,0,0,0.25) ",
-                    }}
-                  >
-                    <div className="text-xl">{item.name_en}</div>
-                    <div
-                      className="cardTitle"
-                      style={{ color: "#6645b9" }}
-                    ></div>
-                  </div>
+                  <img
+                    src={item.image}
+                    className="object-cover w-full h-full"
+                    alt={item.name_en}
+                  />
+                </div>
+                <div className="absolute bottom-0 left-0 p-4 w-full h-30percent bg-white bg-opacity-90 flex flex-col justify-center">
+                  <h2 className="text-xl font-bold text-gray-800">
+                    {item.name_en}
+                  </h2>
+                  <p className="text-gray-600">{item.subtitle}</p>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <button onClick={scrollToTop}>탑으로</button>
       </div>
     </div>
   );
