@@ -5,12 +5,26 @@ import DatePicker from '../DatePicker/DatePicker';
 
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
+  const [dateList, setDateList] = useState([]);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [polyline, setPolyline] = useState(null);
+  const [isClicked, setIsClicked] = useState(false);
 
-  const getList = (newList) => {
-    setList(newList);
+  const getList = (list) => {
+    if (isClicked) {
+      setList(list);
+      console.log('list', list);
+    }
+  };
+
+  const handleShowAll = () => {
+    setIsClicked(true);
+  };
+
+  const getDateList = (dateList) => {
+    setDateList(dateList);
+    console.log('dateList', dateList);
   };
 
   const attachMapSdkScript = () => {
@@ -94,8 +108,41 @@ function PlannerMapEdit() {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <DatePicker />
-        <DestinationList getList={getList} />
+        <DatePicker getDateList={getDateList} />
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <button
+              style={{
+                width: '62px',
+                height: '38px',
+                backgroundColor: '#E9EBED',
+                marginBottom: '26px',
+              }}
+              onClick={handleShowAll}
+            >
+              전체
+            </button>
+            {dateList.map((date, index) => (
+              <button
+                style={{
+                  width: '62px',
+                  height: '38px',
+                  backgroundColor: '#E9EBED',
+                  marginBottom: '26px',
+                }}
+                key={index}
+              >
+                DAY {index + 1}
+              </button>
+            ))}
+          </div>
+          <DestinationList getList={getList} getDateList={getDateList} />
+        </div>
       </div>
       <div id="map" style={{ width: '1200px', height: '1000px' }}></div>
     </div>

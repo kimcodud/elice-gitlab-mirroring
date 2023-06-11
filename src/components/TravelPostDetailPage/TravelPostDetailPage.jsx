@@ -7,11 +7,8 @@ import prevBtn from "../../assets/prev.webp";
 import nextBtn from "../../assets/next.webp";
 import deleteBtn from "../../assets/close.webp";
 
-import image1 from "./images/image-1.jpg";
-import image2 from "./images/image-2.jpg";
-import image3 from "./images/image-3.jpg";
-import image4 from "./images/image-4.jpg";
-import { commentsData, contentText, contentTitle } from "./temp";
+import prevBtn from "../../assets/prev.png";
+import nextBtn from "../../assets/next.png";
 
 import userImg from "../../assets/user.png";
 const contentImages = [image1, image2, image3, image4];

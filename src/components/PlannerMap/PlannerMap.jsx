@@ -1,73 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
 
 const SearchMap = () => {
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const [kakaoMap, setKakaoMap] = useState(null);
+  const [infowindow, setInfowindow] = useState();
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
-  const [infowindow, setInfowindow] = useState(null);
-  // const [list, setList] = useState([]);
+  const [markers, setMakers] = useState([]);
 
-  const handleDisplayInfowindow = (marker, title) => {
-    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
-  };
-
-  const searchPlaces = () => {
-    if (!keyword.trim()) {
-      alert("키워드를 입력해주세요!");
-      return;
-    }
-
-    const ps = new window.kakao.maps.services.Places();
-    ps.keywordSearch(keyword, placesSearchCB);
-  };
-
-  const placesSearchCB = (data, status, pagination, place) => {
-    // console.log({ data, status, pagination });
-
-    if (status === window.kakao.maps.services.Status.OK) {
-      displayPlaces(data);
-      displayPagination(pagination);
-    } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-      alert("검색 결과가 존재하지 않습니다.");
-    } else if (status === window.kakao.maps.services.Status.ERROR) {
-      alert("검색 결과 중 오류가 발생했습니다.");
-    }
-  };
-  console.log(places);
-  const displayPlaces = (_places) => {
-    removeMarkers(); // marker-state []
-    console.log(_places);
-    const bounds = new window.kakao.maps.LatLngBounds();
-    _places.forEach((place, index) => {
-      const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
-      addMarker(placePosition, index);
-      bounds.extend(placePosition);
-    }); // marker-state [....]
-
-    const markerList = createMarkerList(_places);
-    const newPlaces = _places.map((placeData, index) => {
-      return {
-        ...placeData,
-        marker: markerList[index],
-      };
-    });
-
-    setPlaces(newPlaces || []);
-    map.setBounds(bounds);
-  };
-  const createMarkerList = (places) => {
-    return places?.map((place, index) => {
-      const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
-      const marker = addMarker(placePosition, index);
-      return marker;
-    });
-  };
-
-  const addMarker = (position, index) => {
+  const createMarker = (position, index) => {
     const imageSrc =
       "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png";
     const imageSize = new window.kakao.maps.Size(36, 37);
@@ -88,15 +29,83 @@ const SearchMap = () => {
       image: markerImage,
     });
 
-    marker.setMap(map);
-    setMarkers((prevMarkers) => [...prevMarkers, ...[marker]]);
-
     return marker;
   };
 
+  const createMarkerList = (places) => {
+    return places?.map((place, index) => {
+      const position = new window.kakao.maps.LatLng(place.y, place.x);
+      const placePosition = createMarker(position, index);
+      return placePosition;
+    });
+  };
+
+  const handleDisplayInfowindow = (marker, title) => {
+    const content = `<div style="padding:5px;z-index:1;">${title}</div>`;
+    infowindow.setContent(content);
+    infowindow.open(kakaoMap, marker);
+  };
+
+  const onSearch = useCallback(() => {
+    if (!keyword.trim()) {
+      alert("키워드를 입력해주세요!");
+      return;
+    }
+    removeMarkers();
+    const ps = new window.kakao.maps.services.Places();
+    ps.keywordSearch(keyword, placesSearchCB);
+  }, [keyword]);
+
+  const placesSearchCB = (data, status, pagination) => {
+    if (status === window.kakao.maps.services.Status.OK) {
+      displayMarkers(data);
+      displayPagination(pagination);
+    } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+      alert("검색 결과가 존재하지 않습니다.");
+    } else if (status === window.kakao.maps.services.Status.ERROR) {
+      alert("검색 결과 중 오류가 발생했습니다.");
+    }
+  };
+
+  const displayMarkers = (placeList) => {
+    // 기존 마커 초기화
+    removeMarkers();
+
+    // 새로운 마커 추가
+    const bounds = new window.kakao.maps.LatLngBounds();
+
+    placeList.forEach((place, index) => {
+      const placePosition = new window.kakao.maps.LatLng(place.y, place.x);
+      createMarker(placePosition, index);
+      bounds.extend(placePosition);
+      kakaoMap.setBounds(bounds);
+    });
+
+    if (
+      kakaoMap.o.idle &&
+      Array.isArray(kakaoMap.o.idle) &&
+      kakaoMap.o.idle.length
+    ) {
+      const prevMarkerValues = kakaoMap.o.idle.map(({ object }) => object);
+      prevMarkerValues.forEach((prevMarker) => {
+        prevMarker.setMap(null);
+      });
+    }
+    const markerList = createMarkerList(placeList);
+    markerList.forEach((marker) => marker.setMap(kakaoMap));
+    setMakers(markerList);
+    const newPlaces = placeList.map((placeData, index) => {
+      return {
+        ...placeData,
+        marker: markerList[index],
+      };
+    });
+
+    setPlaces(newPlaces || []);
+  };
+
   const removeMarkers = () => {
-    markers.forEach((marker) => marker.setMap(null));
-    setMarkers([]);
+    setMakers([]);
   };
 
   const removeAllChildNodes = (elementId) => {
@@ -107,10 +116,8 @@ const SearchMap = () => {
   };
 
   const displayPagination = (pagination) => {
-    console.log(markers);
     const paginationEl = document.getElementById("pagination");
     removeAllChildNodes("pagination");
-
     for (let i = 1; i <= pagination.last; i++) {
       const el = document.createElement("a");
       el.href = "#";
@@ -120,7 +127,7 @@ const SearchMap = () => {
         el.className = "on";
       } else {
         el.onclick = () => {
-          removeMarkers();
+          console.log(markers);
           pagination.gotoPage(i);
         };
       }
@@ -138,7 +145,7 @@ const SearchMap = () => {
         handleDisplayInfowindow={handleDisplayInfowindow}
       />
     );
-  }, [places]);
+  }, [markers]);
 
   const attachMapSdkScript = () => {
     const script = document.createElement("script");
@@ -156,64 +163,63 @@ const SearchMap = () => {
           center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
           level: 3,
         };
-        const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
-        setMap(newMap);
+        const newKakaoMap = new window.kakao.maps.Map(mapContainer, mapOptions);
+        setKakaoMap(newKakaoMap);
         const newInfowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         setInfowindow(newInfowindow);
       });
     };
   };
+
   useEffect(() => {
     attachMapSdkScript();
   }, []);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      searchPlaces();
+      onSearch();
     }
   };
 
   return (
-    <div style={{ display: "flex ", justifyContent: "center" }}>
-      <div id="map" style={{ width: "1200px", height: "920px" }} />
-      <div>
-        <input
-          type="text"
-          id="keyword"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
-          onKeyPress={handleKeyPress}
-          placeholder=" 장소를 검색해보세요"
-          style={{
-            marginLeft: "10px",
-            // borderWidth: "2px",
-            justifyContent: "center",
-            textAlign: "center",
-          }}
-        />
-        <div
-          className="drag-box"
-          // style={{ height: "920px", overflowY: "scroll" }}
-        >
-          <div
-            id="placesList"
+    <>
+      <div style={{ display: "flex ", justifyContent: "center" }}>
+        <div id="map" style={{ width: "1200px", height: "920px" }} />
+        <div>
+          <input
+            type="text"
+            id="keyword"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
+            onKeyPress={handleKeyPress}
+            placeholder=" 장소를 검색해보세요"
             style={{
-              height: "890px",
-              whiteSpace: "nowrap",
-              overflow: "auto",
+              marginLeft: "10px",
+              justifyContent: "center",
+              textAlign: "center",
             }}
-          >
-            {PlaceListComponent}
-          </div>
-          <div
-            id="pagination"
-            className="drop-shadow-md cursor-pointer"
-            style={{ display: "flex", justifyContent: "center" }}
           />
+          <div className="drag-box">
+            <div
+              id="placesList"
+              style={{
+                height: "890px",
+                whiteSpace: "nowrap",
+                overflow: "auto",
+              }}
+            >
+              {PlaceListComponent}
+            </div>
+            <div
+              id="pagination"
+              className="drop-shadow-md cursor-pointer"
+              style={{ display: "flex", justifyContent: "center" }}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default SearchMap;

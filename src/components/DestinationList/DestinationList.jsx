@@ -2,11 +2,11 @@ import React, { useState, useCallback, useEffect } from 'react';
 import mockData from '../../assets/mockData.json';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-function PlannerLeft({ getList }) {
+function DestinationList({ getList, getDateList }) {
   const [items, setItems] = useState(mockData);
+  const [dates, setDates] = useState([]);
 
   const handleEnd = (result) => {
-    // console.log(result);
     if (!result.destination) return; //드랍 발생하지 않은 경우
 
     const { source, destination } = result;
@@ -19,9 +19,9 @@ function PlannerLeft({ getList }) {
 
   const handleClick = useCallback(
     (id) => {
-      console.log('id', id);
+      // console.log('id', id);
       let newItems = items.filter((data) => data.id !== id);
-      console.log('newItems', newItems);
+      // console.log('newItems', newItems);
       setItems(newItems);
     },
     //todoData가 바뀔 때만)다시 생성된다.
@@ -35,8 +35,14 @@ function PlannerLeft({ getList }) {
   //items 바뀔때마다 상위 prop 전달
   useEffect(() => {
     getList(items);
-    console.log(items);
+    console.log('items', items);
   }, [items]);
+
+  useEffect(() => {
+    getDateList(dates);
+    console.log('destination dateList', dates);
+    setDates(dates);
+  }, [dates]);
 
   return (
     <div
@@ -48,6 +54,7 @@ function PlannerLeft({ getList }) {
       }}
     >
       <h1 style={{ borderBottom: '3px solid #6645B9' }}>선택목록</h1>
+
       <button onClick={handleRemoveAll}>Delete All</button>
       <DragDropContext onDragEnd={handleEnd}>
         <Droppable droppableId="itemList">
@@ -103,8 +110,13 @@ function PlannerLeft({ getList }) {
           )}
         </Droppable>
       </DragDropContext>
+      <ul>
+        {dates.map((date, index) => (
+          <li key={index}>{date}</li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default PlannerLeft;
+export default DestinationList;

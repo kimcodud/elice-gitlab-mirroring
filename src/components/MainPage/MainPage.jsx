@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./MainPage.css";
+import axios from "axios";
 
 const MainPageComponent = () => {
   const images = [
@@ -27,6 +28,21 @@ const MainPageComponent = () => {
   const scrollBtn = () => {
     movePoint.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const [destination, setDestination] = useState([]);
+  const getLocation = async () => {
+    const result = await axios.get("http://localhost:3000/destinations");
+    console.log(result.data.data.destinations);
+    setDestination(result.data.data.destinations);
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   return (
     <div>
@@ -69,7 +85,7 @@ const MainPageComponent = () => {
                 fontSize: "1rem",
                 fontWeight: "700",
                 textAlign: "center",
-                marginLeft: "9rem",
+                marginLeft: "29%",
                 color: "white",
                 width: "15rem",
                 // border: "1px solid black",
@@ -90,71 +106,82 @@ const MainPageComponent = () => {
           />
         </div>
       </div>
-      <div className="relative" ref={movePoint}>
-        <img
-          src={images[currentIndex]}
-          alt="Slide"
-          className="h-[500px] sm:h-[655px] lg:w-screen lg:h-[700px]"
-          style={{
-            animation: "bannermove 5s linear infinite",
-            width: "80%",
-            height: "20rem",
-            objectFit: "cover",
-            margin: "auto",
-            boxShadow: "1px 4px 4px black",
-            borderRadius: "4px",
-          }}
-        />
+      <div className="relative">
+        <a href="/travelBoard">
+          <img
+            src={images[currentIndex]}
+            alt="Slide"
+            className=""
+            style={{
+              animation: "bannermove 5s linear infinite",
+              width: "80%",
+              height: "20rem",
+              objectFit: "cover",
+              margin: "auto",
+              boxShadow: "1px 4px 4px black",
+              borderRadius: "4px",
+            }}
+          />
+        </a>
         <button
           onClick={previousSlide}
           className="absolute left-40 top-1/2 transform -translate-y-1/2 "
         >
-          <img src="/src/assets/prev.png" />
+          <img src="/src/assets/prev.webp" />
         </button>
         <button
           onClick={nextSlide}
           className="absolute right-40 top-1/2 transform -translate-y-1/2 "
         >
-          <img src="/src/assets/next.png" />
+          <img src="/src/assets/next.webp" />
         </button>
       </div>
-      <div>
-        <div style={{ width: "90%" }} className="flex flex-col items-center">
-          <div className="w-full grid grid-cols-4 my-5">
-            <div>
-              <style>
-                {`
-          .postCard {
-            padding-top: 80%;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 3px;
-            background: #D9D9D9;
-          }
-          .postCard:hover {
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            background: gray;
-          }
-          .postInfo {
-            width: 100%;
-            height: 30%;
-            background: #FFFFFF;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 3px;
-          }
-          .postWriter {
-            color: #6645B9;
-          }
-          `}
-              </style>
-              <div className="postCard flex flex-col justify-end items-center m-5">
-                <div className="postInfo flex flex-col justify-center items-center">
-                  <div className="postTittle text-xl">SEOUL</div>
-                  <div className="postWriter">대한민국 서울</div>
+      <div
+        style={{
+          maxWidth: "100%",
+          position: "relative",
+          display: "inline-block",
+        }}
+      >
+        <input
+          className=""
+          type="text"
+          style={{
+            maxWidth: "600px",
+            margin: "auto",
+            border: "0.5px solid #e0e0e0",
+            marginTop: "3rem",
+          }}
+          placeholder="검색어를 입력하세요"
+        />
+        <span>dd</span>
+      </div>
+      <div ref={movePoint}>
+        <div className="grid grid-cols-4 gap-4">
+          {destination.map((item, idx) => (
+            <div className="w-full my-5" key={idx}>
+              <div className="relative">
+                <div
+                  className="aspect-w-10 aspect-h-7 bg-violet-200 hover:bg-violet-300 transition-colors duration-300 rounded-md overflow-hidden"
+                  style={{ paddingBottom: "70%" }}
+                >
+                  <img
+                    src={item.image}
+                    className="object-cover w-full h-full"
+                    alt={item.name_en}
+                  />
+                </div>
+                <div className="absolute bottom-0 left-0 p-4 w-full h-30percent bg-white bg-opacity-90 flex flex-col justify-center">
+                  <h2 className="text-xl font-bold text-gray-800">
+                    {item.name_en}
+                  </h2>
+                  <p className="text-gray-600">{item.subtitle}</p>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
+        <button onClick={scrollToTop}>탑으로</button>
       </div>
     </div>
   );

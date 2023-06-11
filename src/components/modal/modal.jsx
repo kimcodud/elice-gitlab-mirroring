@@ -1,5 +1,5 @@
 import { useModalStore } from "../../store/store";
-import closeIcon from "./images/close.png";
+import closeIcon from "../../assets/close.webp";
 function Modal() {
   const {
     isOpen,
