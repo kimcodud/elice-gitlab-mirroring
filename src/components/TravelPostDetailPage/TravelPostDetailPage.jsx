@@ -1,17 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import Modal from "../modal/modal";
-import { ModalPortal } from "../modal/ModalPortal";
+import { ModalPortal } from "../modal/ModalPortal.jsx";
 import { useModalStore } from "../../store/store";
 
 import prevBtn from "../../assets/prev.webp";
 import nextBtn from "../../assets/next.webp";
 import deleteBtn from "../../assets/close.webp";
 
-import prevBtn from "../../assets/prev.png";
-import nextBtn from "../../assets/next.png";
+import userImg from "../../assets/user.webp";
 
-import userImg from "../../assets/user.png";
-const contentImages = [image1, image2, image3, image4];
+import seoul from "../../assets/seoul.webp";
+
+const contentImages = [seoul, prevBtn, nextBtn, deleteBtn];
 
 function TravelPostDetail() {
   const { openModal, closeModal } = useModalStore();
@@ -31,27 +31,74 @@ function TravelPostDetail() {
   }, []);
 
   const CommentComponent = () => {
-    return div;
+    // 댓글
+    return (
+      <form
+        action=""
+        className="w-full h-full flex justify-center items-center"
+      >
+        <div className="grid grid-cols-[1fr,5fr] grid-rows-[1fr,auto] w-11/12 h-full mb-2">
+          <div className="col-span-1 row-span-full w-full p-1">
+            <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-2xl">
+              <img
+                className="mx-auto my-auto w-3/4"
+                src={userImg}
+                alt="유저이미지"
+              />
+            </div>
+          </div>
+          <div className="flex flex-row justify-between w-full h-full ">
+            <div>
+              <span className="pr-2">유저이름</span>{" "}
+              <span className="text-gray-400">2020-02-20</span>
+            </div>
+            <div className="flex justify-end items-start w-1/12 cursor-pointer select-none ">
+              <img className="w-2/3" src={deleteBtn} alt="댓글삭제" />
+            </div>
+          </div>
+          <div className="flex flex-row items-start w-full h-full">
+            댓글내용 짱짱 유익함 멋져용 와웅댓글내용 짱짱 유익함 멋져용 와웅
+          </div>
+        </div>
+      </form>
+    );
+  };
+
+  const ScheduleComponent = () => {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <div className="mb-5">2020-02-20 ~ 2020-02-20</div>
+        <div className="bg-gray-100 w-4/5 flex flex-col justify-center items-center rounded-2xl my-3 py-5 shadow-md">
+          <div className="text-2xl text-center">{}1 일차</div>
+          <div className="flex flex-col w-4/5 bg-white py-1 px-4 my-2 rounded">
+            <div className="font-bold">경복궁</div>
+            <div>경기도 경기시 경기구 경기경기로 1234-1</div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const openScheduleModal = () => {
     openModal({
       modalType: "schedule",
       style: {
-        backgroundColor: " #F1F5F9",
-        width: "60%",
-        height: "100%",
-        top: "50%",
-        left: "50%",
+        backgroundColor: "rgb(249, 250, 251)",
+        width: "32.8%",
+        height: "82%",
+        top: "59%",
+        left: "67.5%",
         transform: "translate(-50%, -50%)",
       },
-      title: <div className="text-center font-bold text-4xl">여행 일정</div>,
-      content: (
-        <div>
-          <div style={{ color: "red" }}>안녕</div>
-          <div className="text-blue-400">하세요</div>
+      title: (
+        <div
+          style={{ color: "#6645B9" }}
+          className="border-b border-gray-300 pb-4 text-3xl"
+        >
+          여행 일정
         </div>
       ),
+      content: <ScheduleComponent />,
     });
   };
 
@@ -70,35 +117,7 @@ function TravelPostDetail() {
         transform: "translate(-50%, -50%)",
       },
       title: <div className="border-b border-gray-300 pb-4">댓글</div>,
-      content: (
-        <form action="" className="w-full h-full">
-          <div className="grid grid-cols-[1fr,5fr] grid-rows-[1fr,auto] w-full h-full mb-2">
-            <div className="col-span-1 row-span-full w-full p-3">
-              <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-2xl">
-                <img
-                  className="mx-auto my-auto w-3/4"
-                  src={userImg}
-                  alt="유저이미지"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col justify-center w-full h-full">
-              <div>
-                <span className="pr-2">유저이름</span>{" "}
-                <span className="text-gray-400">2020-02-20</span>
-              </div>
-              <div>
-                <img src="deleteBtn" alt="댓글삭제" />
-              </div>
-            </div>
-            <div className="flex flex-row items-start w-full h-full">
-              댓글내용 짱짱 유익함 멋져용 와웅댓글내용 짱짱 유익함 멋져용 와웅
-              댓글내용 짱짱 유익함 멋져용 와웅댓글내용 짱짱 유익함 멋져용 와웅
-              댓글내용 짱짱 유익함 멋져용 와웅댓글내용 짱짱 유익함 멋져용 와웅
-            </div>
-          </div>
-        </form>
-      ),
+      content: <CommentComponent />,
       onClose: handleCloseModal,
     });
   };
@@ -239,7 +258,7 @@ function TravelPostDetail() {
               className="box-content w-full text-3xl font-bold"
               style={{ color: "#6645B9" }}
             >
-              <p>{contentTitle}</p>
+              <p>제목이 들어갈 곳</p>
             </div>
             <button
               onClick={openScheduleModal}
@@ -256,7 +275,7 @@ function TravelPostDetail() {
               showComments ? "reduced-height" : ""
             }`}
           >
-            {contentText}
+            내용이 들어갈 곳
           </div>
 
           <div className="flex flex-row justify-between w-full pt-5 pb-3 px-3">
