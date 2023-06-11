@@ -9,10 +9,17 @@ function PlannerMapEdit() {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [polyline, setPolyline] = useState(null);
+  const [isClicked, setIsClicked] = useState(false);
 
   const getList = (list) => {
-    setList(list);
-    console.log('list', list);
+    if (isClicked) {
+      setList(list);
+      console.log('list', list);
+    }
+  };
+
+  const handleShowAll = () => {
+    setIsClicked(true);
   };
 
   const getDateList = (dateList) => {
@@ -116,6 +123,7 @@ function PlannerMapEdit() {
                 backgroundColor: '#E9EBED',
                 marginBottom: '26px',
               }}
+              onClick={handleShowAll}
             >
               전체
             </button>
