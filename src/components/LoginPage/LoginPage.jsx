@@ -26,10 +26,7 @@ function LoginPageComponent() {
       console.log(response);
       if (response.status === 200) {
         navigate("/");
-
-        // axios로 서버에서 전송된 헤더값 받기
-        // console.log(response.headers.get("Date"));
-        console.log(response.headers.cookies);
+        localStorage.setItem("role", response.data.user.role);
       }
     } catch (error) {
       console.log(error.response.data.error.status);
