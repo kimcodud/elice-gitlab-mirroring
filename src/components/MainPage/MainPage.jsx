@@ -85,7 +85,7 @@ const MainPageComponent = () => {
                 fontSize: "1rem",
                 fontWeight: "700",
                 textAlign: "center",
-                marginLeft: "29%",
+                marginLeft: "25%",
                 color: "white",
                 width: "15rem",
                 // border: "1px solid black",
@@ -162,8 +162,8 @@ const MainPageComponent = () => {
             <div className="w-full my-5" key={idx}>
               <div className="relative">
                 <div
-                  className="aspect-w-10 aspect-h-7 bg-violet-200 hover:bg-violet-300 transition-colors duration-300 rounded-md overflow-hidden"
-                  style={{ paddingBottom: "70%" }}
+                  className=""
+                  style={{ paddingBottom: "50%", margin: "auto" }}
                 >
                   <img
                     src={item.image}
@@ -175,7 +175,7 @@ const MainPageComponent = () => {
                   <h2 className="text-xl font-bold text-gray-800">
                     {item.name_en}
                   </h2>
-                  <p className="text-gray-600">{item.subtitle}</p>
+                  <p className="text-gray-600">{item.name_ko}</p>
                 </div>
               </div>
             </div>
