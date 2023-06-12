@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import mockData from '../../assets/mockData.json';
 import DestinationList from '../DestinationList/DestinationList';
-import DatePicker from '../DatePicker/DatePicker';
+// import DatePicker from '../DatePicker/DatePicker';
 
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
@@ -9,23 +9,32 @@ function PlannerMapEdit() {
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [polyline, setPolyline] = useState(null);
-  const [isClicked, setIsClicked] = useState(false);
 
-  const getList = (list) => {
-    if (isClicked) {
-      setList(list);
-      console.log('list', list);
-    }
+  const [isAll, setIsAll] = useState(true);
+  const [showDayList, setShowDayList] = useState(false);
+
+  const handleClickAll = () => {
+    setIsAll(true);
+    setShowDayList(false);
   };
 
-  const handleShowAll = () => {
-    setIsClicked(true);
+  const handleClickDay = () => {
+    setShowDayList(true);
+    setIsAll(false);
+  };
+
+  const getList = (list) => {
+    setList(list);
+    console.log('list', list);
   };
 
   const getDateList = (dateList) => {
     setDateList(dateList);
     console.log('dateList', dateList);
   };
+
+  const startDate = list.itinerary_list[0].start_date;
+  const endDate = list.itinerary_list[0].end_date;
 
   const attachMapSdkScript = () => {
     const script = document.createElement('script');
@@ -63,11 +72,8 @@ function PlannerMapEdit() {
       const newMarkers = [];
       const linePath = [];
 
-      list.forEach((position) => {
-        const latlng = new window.kakao.maps.LatLng(
-          position.latlng.lat,
-          position.latlng.lng
-        );
+      list.itinerary_list[0].dates.forEach((position) => {
+        const latlng = new window.kakao.maps.LatLng(position.lat, position.lng);
 
         const marker = new window.kakao.maps.Marker({
           map: map,
@@ -75,7 +81,7 @@ function PlannerMapEdit() {
         });
 
         const infowindow = new window.kakao.maps.InfoWindow({
-          content: position.content,
+          content: position.location,
         });
 
         window.kakao.maps.event.addListener(marker, 'mouseover', () => {
@@ -108,7 +114,12 @@ function PlannerMapEdit() {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <DatePicker getDateList={getDateList} />
+        {/* <DatePicker getDateList={getDateList} /> */}
+        <div>{list.itinerary_list[0].destination}</div>
+        <div>0 Day</div>
+        <div>
+          {startDate} ~ {endDate}
+        </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div
             style={{
@@ -123,11 +134,12 @@ function PlannerMapEdit() {
                 backgroundColor: '#E9EBED',
                 marginBottom: '26px',
               }}
-              onClick={handleShowAll}
+              onClick={handleClickAll}
             >
               전체
             </button>
-            {dateList.map((date, index) => (
+
+            {list.itinerary_list[0].dates.map((item, index) => (
               <button
                 style={{
                   width: '62px',
@@ -136,12 +148,19 @@ function PlannerMapEdit() {
                   marginBottom: '26px',
                 }}
                 key={index}
+                onClick={handleClickDay}
               >
                 DAY {index + 1}
               </button>
             ))}
           </div>
-          <DestinationList getList={getList} getDateList={getDateList} />
+
+          <DestinationList
+            isAll={isAll}
+            showDayList={showDayList}
+            getList={getList}
+            dateList={dateList}
+          />
         </div>
       </div>
       <div id="map" style={{ width: '1200px', height: '1000px' }}></div>
