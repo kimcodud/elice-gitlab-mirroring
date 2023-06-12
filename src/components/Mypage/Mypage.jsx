@@ -11,145 +11,6 @@ import moveBtn from "../../assets/goBackIcon.webp";
 
 import tempImage from "../../assets/main.jpg";
 
-const UserInfoUpdateModalContent = () => {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-    passwordConfirm: "",
-  });
-
-  const handleValueChange = ({ target: { value, name } }) => {
-    setUser((prev) => ({ ...prev, [name]: value }));
-    console.log(user);
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/;
-
-    try {
-      // console.log(user);
-      if (!user.email && !user.password) {
-        alert("수정할 내용이 없습니다.");
-        return;
-      } else {
-        if (user.password) {
-          if (!passwordRegex.test(user.password)) {
-            alert("비밀번호에 문자, 숫자, 특수문자를 포함해야 합니다.");
-            return;
-          } else if (user.password !== user.passwordConfirm) {
-            alert("비밀번호가 일치하지 않습니다.");
-            return;
-          }
-          alert("입력완료");
-
-          const header = {
-            header: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            withCrendentials: true,
-          };
-          const body = {
-            password: user.password,
-            email: user.email,
-          };
-          const uri = "http://localhost:3000/users/";
-          const updateResponse = await axios.patch(uri, body, header);
-
-          console.log(updateResponse.data);
-          alert("회원정보가 수정되었습니다.");
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full flex flex-col justify-center items-center my-5 h-5/6"
-    >
-      <div className="w-1/6 mb-5 border bg-white border-gray-100 rounded-full flex items-center justify-center shadow-lg">
-        <img className="h-full" src={basicUserImage} alt="유저이미지" />
-      </div>
-      <div className="grid grid-cols-none grid-rows-4 justify-center items-center w-5/12 border-solid grid-underline text-center">
-        <div
-          className="grid grid-cols-[1fr,2fr] h-4/5 items-center justify-center gap-3 p-2"
-          style={{ borderBottom: "1px solid #6645B9" }}
-        >
-          <div className="text-lg cursor-pointer select-none">이름</div>
-          <div className="text-lg select-none text-left">{userInfo.name}</div>
-        </div>
-        <label
-          className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
-          style={{ borderBottom: "1px solid #6645B9" }}
-        >
-          <div className="text-lg select-none">이메일</div>
-          <input
-            type="text"
-            name="email"
-            label="이메일"
-            value={user.email}
-            onChange={handleValueChange}
-            placeholder={"이메일을 입력해주세요."}
-            className="hide-input-focus outline-none w-full p-2 rounded border border-gray-100"
-          />
-        </label>
-        <label
-          className="grid grid-cols-[1fr,2fr]  h-full items-center justify-center gap-3 p-2"
-          style={{ borderBottom: "1px solid #6645B9" }}
-        >
-          <div className="text-lg select-none">비밀번호</div>
-          <input
-            type="password"
-            label="비밀번호"
-            name="password"
-            value={user.password}
-            onChange={handleValueChange}
-            minLength={10}
-            maxLength={20}
-            placeholder={"비밀번호를 입력해주세요."}
-            className="hide-input-focus outline-none w-full rounded border border-gray-100 p-2"
-          />
-          {user.password !== user.passwordConfirm ? (
-            <h6 className="text-xs text-rose-600 col-span-2">
-              비밀번호가 서로 다릅니다.
-            </h6>
-          ) : (
-            <h6 className="text-xs text-violet-400 col-span-2">
-              비밀번호(문자,숫자,특수문자 포함 10~20자)
-            </h6>
-          )}
-        </label>
-        <label
-          className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
-          style={{ borderBottom: "1px solid #6645B9" }}
-        >
-          <div className="text-lg select-none">비밀번호 확인</div>
-          <input
-            type="password"
-            label="비밀번호 확인"
-            name="passwordConfirm"
-            value={user.passwordConfirm}
-            onChange={handleValueChange}
-            minLength={10}
-            maxLength={20}
-            placeholder={"비밀번호를 다시 입력해주세요."}
-            className="hide-input-focus outline-none w-full rounded border border-gray-100 p-2"
-          />
-        </label>
-      </div>
-      <input
-        className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
-        style={{ backgroundColor: "#B09FCE" }}
-        type="submit"
-        value="저장"
-      />
-    </form>
-  );
-};
-
 const UserInfoPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { openModal } = useModalStore();
@@ -255,6 +116,142 @@ const UserInfoPage = () => {
   };
   const handleDeletSchedule = () => {
     alert(travelSchedule[currentIndex].koPlaceName + " 일정이 삭제되었습니다.");
+  };
+
+  const UserInfoUpdateModalContent = () => {
+    const [user, setUser] = useState({
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    });
+
+    const handleValueChange = ({ target: { value, name } }) => {
+      setUser((prev) => ({ ...prev, [name]: value }));
+      console.log(user);
+    };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      const passwordRegex =
+        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/;
+
+      try {
+        // console.log(user);
+        if (!user.email && !user.password) {
+          alert("수정할 내용이 없습니다.");
+          return;
+        } else {
+          if (user.password) {
+            if (!passwordRegex.test(user.password)) {
+              alert("비밀번호에 문자, 숫자, 특수문자를 포함해야 합니다.");
+              return;
+            } else if (user.password !== user.passwordConfirm) {
+              alert("비밀번호가 일치하지 않습니다.");
+              return;
+            }
+            alert("입력완료");
+
+            const header = {
+              withCrendentials: true,
+            };
+            const body = {
+              password: user.password,
+              email: user.email,
+            };
+            const uri = "http://localhost:3000/users/";
+            const updateResponse = await axios.patch(uri, body);
+
+            console.log(updateResponse.data);
+            alert("회원정보가 수정되었습니다.");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    return (
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col justify-center items-center my-5 h-5/6"
+      >
+        <div className="w-1/6 mb-5 border bg-white border-gray-100 rounded-full flex items-center justify-center shadow-lg">
+          <img className="h-full" src={basicUserImage} alt="유저이미지" />
+        </div>
+        <div className="grid grid-cols-none grid-rows-4 justify-center items-center w-5/12 border-solid grid-underline text-center">
+          <div
+            className="grid grid-cols-[1fr,2fr] h-4/5 items-center justify-center gap-3 p-2"
+            style={{ borderBottom: "1px solid #6645B9" }}
+          >
+            <div className="text-lg cursor-pointer select-none">이름</div>
+            <div className="text-lg select-none text-left">{userInfo.name}</div>
+          </div>
+          <label
+            className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
+            style={{ borderBottom: "1px solid #6645B9" }}
+          >
+            <div className="text-lg select-none">이메일</div>
+            <input
+              type="text"
+              name="email"
+              label="이메일"
+              value={user.email}
+              onChange={handleValueChange}
+              placeholder={"이메일을 입력해주세요."}
+              className="hide-input-focus outline-none w-full p-2 rounded border border-gray-100"
+            />
+          </label>
+          <label
+            className="grid grid-cols-[1fr,2fr]  h-full items-center justify-center gap-3 p-2"
+            style={{ borderBottom: "1px solid #6645B9" }}
+          >
+            <div className="text-lg select-none">비밀번호</div>
+            <input
+              type="password"
+              label="비밀번호"
+              name="password"
+              value={user.password}
+              onChange={handleValueChange}
+              minLength={10}
+              maxLength={20}
+              placeholder={"비밀번호를 입력해주세요."}
+              className="hide-input-focus outline-none w-full rounded border border-gray-100 p-2"
+            />
+            {user.password !== user.passwordConfirm ? (
+              <h6 className="text-xs text-rose-600 col-span-2">
+                비밀번호가 서로 다릅니다.
+              </h6>
+            ) : (
+              <h6 className="text-xs text-violet-400 col-span-2">
+                비밀번호(문자,숫자,특수문자 포함 10~20자)
+              </h6>
+            )}
+          </label>
+          <label
+            className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
+            style={{ borderBottom: "1px solid #6645B9" }}
+          >
+            <div className="text-lg select-none">비밀번호 확인</div>
+            <input
+              type="password"
+              label="비밀번호 확인"
+              name="passwordConfirm"
+              value={user.passwordConfirm}
+              onChange={handleValueChange}
+              minLength={10}
+              maxLength={20}
+              placeholder={"비밀번호를 다시 입력해주세요."}
+              className="hide-input-focus outline-none w-full rounded border border-gray-100 p-2"
+            />
+          </label>
+        </div>
+        <input
+          className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
+          style={{ backgroundColor: "#B09FCE" }}
+          type="submit"
+          value="저장"
+        />
+      </form>
+    );
   };
 
   const openuUpdateUserInfoModal = () => {
@@ -460,4 +457,5 @@ const UserInfoPage = () => {
     </div>
   );
 };
+
 export default UserInfoPage;

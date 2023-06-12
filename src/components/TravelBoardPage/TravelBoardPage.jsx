@@ -72,7 +72,7 @@ function TravelBoard() {
 
         const uri = "http://localhost:3000/users/";
         // const getResponse = await axios.get(uri, body, header);
-        const getResponse = await axios.get(body, uri);
+        const getResponse = await axios.get(uri, { data: body });
 
         const fetchedPosts = getResponse.data;
         setChosenPosts(fetchedPosts);
