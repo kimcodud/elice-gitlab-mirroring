@@ -165,20 +165,7 @@ const MainPageComponent = () => {
           position: "relative",
           display: "inline-block",
         }}
-      >
-        <input
-          className=""
-          type="text"
-          style={{
-            maxWidth: "600px",
-            margin: "auto",
-            border: "0.5px solid #e0e0e0",
-            marginTop: "3rem",
-          }}
-          placeholder="검색어를 입력하세요"
-        />
-        <span>dd</span>
-      </div>
+      ></div>
       <div ref={movePoint}>
         <div className="grid grid-cols-4 gap-4">
           {destination.map((item, idx) => (
@@ -200,6 +187,11 @@ const MainPageComponent = () => {
                       className="object-cover w-full h-full"
                       alt={item.name_en}
                     />
+                    {/* <img
+                      src="http://localhost:3000/static/compressed/c9c6801f-90a1-479b-b5ba-845e17b638cd-busan.jpg"
+                      className="object-cover w-full h-full"
+                      alt={item.name_en}
+                    /> */}
                   </button>
                 </div>
                 <div className="absolute bottom-0 left-0 p-4 w-full h-30percent bg-white bg-opacity-90 flex flex-col justify-center">
@@ -212,13 +204,17 @@ const MainPageComponent = () => {
             </div>
           ))}
         </div>
-        <button
-          className="bottom-8 bg-teal-500 hover:bg-teal-600 text-white py-3 px-6 rounded-full"
-          onClick={scrollToTop}
-        >
-          탑으로
-        </button>
       </div>
+      <button
+        className="bottom-8 bg-gray-50 hover:bg-gray-200 text-gray-500 py-3 px-6 m-auto"
+        onClick={scrollToTop}
+        style={{
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        맨 위로 올라가기
+      </button>
       <ModalPortal>
         <Modal />
       </ModalPortal>
