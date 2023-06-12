@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
+import DatePicker from "../DatePicker/DatePicker";
+import DestinationListAdd from "../DestinationListAdd/DestinationListAdd";
+import mockData from "../../assets/mockData.json";
 
 const SearchMap = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
   const [infowindow, setInfowindow] = useState();
+  const [dateList, setDateList] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
   const [markers, setMakers] = useState([]);
+  const [isAll, setIsAll] = useState(true);
+  const [showDayList, setShowDayList] = useState(false);
+  const [list, setList] = useState(mockData);
 
   const createMarker = (position, index) => {
     const imageSrc =
@@ -60,6 +67,7 @@ const SearchMap = () => {
     if (status === window.kakao.maps.services.Status.OK) {
       displayMarkers(data);
       displayPagination(pagination);
+      addPlaces(data);
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
       alert("검색 결과가 존재하지 않습니다.");
     } else if (status === window.kakao.maps.services.Status.ERROR) {
@@ -108,6 +116,10 @@ const SearchMap = () => {
     setMakers([]);
   };
 
+  const addPlaces = (data) => {
+    console.log(data);
+  };
+  console.log(places);
   const removeAllChildNodes = (elementId) => {
     const parent = document.getElementById(elementId);
     while (parent.firstChild) {
@@ -127,7 +139,6 @@ const SearchMap = () => {
         el.className = "on";
       } else {
         el.onclick = () => {
-          console.log(markers);
           pagination.gotoPage(i);
         };
       }
@@ -137,15 +148,40 @@ const SearchMap = () => {
     }
   };
 
+  const getDateList = (dateList) => {
+    setDateList(dateList);
+    console.log("dateList", dateList);
+  };
+
   const PlaceListComponent = useMemo(() => {
     return (
       <PlaceList
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
+        addPlaces={addPlaces}
       />
     );
-  }, [markers]);
+  }, [markers, places]);
+
+  const DatePickerComponent = useMemo(() => {
+    return <DatePicker getDateList={getDateList} />;
+  });
+
+  const getList = (list) => {
+    setList(list);
+    console.log("list", list);
+  };
+
+  const handleClickAll = () => {
+    setIsAll(true);
+    setShowDayList(false);
+  };
+
+  const handleClickDay = () => {
+    setShowDayList(true);
+    setIsAll(false);
+  };
 
   const attachMapSdkScript = () => {
     const script = document.createElement("script");
@@ -183,39 +219,94 @@ const SearchMap = () => {
 
   return (
     <>
-      <div style={{ display: "flex ", justifyContent: "center" }}>
-        <div id="map" style={{ width: "1200px", height: "920px" }} />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <div>
-          <input
-            type="text"
-            id="keyword"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
-            onKeyPress={handleKeyPress}
-            placeholder=" 장소를 검색해보세요"
-            style={{
-              marginLeft: "10px",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          />
-          <div className="drag-box">
-            <div
-              id="placesList"
-              style={{
-                height: "890px",
-                whiteSpace: "nowrap",
-                overflow: "auto",
-              }}
-            >
-              {PlaceListComponent}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ marginRight: "10px" }}>
+                {DatePickerComponent}
+                <div
+                  style={{ display: "flex", justifyContent: "space-around" }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <button
+                      className="w-14 h-8 rounded"
+                      style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
+                      onClick={handleClickAll}
+                    >
+                      전체
+                    </button>
+                    {list.itinerary_list[0].dates.map((item, index) => (
+                      <button
+                        className="w-14 h-8 rounded"
+                        style={{
+                          backgroundColor: "#E9EBED",
+                          color: "#B09FCE",
+                        }}
+                        key={index}
+                        onClick={handleClickDay}
+                      >
+                        DAY {index + 1}
+                      </button>
+                    ))}
+                  </div>
+
+                  <DestinationListAdd
+                    isAll={isAll}
+                    showDayList={showDayList}
+                    getList={getList}
+                    dateList={dateList}
+                  />
+                </div>
+              </div>
             </div>
-            <div
-              id="pagination"
-              className="drop-shadow-md cursor-pointer"
-              style={{ display: "flex", justifyContent: "center" }}
+            <div id="map" style={{ width: "1200px", height: "920px" }}></div>
+          </div>
+        </div>
+        <div style={{ display: "flex ", justifyContent: "center" }}>
+          {/* <div id="map" style={{ width: "1200px", height: "920px" }} /> */}
+          <div>
+            <input
+              type="text"
+              id="keyword"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
+              onKeyPress={handleKeyPress}
+              placeholder=" 장소를 검색해보세요"
+              style={{
+                marginLeft: "10px",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
             />
+            <div className="drag-box">
+              <div
+                id="placesList"
+                style={{
+                  height: "881px",
+                  whiteSpace: "nowrap",
+                  overflow: "auto",
+                }}
+              >
+                {PlaceListComponent}
+              </div>
+              <div
+                id="pagination"
+                className="drop-shadow-md cursor-pointer"
+                style={{ display: "flex", justifyContent: "center" }}
+              />
+            </div>
           </div>
         </div>
       </div>
