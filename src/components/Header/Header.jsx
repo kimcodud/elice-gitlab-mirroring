@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./Header.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,8 +10,17 @@ const Header = () => {
     }
   };
 
-  const logoutHandler = () => {
-    const res = axios.post("http://localhost:3000/users/logout");
+  const logoutHandler = async () => {
+    const res = await axios.post(
+      "http://localhost:3000/users/logout",
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    if (res.status === 200) {
+      location.reload();
+    }
     console.log(res);
     localStorage.removeItem("role");
   };
@@ -55,17 +63,22 @@ const Header = () => {
             로그인
           </a>
         )}
-        {/* {role && (
-          <button onClick={logoutHandler}>
-            <a
-              href="/"
-              className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
-            >
-              로그아웃
-            </a>
+        {role && (
+          // <button onClick={logoutHandler}>
+          //   <a
+          //     href="/"
+          //     className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
+          //   >
+          //     로그아웃
+          //   </a>
+          // </button>
+          <button
+            className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
+            onClick={logoutHandler}
+          >
+            로그아웃
           </button>
-        )} */}
-        <button onClick={logoutHandler}>로그아웃</button>
+        )}
         <a
           href="/signup"
           className="text-zinc-400 mr-5 p-3 bg-white hover:bg-gray-100"

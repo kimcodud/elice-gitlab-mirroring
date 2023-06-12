@@ -27,6 +27,7 @@ function LoginPageComponent() {
       if (response.status === 200) {
         navigate("/");
         localStorage.setItem("role", response.data.user.role);
+        location.reload();
       }
     } catch (error) {
       console.log(error);
