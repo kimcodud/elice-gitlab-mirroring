@@ -2,9 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import mockData from '../../assets/mockData.json';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-function DestinationList({ getList, getDateList }) {
+function DestinationList({ getList, isAll, showDayList }) {
   const [items, setItems] = useState(mockData);
-  const [dates, setDates] = useState([]);
 
   const handleEnd = (result) => {
     if (!result.destination) return; //드랍 발생하지 않은 경우
@@ -17,7 +16,7 @@ function DestinationList({ getList, getDateList }) {
     setItems(updatedItems);
   };
 
-  const handleClick = useCallback(
+  const handleClickDelete = useCallback(
     (id) => {
       // console.log('id', id);
       let newItems = items.filter((data) => data.id !== id);
@@ -35,14 +34,95 @@ function DestinationList({ getList, getDateList }) {
   //items 바뀔때마다 상위 prop 전달
   useEffect(() => {
     getList(items);
-    console.log('items', items);
   }, [items]);
 
-  useEffect(() => {
-    getDateList(dates);
-    console.log('destination dateList', dates);
-    setDates(dates);
-  }, [dates]);
+  const allList = isAll ? (
+    <div>
+      {items.itinerary_list[0].dates.map((item, index) => {
+        return (
+          <div key={index}>
+            <span>Day {index + 1}</span>
+            <ul>
+              {item.locations.map((loca, order) => {
+                console.log('loca', loca);
+                <li key={order}>{loca.location}</li>;
+              })}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
+  ) : null;
+
+  const dayList = showDayList ? (
+    <div>
+      <h1 style={{ borderBottom: '3px solid #6645B9' }}>선택목록</h1>
+      <button onClick={handleRemoveAll}>Delete All</button>
+      <DragDropContext onDragEnd={handleEnd}>
+        <Droppable droppableId="itemList">
+          {(provided) => (
+            <ul
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              style={{ listStyle: 'none', padding: 0 }}
+            >
+              {/* 지금은 하드코딩으로 일정 1번인 것만 표시 */}
+              {items.itinerary_list
+                .filter((item) => item.plan_id === 1)
+                .map((itinerary) =>
+                  itinerary.dates.map((date) =>
+                    date.locations.map((location, index) => {
+                      console.log('location', location);
+                      return (
+                        <Draggable
+                          key={index}
+                          draggableId={index.toString()}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <li
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              style={{
+                                width: '247px',
+                                height: '74px',
+                                filter:
+                                  'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+                                marginBottom: '10px',
+                                backgroundColor: 'white',
+                                listStyle: 'none',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                ...provided.draggableProps.style,
+                              }}
+                            >
+                              {location.location}
+                              <div className="items-center">
+                                <button
+                                  className="px-4 py-2 float-right"
+                                  onClick={() =>
+                                    handleClickDelete(location.order)
+                                  }
+                                >
+                                  x
+                                </button>
+                              </div>
+                            </li>
+                          )}
+                        </Draggable>
+                      );
+                    })
+                  )
+                )}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
+  ) : null;
 
   return (
     <div
@@ -53,68 +133,8 @@ function DestinationList({ getList, getDateList }) {
         alignItems: 'center',
       }}
     >
-      <h1 style={{ borderBottom: '3px solid #6645B9' }}>선택목록</h1>
-
-      <button onClick={handleRemoveAll}>Delete All</button>
-      <DragDropContext onDragEnd={handleEnd}>
-        <Droppable droppableId="itemList">
-          {(provided) => (
-            <ul
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              style={{ listStyle: 'none', padding: 0 }}
-            >
-              {items.map((item, index) => (
-                <Draggable
-                  key={index}
-                  draggableId={index.toString()}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <li
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      // className="w-247 h-74 filter drop-shadow-md mb-10 bg-white list-none flex items-center justify-center"
-                      // className={`${
-                      //   snapshot.isDragging ? 'bg-gray-400' : 'bg-gray-100'
-                      // } flex items-center justify-between w-full px-4 py-1 my-2 text-gray-600  bg-gray-100 border rounded"`}
-                      style={{
-                        width: '247px',
-                        height: '74px',
-                        filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-                        marginBottom: '10px',
-                        backgroundColor: 'white',
-                        listStyle: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        ...provided.draggableProps.style, // 추가
-                      }}
-                    >
-                      {item.content}
-                      <div className="items-center">
-                        <button
-                          className="px-4 py-2 float-right"
-                          onClick={() => handleClick(item.id)}
-                        >
-                          x
-                        </button>
-                      </div>
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <ul>
-        {dates.map((date, index) => (
-          <li key={index}>{date}</li>
-        ))}
-      </ul>
+      {allList}
+      {dayList}
     </div>
   );
 }
