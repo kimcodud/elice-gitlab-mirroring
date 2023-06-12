@@ -174,17 +174,24 @@ const UserInfoPage = () => {
     image: "",
   });
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserInfo = async () => {
       try {
         const userInfoResponse = await axios.get(
-          "http://localhost:3306/users/mypage/",
+          "http://localhost:3000/users",
           {
             username: userInfo.userName,
           },
           { withCredentials: true }
         );
         setUserInfor(userInfoResponse.data);
+      } catch (error) {
+        console.log(error);
+        //navigate("/login");
+      }
+    };
 
+    const fetchUserTravelInfo = async () => {
+      try {
         const userTravelInfoResponse = await axios.get(
           "http://localhost:3000/diaries/mypage/diary",
           {
@@ -195,25 +202,35 @@ const UserInfoPage = () => {
             created_at: userTravelInfo.created_at,
             updated_at: userTravelInfo.updated_at,
             locations: userTravelInfo.locations,
-          },
-          { withCredentials: true }
+          }
         );
         setUserTravelInfo(userTravelInfoResponse.data);
-        const area = await axios.get("", {
-          name_en: area.name_en,
-          name_ko: area.name_ko,
-          image: area.image,
-        });
-        setArea(area.data);
       } catch (error) {
         console.log(error);
-        navigate("/login");
+        //navigate("/login");
       }
     };
 
-    fetchData();
-  }, []);
+    const fetchArea = async () => {
+      try {
+        const areaResponse = await axios.get(
+          "http://localhost:3000/destinations/:location_id",
+          {
+            name_en: area.name_en,
+            name_ko: area.name_ko,
+            image: area.image,
+          }
+        );
+        setArea(areaResponse.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    fetchUserInfo();
+    fetchUserTravelInfo();
+    fetchArea();
+  }, []);
   const handleClickNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % travelSchedule.length);
   };

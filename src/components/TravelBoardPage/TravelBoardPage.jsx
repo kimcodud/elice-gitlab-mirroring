@@ -8,7 +8,17 @@ function TravelBoard() {
   const [selectedNavIndex, setSelectedNavIndex] = useState(null);
   const [chosenPosts, setChosenPosts] = useState([]);
   const [selectedDropdown, setSelectedDropdown] = useState("기본값");
-
+  const [posts, setPosts] = useState({
+    id: "",
+    username: "",
+    plan_id: "",
+    title: "",
+    content: "",
+    image: "",
+    destination: "",
+    created_at: "",
+    updated_at: "",
+  });
   const handleFilterClick = (filter, index) => {
     setSelectedFilter(filter);
     setSelectedNavIndex(index);
@@ -41,15 +51,15 @@ function TravelBoard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const accessToken = await getAccessTokenFromCookie(); // 액세스 토큰 설정해야함
-        const header = {
-          header: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          withCrendentials: true,
-        };
+        // const accessToken = await getAccessTokenFromCookie(); // 액세스 토큰 설정해야함
+        // const header = {
+        //   header: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        //   withCrendentials: true,
+        // };
         const body = {
-          id: 2,
+          id: posts.id,
           username: posts.username,
           plan_id: posts.title,
           title: posts.title,
@@ -59,14 +69,15 @@ function TravelBoard() {
           created_at: posts.created_at,
           updated_at: posts.updated_at,
         };
-        const uri = "http://localhost:3000/users/";
-        const getResponse = await axios.get(uri, body, header);
 
-        const posts = getResponse.data;
-        setChosenPosts(posts);
+        const uri = "http://localhost:3000/users/";
+        // const getResponse = await axios.get(uri, body, header);
+        const getResponse = await axios.get(body, uri);
+
+        const fetchedPosts = getResponse.data;
+        setChosenPosts(fetchedPosts);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("데이터를 가져오는 중에 오류가 발생했습니다.");
+        console.log(error);
       }
     };
     fetchData();
