@@ -36,33 +36,40 @@ const UserInfoPage = () => {
   });
   useEffect(() => {
     const fetchUserInfo = async () => {
+      // 유저 Name
       try {
         const userInfoResponse = await axios.get(
-          "http://localhost:3000/users",
+          "http://localhost:3000/users/",
           {
-            username: userInfo.userName,
-          },
-          { withCredentials: true }
+            params: {
+              name: userInfo.userName,
+            },
+            withCredentials: true,
+          }
         );
         setUserInfor(userInfoResponse.data);
       } catch (error) {
         console.log(error);
-        //navigate("/login");
+        navigate("/login");
       }
     };
 
     const fetchUserTravelInfo = async () => {
+      //나의 여행지 조회
       try {
         const userTravelInfoResponse = await axios.get(
+          //
           "http://localhost:3000/diaries/mypage/diary",
           {
-            plan_id: userTravelInfo.travelPlanID,
-            start_date: userTravelInfo.start_date,
-            end_date: userTravelInfo.end_date,
-            destination: userTravelInfo.destination,
-            created_at: userTravelInfo.created_at,
-            updated_at: userTravelInfo.updated_at,
-            locations: userTravelInfo.locations,
+            params: {
+              plan_id: userTravelInfo.plan_id,
+              start_date: userTravelInfo.start_date,
+              end_date: userTravelInfo.end_date,
+              destination: userTravelInfo.destination,
+              created_at: userTravelInfo.created_at,
+              updated_at: userTravelInfo.updated_at,
+              locations: userTravelInfo.locations,
+            },
           }
         );
         setUserTravelInfo(userTravelInfoResponse.data);
@@ -75,11 +82,13 @@ const UserInfoPage = () => {
     const fetchArea = async () => {
       try {
         const areaResponse = await axios.get(
-          "http://localhost:3000/destinations/:location_id",
+          "http://localhost:3000/destinations/${area.location_id}",
           {
-            name_en: area.name_en,
-            name_ko: area.name_ko,
-            image: area.image,
+            params: {
+              name_en: area.name_en,
+              name_ko: area.name_ko,
+              image: area.image,
+            },
           }
         );
         setArea(areaResponse.data);
@@ -158,7 +167,7 @@ const UserInfoPage = () => {
               email: user.email,
             };
             const uri = "http://localhost:3000/users/";
-            const updateResponse = await axios.patch(uri, body);
+            const updateResponse = await axios.patch(uri, body, header);
 
             console.log(updateResponse.data);
             alert("회원정보가 수정되었습니다.");
@@ -183,7 +192,9 @@ const UserInfoPage = () => {
             style={{ borderBottom: "1px solid #6645B9" }}
           >
             <div className="text-lg cursor-pointer select-none">이름</div>
-            <div className="text-lg select-none text-left">{userInfo.name}</div>
+            <div className="text-lg select-none text-left">
+              {userInfo.userName}
+            </div>
           </div>
           <label
             className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
@@ -280,7 +291,7 @@ const UserInfoPage = () => {
             <img className="h-full" src={basicUserImage} alt="유저이미지" />
           </div>
           <div className="text-gray-500 text-lg m-3">
-            {userInfo.name}님 안녕하세요
+            {userInfo.userName}님 안녕하세요
           </div>
           <button
             onClick={openuUpdateUserInfoModal}
