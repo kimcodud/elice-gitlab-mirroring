@@ -5,23 +5,25 @@ import DestinationList from '../DestinationList/DestinationList';
 
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
+
   const [dateList, setDateList] = useState([]);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [polyline, setPolyline] = useState(null);
 
   const [isAll, setIsAll] = useState(true);
-  const [showDayList, setShowDayList] = useState(false);
+  const [dateIndex, setDateIndex] = useState();
 
   const handleClickAll = () => {
     setIsAll(true);
-    setShowDayList(false);
   };
 
-  const handleClickDay = () => {
-    setShowDayList(true);
+  const handleClickDay = (index) => {
     setIsAll(false);
+    setDateIndex(index);
   };
+
+  useEffect(() => console.log(dateIndex), [dateIndex]);
 
   const getList = (list) => {
     setList(list);
@@ -148,7 +150,7 @@ function PlannerMapEdit() {
                   marginBottom: '26px',
                 }}
                 key={index}
-                onClick={handleClickDay}
+                onClick={() => handleClickDay(index + 1)}
               >
                 DAY {index + 1}
               </button>
@@ -157,9 +159,10 @@ function PlannerMapEdit() {
 
           <DestinationList
             isAll={isAll}
-            showDayList={showDayList}
+            list={list}
             getList={getList}
             dateList={dateList}
+            dateIndex={dateIndex}
           />
         </div>
       </div>
