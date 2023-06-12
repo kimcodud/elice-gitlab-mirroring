@@ -75,7 +75,7 @@ function TravelBoard() {
   return (
     <div
       className="flex flex-col justify-center items-center w-full"
-      style={{ height: "85vh" }}
+      style={{ height: "calc(100vh - 7rem)" }}
     >
       <style>
         {`
