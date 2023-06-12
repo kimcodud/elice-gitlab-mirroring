@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 // input 컴포넌트
 
@@ -11,6 +12,7 @@ function SignUpPageComponent() {
     password: "",
     passwordConfirm: "",
   });
+  const navicate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,6 +47,7 @@ function SignUpPageComponent() {
           }
         );
         console.log(response.data);
+        navicate("/login");
         alert("회원가입을 축하합니다");
       }
     } catch (error) {

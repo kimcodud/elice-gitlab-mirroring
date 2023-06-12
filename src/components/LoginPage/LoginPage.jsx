@@ -23,14 +23,15 @@ function LoginPageComponent() {
           withCredentials: true,
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         navigate("/");
         localStorage.setItem("role", response.data.user.role);
+        location.reload();
       }
     } catch (error) {
-      console.log(error.response.data.error.status);
-      alert("로그인에 실패하였습니다.");
+      console.log(error);
+      // alert(error.response.data.error.message);
     }
   };
 
@@ -66,7 +67,7 @@ function LoginPageComponent() {
         />
       </label>
 
-      <div className="text-sm text-violet-400">비밀번호를 잊으셨나요?</div>
+      {/* <div className="text-sm text-violet-400">비밀번호를 잊으셨나요?</div> */}
 
       <div className="flex items-center justify-center mt-5">
         <button
@@ -80,7 +81,9 @@ function LoginPageComponent() {
 
       <div className="flex items-center justify-center mt-5">
         <p className="pr-3 text-sm">회원이 아니세요?</p>
-        <div className="text-sm text-violet-400">회원가입하기</div>
+        <div className="text-sm text-violet-400">
+          <a href="/signup">회원가입하기</a>
+        </div>
       </div>
       <p className="my-3 text-xs text-center text-slate-500">또는</p>
       <div className="my-3 text-sm text-center ">SNS 간편 로그인</div>

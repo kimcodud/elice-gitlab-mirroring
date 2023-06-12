@@ -1,17 +1,18 @@
-function Footer() {
+const Footer = () => {
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       <footer
         style={{
           textAlign: "center",
           lineHeight: "3rem",
-          // borderTop: "0.5px solid #845ec2",
           border: "none",
           backgroundColor: "#FBF3FF",
           marginTop: "5rem",
+          minHeight: "100px",
+          position: "sticky",
+          bottom: 0,
         }}
       >
-        {/* <br style={{ borderTop: "1px solid #845ec2" }} /> */}
         <div style={{ color: "#845ec2", fontWeight: "700" }}>
           무엇을 써야 있어보일까
         </div>
@@ -28,5 +29,5 @@ function Footer() {
       </footer>
     </div>
   );
-}
+};
 export default Footer;

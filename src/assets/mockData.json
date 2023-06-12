@@ -1,42 +1,118 @@
-[
-  {
-    "id": 1,
-    "content": "카카오",
-    "latlng": {
-      "lat": 33.450705,
-      "lng": 126.570677
+{
+  "username": "AdminHeesan",
+  "itinerary_list": [
+    {
+      "plan_id": 1,
+      "start_date": "2023-12-01",
+      "end_date": "2023-12-02",
+      "destination": "테스트한국",
+      "dates": [
+        {
+          "id": 1,
+          "date": "2023-12-01",
+          "locations": [
+            {
+              "location": "테스트서울",
+              "order": 1,
+              "lat": 37.5665,
+              "lng": 126.978
+            },
+            {
+              "location": "테스트대구",
+              "order": 2,
+              "lat": 35.8714,
+              "lng": 128.6014
+            },
+            {
+              "location": "테스트울산",
+              "order": 3,
+              "lat": 35.5383,
+              "lng": 129.3114
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "date": "2023-12-02",
+          "locations": [
+            {
+              "location": "테스트부산",
+              "order": 1,
+              "lat": 37.5665,
+              "lng": 126.978
+            },
+            {
+              "location": "테스트인천",
+              "order": 2,
+              "lat": 35.8714,
+              "lng": 128.6014
+            },
+            {
+              "location": "테스트울산",
+              "order": 3,
+              "lat": 35.5383,
+              "lng": 129.3114
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "plan_id": 2,
+      "start_date": "2023-12-01",
+      "end_date": "2023-12-02",
+      "destination": "테스트한국",
+      "dates": [
+        {
+          "id": 1,
+          "date": "2023-12-01",
+          "locations": [
+            {
+              "location": "테스트서울",
+              "order": 1,
+              "lat": 37.5665,
+              "lng": 126.978
+            },
+            {
+              "location": "테스트대구",
+              "order": 2,
+              "lat": 35.8714,
+              "lng": 128.6014
+            },
+            {
+              "location": "테스트울산",
+              "order": 3,
+              "lat": 35.5383,
+              "lng": 129.3114
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "date": "2023-12-02",
+          "locations": [
+            {
+              "location": "테스트서울",
+              "order": 1,
+              "lat": 37.5665,
+              "lng": 126.978
+            },
+            {
+              "location": "테스트대구",
+              "order": 2,
+              "lat": 35.8714,
+              "lng": 128.6014
+            },
+            {
+              "location": "테스트울산",
+              "order": 3,
+              "lat": 35.5383,
+              "lng": 129.3114
+            }
+          ]
+        }
+      ]
     }
-  },
-  {
-    "id": 2,
-    "content": "생태연못",
-    "latlng": {
-      "lat": 33.450936,
-      "lng": 126.569477
-    }
-  },
-  {
-    "id": 3,
-    "content": "텃밭",
-    "latlng": {
-      "lat": 33.450879,
-      "lng": 126.56994
-    }
-  },
-  {
-    "id": 4,
-    "content": "근린공원",
-    "latlng": {
-      "lat": 33.451393,
-      "lng": 126.570738
-    }
-  },
-  {
-    "id": 5,
-    "content": "제농에스앤티농업회사법인",
-    "latlng": {
-      "lat": 33.4495699669207,
-      "lng": 126.57217252573757
-    }
-  }
-]
+  ]
+}

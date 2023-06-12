@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./MainPage.css";
 import axios from "axios";
+import Modal from "../modal/modal";
+import { ModalPortal } from "../modal/ModalPortal";
+import { useModalStore } from "../../store/store";
 
 const MainPageComponent = () => {
   const images = [
@@ -38,6 +41,26 @@ const MainPageComponent = () => {
     const result = await axios.get("http://localhost:3000/destinations");
     console.log(result.data.data.destinations);
     setDestination(result.data.data.destinations);
+  };
+
+  const { openModal } = useModalStore();
+  const openInfoModal = (item) => {
+    console.log(item);
+    openModal({
+      modalType: "info",
+      style: {
+        /*자유롭게 꾸며보세요!*/ backgroundColor: "rgb(249, 250, 251)",
+        width: "60%",
+        height: "85%",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      title: (
+        <div className="text-center font-bold text-4xl">회원정보 수정</div>
+      ),
+      content: <div>{JSON.stringify(item)}</div>,
+    });
   };
 
   useEffect(() => {
@@ -142,34 +165,34 @@ const MainPageComponent = () => {
           position: "relative",
           display: "inline-block",
         }}
-      >
-        <input
-          className=""
-          type="text"
-          style={{
-            maxWidth: "600px",
-            margin: "auto",
-            border: "0.5px solid #e0e0e0",
-            marginTop: "3rem",
-          }}
-          placeholder="검색어를 입력하세요"
-        />
-        <span>dd</span>
-      </div>
+      ></div>
       <div ref={movePoint}>
         <div className="grid grid-cols-4 gap-4">
           {destination.map((item, idx) => (
-            <div className="w-full my-5" key={idx}>
-              <div className="relative">
-                <div
-                  className=""
-                  style={{ paddingBottom: "50%", margin: "auto" }}
-                >
-                  <img
-                    src={item.image}
-                    className="object-cover w-full h-full"
-                    alt={item.name_en}
-                  />
+            <div className="w-auto my-8" key={idx}>
+              <div
+                className="relative"
+                style={{
+                  border: "1px solid rgb(120,120,120)",
+                }}
+              >
+                <div className="" style={{ paddingBottom: "50%" }}>
+                  <button
+                    onClick={() => {
+                      openInfoModal(item);
+                    }}
+                  >
+                    <img
+                      src={item.image}
+                      className="object-cover w-full h-full"
+                      alt={item.name_en}
+                    />
+                    {/* <img
+                      src="http://localhost:3000/static/compressed/c9c6801f-90a1-479b-b5ba-845e17b638cd-busan.jpg"
+                      className="object-cover w-full h-full"
+                      alt={item.name_en}
+                    /> */}
+                  </button>
                 </div>
                 <div className="absolute bottom-0 left-0 p-4 w-full h-30percent bg-white bg-opacity-90 flex flex-col justify-center">
                   <h2 className="text-xl font-bold text-gray-800">
@@ -181,8 +204,20 @@ const MainPageComponent = () => {
             </div>
           ))}
         </div>
-        <button onClick={scrollToTop}>탑으로</button>
       </div>
+      <button
+        className="bottom-8 bg-gray-50 hover:bg-gray-200 text-gray-500 py-3 px-6 m-auto"
+        onClick={scrollToTop}
+        style={{
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        맨 위로 올라가기
+      </button>
+      <ModalPortal>
+        <Modal />
+      </ModalPortal>
     </div>
   );
 };
