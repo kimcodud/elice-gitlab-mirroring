@@ -1,32 +1,42 @@
+import { useState } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
+import DatePicker from "../DatePicker/DatePicker";
 
 const PlaceList = (props) => {
+  const [selectedPlace, setSelectedPlace] = useState(null);
   const { places, infowindow, handleDisplayInfowindow } = props;
   const { openModal } = useModalStore();
 
   // + 버튼 눌렀을 때 장소 넘겨주는 함수
+
   const handlePlaceClick = (index) => {
     const selectedPlace = places[index];
-    console.log(selectedPlace);
-    return (
-      <div
-        className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
-        style={{ marginLeft: "10px" }}
-      >
-        <div className="font-bold text-sm">{selectedPlace.place_name}</div>
-        <div style={{ display: "flex ", justifyContent: "right" }}>
-          <span className="text-xs">{selectedPlace.category_group_name}</span>
-          <img
-            src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-            alt="remove icon"
-            className="cursor-pointer"
-          />
-        </div>
-      </div>
-    );
+    setSelectedPlace(selectedPlace);
   };
+
+  // const handlePlaceClick = (index) => {
+  //   const selectedPlace = places[index];
+  //   console.log(selectedPlace);
+
+  //   // return (
+  //   //   <div
+  //   //     className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
+  //   //     style={{ marginLeft: "10px" }}
+  //   //   >
+  //   //     <div className="font-bold text-sm">{selectedPlace.place_name}</div>
+  //   //     <div style={{ display: "flex ", justifyContent: "right" }}>
+  //   //       <span className="text-xs">{selectedPlace.category_group_name}</span>
+  //   //       <img
+  //   //         src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
+  //   //         alt="remove icon"
+  //   //         className="cursor-pointer"
+  //   //       />
+  //   //     </div>
+  //   //   </div>
+  //   // );
+  // };
 
   return (
     <div style={{ color: "black" }}>

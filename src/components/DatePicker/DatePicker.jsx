@@ -1,43 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import AddDestination from "../AddDestination/AddDestination";
 
-const DatePicker = ({ getDateList }) => {
+const DatePicker = ({ getDateList, handlePlaceClick }) => {
   const [dates, setDates] = useState([]); //선택된 날짜 목록
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date()); //현재 표시되는 달
   const [showAllDates, setShowAllDates] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
-
-  // 선택한 날짜에 따라 버튼을 생성하는 함수
-  const renderSelectedDates = () => {
-    if (selectedDates.length > 0) {
-      return (
-        <div
-          className="flex flex-col items-center mt-4"
-          style={{
-            height: "300px",
-            whiteSpace: "nowrap",
-            overflow: "auto",
-          }}
-        >
-          {selectedDates.map((date, index) => (
-            <button
-              className="w-14 h-8 rounded mt-2"
-              style={{
-                backgroundColor: "#E9EBED",
-                color: "#B09FCE",
-              }}
-              key={index}
-              onClick={() => handleClickDate(date)}
-            >
-              DAY {index + 1}
-            </button>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
 
   const handleClickDate = (date) => {
     console.log("Clicked date:", date);
@@ -341,7 +311,10 @@ const DatePicker = ({ getDateList }) => {
             전체
           </button>
         </div>
-        {renderSelectedDates()}
+        <AddDestination
+          handleClickDate={handleClickDate}
+          selectedDates={selectedDates}
+        />
       </div>
     </div>
   );
