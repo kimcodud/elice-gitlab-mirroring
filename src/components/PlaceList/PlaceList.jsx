@@ -6,16 +6,31 @@ const PlaceList = (props) => {
   const { places, infowindow, handleDisplayInfowindow } = props;
   const { openModal } = useModalStore();
 
+  // + 버튼 눌렀을 때 장소 넘겨주는 함수
+  const handlePlaceClick = (index) => {
+    const selectedPlace = places[index];
+    console.log(selectedPlace);
+    return (
+      <div
+        className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
+        style={{ marginLeft: "10px" }}
+      >
+        <div className="font-bold text-sm">{selectedPlace.place_name}</div>
+        <div style={{ display: "flex ", justifyContent: "right" }}>
+          <span className="text-xs">{selectedPlace.category_group_name}</span>
+          <img
+            src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
+            alt="remove icon"
+            className="cursor-pointer"
+          />
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ color: "black" }}>
       {places?.map((place, index) => {
-        {
-          /* console.log({ place }); */
-        }
-        {
-          /* console.log(place.address_name); */
-        }
-
         const openInfoModal = () => {
           openModal({
             modalType: "info",
@@ -110,26 +125,9 @@ const PlaceList = (props) => {
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/add_circle/v1/24px.svg"
                   alt="add_circle icon"
                   className="cursor-pointer"
+                  onClick={() => handlePlaceClick(index)}
                 />
-                {/* <button
-                  onClick={() => openInfoModal()}
-                  className="rounded-md bg-purple-500/25 text-xs"
-                  style={{ marginLeft: "auto" }}
-                >
-                  장소 정보
-                </button>
-                <button className="rounded-md bg-purple-500/25 text-xs">
-                  일정 추가
-                </button> */}
               </div>
-              {/* {place.road_address_name ? (
-              <> */}
-              {/* <span className="jibun gray">{place.address_name}</span> */}
-              {/* </>
-            ) : (
-              <span>{place.address_name}</span>
-            )} */}
-              {/* <span className="tel">{place.phone}</span> */}
             </div>
           </div>
         );

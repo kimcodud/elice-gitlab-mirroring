@@ -1,17 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const DatePicker = ({ getDateList }) => {
   const [dates, setDates] = useState([]); //선택된 날짜 목록
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date()); //현재 표시되는 달
+  const [showAllDates, setShowAllDates] = useState(false);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  // 선택한 날짜에 따라 버튼을 생성하는 함수
+  const renderSelectedDates = () => {
+    if (selectedDates.length > 0) {
+      return (
+        <div
+          className="flex flex-col items-center mt-4"
+          style={{
+            height: "300px",
+            whiteSpace: "nowrap",
+            overflow: "auto",
+          }}
+        >
+          {selectedDates.map((date, index) => (
+            <button
+              className="w-14 h-8 rounded mt-2"
+              style={{
+                backgroundColor: "#E9EBED",
+                color: "#B09FCE",
+              }}
+              key={index}
+              onClick={() => handleClickDate(date)}
+            >
+              DAY {index + 1}
+            </button>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const handleClickDate = (date) => {
+    console.log("Clicked date:", date);
+  };
+
+  // 전체 날짜를 보여주는 함수
+  const handleShowAllDates = () => {
+    setShowAllDates(!showAllDates);
+  };
 
   useEffect(() => {
-    // 시작일과 완료일이 모두 선택되었을 때에만 날짜 목록을 전달
+    // 시작일과 완료일이 모두 선택되었을 때에만 날짜 목록을 업데이트
     if (selectedStartDate !== null && selectedEndDate !== null) {
-      getDateList(dates);
+      const dates = getDatesBetween(selectedStartDate, selectedEndDate);
+      setSelectedDates(dates);
     }
-  }, [dates]);
+  }, [selectedStartDate, selectedEndDate]);
 
   //날짜 관련된 데이터 계산 함수
   const getNewDateObj = (newDate) => {
@@ -113,7 +156,7 @@ const DatePicker = ({ getDateList }) => {
 
         // 시작일부터 완료일까지의 날짜 목록 생성
         const dates = getDatesBetween(selectedStartDate, date);
-        console.log('시작일부터 완료일까지 날짜 목록:', dates);
+        console.log("시작일부터 완료일까지 날짜 목록:", dates);
         setDates(dates);
       } else {
         //선택한 날짜가 시작일보다 빠른 경우 시작일 초기화
@@ -164,7 +207,7 @@ const DatePicker = ({ getDateList }) => {
         <div className="flex justify-between items-center">
           <button
             className="w-16 h-9 rounded"
-            style={{ backgroundColor: '#E9EBED', color: '#B09FCE' }}
+            style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
             onClick={handlePrevMonth}
           >
             Prev
@@ -172,7 +215,7 @@ const DatePicker = ({ getDateList }) => {
           <h3>{`${monthData.year}년 ${monthData.month}월`}</h3>
           <button
             className="w-16 h-9 rounded"
-            style={{ backgroundColor: '#E9EBED', color: '#B09FCE' }}
+            style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
             onClick={handleNextMonth}
           >
             Next
@@ -180,20 +223,20 @@ const DatePicker = ({ getDateList }) => {
         </div>
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <div
             style={{
-              height: '160px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignContent: 'center',
+              height: "160px",
+              display: "flex",
+              flexDirection: "column",
+              alignContent: "center",
             }}
           >
-            <div className="h-6" style={{ borderBottom: '2px solid black' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="h-6" style={{ borderBottom: "2px solid black" }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div className="w-8 flex justify-center">일</div>
                 <div className="w-8 flex justify-center">월</div>
                 <div className="w-8 flex justify-center">화</div>
@@ -207,8 +250,8 @@ const DatePicker = ({ getDateList }) => {
               {monthData.date.map((week, weekIndex) => (
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                   key={weekIndex}
                 >
@@ -230,13 +273,13 @@ const DatePicker = ({ getDateList }) => {
                     let cellStyle = {};
                     if (isStartDate) {
                       cellStyle = {
-                        backgroundColor: '#B09FCE',
-                        borderRadius: '50%',
+                        backgroundColor: "#B09FCE",
+                        borderRadius: "50%",
                       };
                     } else if (isEndDate) {
                       cellStyle = {
-                        backgroundColor: '#B09FCE',
-                        borderRadius: '50%',
+                        backgroundColor: "#B09FCE",
+                        borderRadius: "50%",
                       };
                     } else if (isInRange) {
                       cellStyle = {
@@ -274,7 +317,7 @@ const DatePicker = ({ getDateList }) => {
         {dates.length} Day
       </div>
       <div className="w-72 h-72 drop-shadow bg-white rounded flex justify-center items-center">
-        <div style={{ width: '250px', height: '250px' }}>
+        <div style={{ width: "250px", height: "250px" }}>
           {renderDatePicker()}
         </div>
       </div>
@@ -283,11 +326,22 @@ const DatePicker = ({ getDateList }) => {
         <div className="text-sm">
           {selectedStartDate
             ? `${selectedStartDate.year}-${selectedStartDate.month}-${selectedStartDate.date} ~ `
-            : '0000-00-00 ~ '}
+            : "0000-00-00 ~ "}
           {selectedEndDate
             ? `${selectedEndDate.year}-${selectedEndDate.month}-${selectedEndDate.date}`
-            : '0000-00-00'}
+            : "0000-00-00"}
         </div>
+      </div>
+      <div>
+        <div className="flex justify-center w-48">
+          <button
+            className="px-3 py-2 rounded bg-purple-500 text-white"
+            onClick={handleShowAllDates}
+          >
+            전체
+          </button>
+        </div>
+        {renderSelectedDates()}
       </div>
     </div>
   );

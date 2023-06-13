@@ -49,17 +49,18 @@ const MainPageComponent = () => {
     openModal({
       modalType: "info",
       style: {
-        /*자유롭게 꾸며보세요!*/ backgroundColor: "rgb(249, 250, 251)",
-        width: "60%",
-        height: "85%",
+        backgroundColor: "white",
+        width: "50rem",
+        height: "20rem",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
+        borderRadius: "10px",
       },
       title: (
-        <div className="text-center font-bold text-4xl">회원정보 수정</div>
+        <div className="text-center font-bold text-4xl">{item.name_ko}</div>
       ),
-      content: <div>{JSON.stringify(item)}</div>,
+      content: <div>{JSON.stringify(item.introduction)}</div>,
     });
   };
 
@@ -72,21 +73,23 @@ const MainPageComponent = () => {
       <div>
         <div>
           <div
-            className="absolute bottom-5 top-14 "
+            className="absolute top-14"
             style={{
+              display: "fixed",
               // fontWeight: "bold",
               fontSize: "3rem",
               marginBottom: "1rem",
               backgroundColor: "rgba( 255, 255, 255, 0.5 )",
-              width: "35%",
-              height: "92vh",
+              width: "38rem",
+              height: "100vh",
             }}
           >
             <div
               style={{
+                display: "fixed",
                 textAlign: "center",
                 color: "#845ec2",
-                marginTop: "14rem",
+                marginTop: "35vh",
                 fontSize: "1rem",
                 fontWeight: "500",
               }}
@@ -105,10 +108,11 @@ const MainPageComponent = () => {
             </div>
             <button
               style={{
+                display: "fixed",
                 fontSize: "1rem",
                 fontWeight: "700",
                 textAlign: "center",
-                marginLeft: "25%",
+                marginLeft: "11rem",
                 color: "white",
                 width: "15rem",
                 // border: "1px solid black",
@@ -171,30 +175,19 @@ const MainPageComponent = () => {
           {destination.map((item, idx) => (
             <div className="w-auto my-8" key={idx}>
               <div
-                className="relative"
-                style={{
-                  border: "1px solid rgb(120,120,120)",
-                }}
+                className="relative border border-gray-300"
+                style={{ paddingBottom: "100%" }}
               >
-                <div className="" style={{ paddingBottom: "50%" }}>
-                  <button
-                    onClick={() => {
-                      openInfoModal(item);
-                    }}
-                  >
+                <div className="absolute inset-0">
+                  <button onClick={() => openInfoModal(item)}>
                     <img
                       src={item.image}
                       className="object-cover w-full h-full"
                       alt={item.name_en}
                     />
-                    {/* <img
-                      src="http://localhost:3000/static/compressed/c9c6801f-90a1-479b-b5ba-845e17b638cd-busan.jpg"
-                      className="object-cover w-full h-full"
-                      alt={item.name_en}
-                    /> */}
                   </button>
                 </div>
-                <div className="absolute bottom-0 left-0 p-4 w-full h-30percent bg-white bg-opacity-90 flex flex-col justify-center">
+                <div className="absolute bottom-0 left-0 p-4 w-full bg-white bg-opacity-90 flex flex-col justify-center">
                   <h2 className="text-xl font-bold text-gray-800">
                     {item.name_en}
                   </h2>

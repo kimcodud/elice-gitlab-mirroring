@@ -5,6 +5,8 @@ const AdminPageComponent = () => {
   const [image, setImage] = useState(null);
   const [name_en, setNameEn] = useState("");
   const [name_ko, setNameKo] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [introduction, setIntroduction] = useState("");
 
   const handleImageChange = (e) => {
@@ -18,6 +20,12 @@ const AdminPageComponent = () => {
 
   const handleNameKoChange = (e) => {
     setNameKo(e.target.value);
+  };
+  const handleLatitudeChange = (e) => {
+    setLatitude(e.target.value);
+  };
+  const handleLongitudeChange = (e) => {
+    setLongitude(e.target.value);
   };
 
   const handleIntroductionChange = (e) => {
@@ -43,6 +51,8 @@ const AdminPageComponent = () => {
         name_en: name_en,
         name_ko: name_ko,
         introduction: introduction,
+        latitude: latitude,
+        longitude: longitude,
       };
       // formData.append("body", body);
       for (const key in body) {
@@ -101,6 +111,39 @@ const AdminPageComponent = () => {
           onChange={handleNameKoChange}
           className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
+      </div>
+      <div className="mb-4">
+        <span className="flex">
+          <label
+            htmlFor="nameKo"
+            className="block text-gray-700 font-bold mb-2 mr-48"
+          >
+            위도
+          </label>
+          <label
+            htmlFor="nameKo"
+            className="block text-gray-700 font-bold mb-2"
+          >
+            경도
+          </label>
+        </span>
+        <span style={{ display: "flex" }}>
+          <input
+            type="text"
+            id="nameKo"
+            value={latitude}
+            onChange={handleLatitudeChange}
+            className="border rounded px-3 py-2 w-48 mr-5  focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+
+          <input
+            type="text"
+            id="nameKo"
+            value={longitude}
+            onChange={handleLongitudeChange}
+            className="border rounded px-3 w-full py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+        </span>
       </div>
       <div className="mb-4">
         <label
