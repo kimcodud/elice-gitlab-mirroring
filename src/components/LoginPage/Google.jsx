@@ -10,13 +10,24 @@ const Google = () => {
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
     
     window.location.href = url;
+
+
+    
   };
 
   return (
     <div>
-      <button onClick={() => handleLogin()}>구글 로그인</button>
+      <button
+  onClick={handleLogin}
+  className="px-32 py-2 mt-6 text-black rounded bg-gray-100"
+>
+  구글로 로그인하기
+</button>
+
     </div>
   );
+
 };
 
 export default Google;
+
