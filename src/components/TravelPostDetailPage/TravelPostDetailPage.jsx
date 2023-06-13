@@ -10,6 +10,7 @@ import deleteBtn from "../../assets/close.webp";
 import userImg from "../../assets/user.webp";
 
 import seoul from "../../assets/seoul.webp";
+import axios from "axios";
 
 const contentImages = [seoul, prevBtn, nextBtn, deleteBtn];
 
@@ -17,7 +18,16 @@ function TravelPostDetail() {
   const { openModal, closeModal } = useModalStore();
   const [showComments, setShowComments] = useState(false);
   const mainTextRef = useRef(null);
-
+  const [post, setPost] = useState({
+    id: "",
+    plan_id: "",
+    title: "",
+    content: "",
+    image: "",
+    destination: "",
+    created_at: "",
+    updated_at: "",
+  });
   useEffect(() => {
     document
       .querySelector("#commentButton")
@@ -29,9 +39,35 @@ function TravelPostDetail() {
         .removeEventListener("click", openCommentModal);
     };
   }, []);
+  useEffect(() => {
+    const fetchPostDetailData = async () => {
+      try {
+        const getPostResponse = await axios.get(
+          "http://localhost:3000/diaries/",
+          {
+            params: {
+              id: post.id,
+              plan_id: post.plan_id,
+              title: post.title,
+              content: post.content,
+              image: post.image,
+              destination: post.destination,
+              created_at: post.created_at,
+              updated_at: post.updated_at,
+            },
+          }
+        );
+        setPost(getPostResponse.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPostDetailData();
+  }, []);
 
   const CommentComponent = () => {
     // 댓글
+
     return (
       <form
         action=""
@@ -65,6 +101,7 @@ function TravelPostDetail() {
   };
 
   const ScheduleComponent = () => {
+    // 일정
     return (
       <div className="w-full flex flex-col justify-center items-center">
         <div className="mb-5">2020-02-20 ~ 2020-02-20</div>
@@ -80,6 +117,7 @@ function TravelPostDetail() {
   };
 
   const openScheduleModal = () => {
+    //일정 모달
     openModal({
       modalType: "schedule",
       style: {
@@ -103,6 +141,7 @@ function TravelPostDetail() {
   };
 
   const openCommentModal = () => {
+    //댓글 모달
     setShowComments(true);
     mainTextRef.current.classList.add("reduced-height");
 
@@ -123,6 +162,7 @@ function TravelPostDetail() {
   };
 
   const handleCloseModal = () => {
+    // 모달 닫기 이벤트
     setShowComments(false);
     closeModal();
     if (mainTextRef.current) {
@@ -258,7 +298,7 @@ function TravelPostDetail() {
               className="box-content w-full text-3xl font-bold"
               style={{ color: "#6645B9" }}
             >
-              <p>제목이 들어갈 곳</p>
+              <p>{post.title}</p>
             </div>
             <button
               onClick={openScheduleModal}
@@ -275,7 +315,7 @@ function TravelPostDetail() {
               showComments ? "reduced-height" : ""
             }`}
           >
-            내용이 들어갈 곳
+            {post.content}
           </div>
 
           <div className="flex flex-row justify-between w-full pt-5 pb-3 px-3">

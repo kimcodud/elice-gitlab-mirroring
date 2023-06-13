@@ -34,10 +34,8 @@ const UserInfoPage = () => {
       plan_start: plan.start_date,
       plan_end: plan.end_date,
       plan_update: plan.updated_at,
-      destination: correspondingInfo ? correspondingInfo.destination : "",
-      diary_created: correspondingInfo ? correspondingInfo.created_at : "",
+      plan_destination: plan.destination,
       diary_update: correspondingInfo ? correspondingInfo.updated_at : "",
-      diary_location: correspondingInfo ? correspondingInfo.locations : "",
     };
   });
 
@@ -68,7 +66,7 @@ const UserInfoPage = () => {
     const fetchUserInfo = async () => {
       try {
         const userInfoResponse = await axios.get(
-          "http://localhost:3000/users/",
+          "http://localhost:3000/mypage/",
           {
             params: {
               username: userInfo.username,
@@ -89,15 +87,13 @@ const UserInfoPage = () => {
       //여행기
       try {
         const userTravelInfoResponse = await axios.get(
-          "http://localhost:3000/diaries/",
+          " http://localhost:3000/mypage/diary",
           {
             params: {
               plan_id: userTravelInfo.plan_id,
-              destination: userTravelInfo.destination,
-              created_at: userTravelInfo.created_at,
               updated_at: userTravelInfo.updated_at,
-              locations: userTravelInfo.locations,
             },
+            withCredentials: true,
           }
         );
         setUserTravelInfo(userTravelInfoResponse.data);
@@ -116,6 +112,7 @@ const UserInfoPage = () => {
               plan_id: userTravelPlan.plan_id,
               start_date: userTravelPlan.start_date,
               end_date: userTravelPlan.end_date,
+              destination: userTravelPlan.destination,
               updated_at: userTravelPlan.updated_at,
             },
             withCredentials: true,
@@ -402,11 +399,11 @@ const UserInfoPage = () => {
                         className="text-4xl py-2 font-bold"
                         style={{ color: "#6645B9" }}
                       >
-                        {mergedUserTravelInfo[currentIndex].destination}
+                        {mergedUserTravelInfo[currentIndex].plan_destination}
                       </div>
                       <div className="text-2xl py-2 font-bold text-gray-500">
                         대한민국{" "}
-                        {mergedUserTravelInfo[currentIndex].destination}
+                        {mergedUserTravelInfo[currentIndex].plan_destination}
                       </div>
                     </div>
                     <div className="flex flex-col justify-between">
@@ -443,9 +440,15 @@ const UserInfoPage = () => {
                         >
                           여행기 작성일
                         </div>
-                        <div className="text-lg">
-                          {changetoKoreaDate(
-                            mergedUserTravelInfo[currentIndex].diary_update
+                        <div>
+                          {mergedUserTravelInfo[currentIndex].diary_update && (
+                            <input
+                              className="text-lg text-center bg-red-400 px-3 cursor-pointer"
+                              type="button"
+                              value={changetoKoreaDate(
+                                mergedUserTravelInfo[currentIndex].diary_update
+                              )}
+                            />
                           )}
                         </div>
                       </div>
