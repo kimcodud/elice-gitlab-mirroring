@@ -67,7 +67,7 @@ const SearchMap = () => {
     if (status === window.kakao.maps.services.Status.OK) {
       displayMarkers(data);
       displayPagination(pagination);
-      addPlaces(data);
+      // addPlaces(data);
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
       alert("검색 결과가 존재하지 않습니다.");
     } else if (status === window.kakao.maps.services.Status.ERROR) {
@@ -116,10 +116,10 @@ const SearchMap = () => {
     setMakers([]);
   };
 
-  const addPlaces = (data) => {
-    console.log(data);
-  };
-  console.log(places);
+  // const addPlaces = (data) => {
+  //   console.log(data);
+  // };
+
   const removeAllChildNodes = (elementId) => {
     const parent = document.getElementById(elementId);
     while (parent.firstChild) {
@@ -159,7 +159,7 @@ const SearchMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
-        addPlaces={addPlaces}
+        // addPlaces={addPlaces}
       />
     );
   }, [markers, places]);
@@ -170,7 +170,7 @@ const SearchMap = () => {
 
   const getList = (list) => {
     setList(list);
-    console.log("list", list);
+    // console.log("list", list);
   };
 
   const handleClickAll = () => {
