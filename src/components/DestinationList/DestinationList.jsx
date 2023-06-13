@@ -10,6 +10,7 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
   );
 
   const handleEnd = (result) => {
+    console.log('daylist', dayList);
     console.log(
       '?',
       items.itinerary_list
@@ -21,7 +22,7 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
 
     const { source, destination } = result;
     const updatedItems = Array.from(
-      items.itinerary_list
+      list.itinerary_list
         .filter((item) => item.plan_id === 1)[0]
         .dates.filter((item) => item.id === dateIndex)[0]
     );
@@ -29,7 +30,6 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
     updatedItems.splice(destination.index, 0, movedItem); //이동된 아이템 새 위치에 삽입
 
     setDayList(updatedItems);
-    // [dayList];
   };
 
   const handleClickDelete = useCallback(
