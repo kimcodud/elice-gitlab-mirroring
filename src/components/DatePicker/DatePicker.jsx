@@ -40,7 +40,6 @@ const DatePicker = ({ getDateList }) => {
   };
 
   const handleClickDate = (date) => {
-    // 선택한 날짜를 처리하는 로직 추가
     console.log("Clicked date:", date);
   };
 
@@ -333,17 +332,17 @@ const DatePicker = ({ getDateList }) => {
             : "0000-00-00"}
         </div>
       </div>
-      <div className="flex justify-center w-48">
-        <button
-          className="px-3 py-2 rounded bg-purple-500 text-white"
-          onClick={handleShowAllDates}
-        >
-          전체 날짜 보기
-        </button>
+      <div>
+        <div className="flex justify-center w-48">
+          <button
+            className="px-3 py-2 rounded bg-purple-500 text-white"
+            onClick={handleShowAllDates}
+          >
+            전체
+          </button>
+        </div>
+        {renderSelectedDates()}
       </div>
-
-      {/* 선택된 날짜 목록 */}
-      {renderSelectedDates()}
     </div>
   );
 };
