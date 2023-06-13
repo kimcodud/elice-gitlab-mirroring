@@ -11,10 +11,11 @@ import userImg from "../../assets/user.webp";
 
 import seoul from "../../assets/seoul.webp";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const contentImages = [seoul, prevBtn, nextBtn, deleteBtn];
 
-function TravelPostDetail() {
+function TravelPostDetail(props) {
   const { openModal, closeModal } = useModalStore();
   const [showComments, setShowComments] = useState(false);
   const mainTextRef = useRef(null);
@@ -29,12 +30,13 @@ function TravelPostDetail() {
     created_at: "",
     updated_at: "",
   });
-
+  const { postId } = useParams();
+  // console.log(id);
   useEffect(() => {
     const fetchPostDetailData = async () => {
       try {
         const getPostResponse = await axios.get(
-          `http://localhost:3000/diaries/${post.id}`,
+          `http://localhost:3000/diaries/${postId}`,
           {
             params: {
               id: post.id,
@@ -49,6 +51,7 @@ function TravelPostDetail() {
             },
           }
         );
+        console.log(getPostResponse);
         setPost(getPostResponse.data);
       } catch (error) {
         console.log(error);
