@@ -30,6 +30,11 @@ const Router = () => {
         <>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route
+            path="/TravelPostDetailPage/:postId"
+            element={<TravelPostDetailPage />}
+          />
+          <Route path="/travelBoard" element={<TravelBoardPage />} />
         </>
       )}
       {isLogin && (

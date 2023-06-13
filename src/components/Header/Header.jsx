@@ -79,12 +79,14 @@ const Header = () => {
             로그아웃
           </button>
         )}
-        <a
-          href="/signup"
-          className="text-zinc-400 mr-5 p-3 bg-white hover:bg-gray-100"
-        >
-          회원가입
-        </a>
+        {!role && (
+          <a
+            href="/signup"
+            className="text-zinc-400 mr-5 p-3 bg-white hover:bg-gray-100"
+          >
+            회원가입
+          </a>
+        )}
         <a href="/mypage">
           <img src="/src/assets/user.png" className="px-4 py-2 mr-2 h-12" />
         </a>
