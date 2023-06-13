@@ -73,21 +73,23 @@ const MainPageComponent = () => {
       <div>
         <div>
           <div
-            className="absolute bottom-5 top-14"
+            className="absolute top-14"
             style={{
+              display: "fixed",
               // fontWeight: "bold",
               fontSize: "3rem",
               marginBottom: "1rem",
               backgroundColor: "rgba( 255, 255, 255, 0.5 )",
-              width: "35%",
-              height: "94vh",
+              width: "38rem",
+              height: "100vh",
             }}
           >
             <div
               style={{
+                display: "fixed",
                 textAlign: "center",
                 color: "#845ec2",
-                marginTop: "14rem",
+                marginTop: "35vh",
                 fontSize: "1rem",
                 fontWeight: "500",
               }}
@@ -106,10 +108,11 @@ const MainPageComponent = () => {
             </div>
             <button
               style={{
+                display: "fixed",
                 fontSize: "1rem",
                 fontWeight: "700",
                 textAlign: "center",
-                marginLeft: "25%",
+                marginLeft: "11rem",
                 color: "white",
                 width: "15rem",
                 // border: "1px solid black",
