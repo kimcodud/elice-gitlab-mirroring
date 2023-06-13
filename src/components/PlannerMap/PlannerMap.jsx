@@ -233,40 +233,12 @@ const SearchMap = () => {
                 <div
                   style={{ display: "flex", justifyContent: "space-around" }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <button
-                      className="w-14 h-8 rounded"
-                      style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
-                      onClick={handleClickAll}
-                    >
-                      전체
-                    </button>
-                    {list.itinerary_list[0].dates.map((item, index) => (
-                      <button
-                        className="w-14 h-8 rounded"
-                        style={{
-                          backgroundColor: "#E9EBED",
-                          color: "#B09FCE",
-                        }}
-                        key={index}
-                        onClick={handleClickDay}
-                      >
-                        DAY {index + 1}
-                      </button>
-                    ))}
-                  </div>
-
-                  <DestinationListAdd
+                  {/* <DestinationListAdd
                     isAll={isAll}
                     showDayList={showDayList}
                     getList={getList}
                     dateList={dateList}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
