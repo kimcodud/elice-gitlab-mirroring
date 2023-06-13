@@ -3,21 +3,19 @@ import axios from "axios";
 import addButton from "../../assets/addIcon.webp";
 import deletButton from "../../assets/deletIcon.webp";
 import goBackIcon from "../../assets/goBackIcon.webp";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const userImage = [deletButton, deletButton]; // 더미데이터
-
-function TravelWrite() {
+const TravelWrite = () => {
   const [selectImages, setSelectImages] = useState([]);
-  const [title, setTittle] = useState("");
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const images = selectImages.join(" ");
+  const location = useLocation();
+  const planId = location.state?.planId;
+
   useEffect(() => {
-    setSelectImages((prevImages) => {
-      const initialImages = [];
-      for (let i = 0; i < userImage.length; i++) {
-        initialImages[i] = userImage[i];
-      }
-      return initialImages;
-    });
+    setSelectImages([...selectImages]);
   }, []);
 
   const handleImageDelete = (index) => {
@@ -55,14 +53,77 @@ function TravelWrite() {
   };
 
   const handleTittleChange = (e) => {
-    setTittle(e.target.value);
+    setTitle(e.target.value);
   };
+
   const handleContentChange = (e) => {
     setContent(e.target.value);
   };
-  const handleSubmit = (e) => {
+
+  const [userTravelInfo, setUserTravelInfo] = useState({
+    plan_id: "",
+    username: "",
+    destination: "",
+  });
+
+  const { postId } = useParams();
+
+  useEffect(() => {
+    const fetchUserTravelData = async () => {
+      try {
+        const getPostResponse = await axios.get(
+          `http://localhost:3000/travels/${planId}`,
+          {
+            params: {
+              plan_id: userTravelInfo.plan_id,
+              username: userTravelInfo.username,
+              destination: userTravelInfo.destination,
+            },
+          }
+        );
+        console.log(getPostResponse);
+        setUserTravelInfo(getPostResponse.data.travelPlanData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchUserTravelData();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // submit
+    try {
+      const formData = new FormData();
+      formData.append("image", images);
+      const url = "http://localhost:3000/mypage/diary";
+      const header = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+        withCredentials: true,
+      };
+      const body = {
+        username: userTravelInfo.username,
+        plan_id: userTravelInfo.plan_id,
+        title: title,
+        content: content,
+        destination: userTravelInfo.destination,
+      };
+
+      for (const key in body) {
+        formData.append(key, body[key]);
+      }
+
+      const response = await axios.post(url, formData, header);
+
+      if (response.status === 200) {
+        console.log("등록되었습니다!");
+      } else {
+        console.log("등록에 실패했습니다.");
+      }
+    } catch (error) {
+      console.log("API 호출 중 오류가 발생했습니다:", error);
+    }
   };
 
   return (
@@ -193,6 +254,6 @@ function TravelWrite() {
       </div>
     </form>
   );
-}
+};
 
 export default TravelWrite;
