@@ -4,6 +4,7 @@ import axios from "axios";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
+import { Link } from "react-router-dom";
 
 const MainPageComponent = () => {
   const images = [
@@ -54,10 +55,10 @@ const MainPageComponent = () => {
         backgroundColor: "white",
         width: "70rem",
         height: "30rem",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        borderRadius: "10px",
+        // top: "50%",
+        // left: "50%",
+        // transform: "translate(-50%, -50%)",
+        borderRadius: "4px",
       },
       title: (
         // <div className="text-center font-bold text-4xl">{item.name_ko}</div>
@@ -65,25 +66,46 @@ const MainPageComponent = () => {
       ),
       content: (
         <div>
-          <div>
-            <img src={item.image} style={{ width: "20rem" }}></img>
+          <div style={{}}>
+            {/* <img
+              src={item.image}
+              style={{ width: "20rem", height: "100%" }}
+            ></img>
           </div>
-          {introductionText}
+          {introductionText} */}
+            <div className="flex">
+              <div className="w-1/3">
+                <div
+                  className="h-full flex items-center justify-start"
+                  style={{ backgroundSize: "cover" }}
+                >
+                  <img
+                    src={item.image}
+                    alt="Modal Image"
+                    className="h-96 w-full"
+                  />
+                </div>
+              </div>
+              <div className="w-70 p-4">
+                <h2 className="text-lg font-bold mb-2">Modal Title</h2>
+                <p className="text-gray-700 mb-4">Modal content goes here.</p>
+                <div className="flex justify-end">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">
+                    Close
+                  </button>
+                  <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ),
     });
   };
 
-  const getUserData = async () => {
-    const result = await axios.get("http://localhost:3000/mypage", {
-      withCredentials: true,
-    });
-    console.log(result);
-  };
-
   useEffect(() => {
-    getUserData();
-
     getLocation();
   }, []);
 
@@ -134,8 +156,6 @@ const MainPageComponent = () => {
                 marginLeft: "11rem",
                 color: "white",
                 width: "15rem",
-                // border: "1px solid black",
-                // backgroundColor: "rgba( 255, 255, 255, 0.6 )",
                 padding: "0.5rem",
                 borderRadius: "2px",
               }}
@@ -153,13 +173,12 @@ const MainPageComponent = () => {
         </div>
       </div>
       <div className="relative">
-        <a href="/travelBoard">
+        <Link to="/travelBoard">
           <img
             src={images[currentIndex]}
             alt="Slide"
             className=""
             style={{
-              animation: "bannermove 5s linear infinite",
               width: "80%",
               height: "20rem",
               objectFit: "cover",
@@ -168,7 +187,7 @@ const MainPageComponent = () => {
               borderRadius: "4px",
             }}
           />
-        </a>
+        </Link>
         <button
           onClick={previousSlide}
           className="absolute left-40 top-1/2 transform -translate-y-1/2 "
@@ -183,42 +202,60 @@ const MainPageComponent = () => {
         </button>
       </div>
       <div
+        ref={movePoint}
         style={{
+          marginTop: "5rem",
           maxWidth: "100%",
           position: "relative",
-          display: "inline-block",
+          // display: "inline-block",
+          fontSize: "2rem",
+          textAlign: "center",
+          fontWeight: "700",
         }}
-      ></div>
-      <div ref={movePoint}>
+      >
+        떠나고 싶은 여행지를 선택하세요!
+      </div>
+      <div
+        style={{
+          marginLeft: "6%",
+          fontSize: "1rem",
+          marginTop: "2rem",
+          fontWeight: "700",
+        }}
+      >
+        지역
+      </div>
+      <div
+        style={{ marginLeft: "5rem", marginRight: "5rem", marginTop: "2rem" }}
+      >
         <div className="grid grid-cols-4 gap-4">
           {destination.map((item, idx) => (
-            <div className="w-auto my-8" key={idx}>
-              <div
-                className="relative border border-gray-300"
-                style={{ paddingBottom: "100%" }}
-              >
-                <div className="absolute inset-0">
-                  <button onClick={() => openInfoModal(item)}>
-                    <img
-                      src={item.image}
-                      className="object-cover w-full h-full"
-                      alt={item.name_en}
-                    />
-                  </button>
-                </div>
-                <div className="absolute bottom-0 left-0 p-4 w-full bg-white bg-opacity-90 flex flex-col justify-center">
-                  <h2 className="text-xl font-bold text-gray-800">
-                    {item.name_en}
-                  </h2>
-                  <p className="text-gray-600">{item.name_ko}</p>
-                </div>
+            <div
+              className="bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700"
+              key={idx}
+            >
+              <img
+                onClick={() => openInfoModal(item)}
+                className="card-image hover:scale-95 hover:brightness-125 hover:bg-gray-100 hover:bg-opacity-0 transition duration-500"
+                src={item.image}
+                alt=""
+                style={{ height: "70%", cursor: "pointer" }}
+              />
+
+              <div className="p-6">
+                <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+                  {item.name_en}
+                </h5>
+                <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+                  {item.name_ko}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </div>
       <button
-        className="bottom-8 bg-gray-50 hover:bg-gray-200 text-gray-500 py-3 px-6 m-auto"
+        className="mt-24 bottom-8 bg-gray-50 hover:bg-gray-200 text-gray-500 py-3 px-6 m-auto"
         onClick={scrollToTop}
         style={{
           justifyContent: "center",

@@ -12,16 +12,28 @@ import PlannerEditPage from "../pages/PlannerEditPage/PlannerEditPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import PageNotFound from "../components/PageNotFound/PageNotFound";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Router = () => {
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const getUserData = async () => {
+    const result = await axios.get("http://localhost:3000/mypage", {
+      withCredentials: true,
+    });
+    console.log(result.data.userData.role);
+    if (result.data.userData.role === "ADMIN") {
+      setIsAdmin(true);
+    }
+  };
   useEffect(() => {
-    if (localStorage.getItem("role")) {
+    if (localStorage.getItem("isLogin") === "1") {
       setIsLogin(true);
     } else {
       setIsLogin(false);
     }
+    getUserData();
   }, [location.pathname]);
   return (
     <Routes>
@@ -46,11 +58,11 @@ const Router = () => {
             path="/TravelPostDetailPage/:postId"
             element={<TravelPostDetailPage />}
           />
-          <Route path="/admin" element={<AdminPage />} />
           <Route path="/plannerMap" element={<PlannerMap />} />
           <Route path="/plannerEdit" element={<PlannerEditPage />} />
         </>
       )}
+      {isAdmin && <Route path="/admin" element={<AdminPage />} />}
 
       <Route path="*" element={<PageNotFound />}></Route>
     </Routes>

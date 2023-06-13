@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LoginPageComponent() {
+const LoginPageComponent = () => {
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -26,7 +26,7 @@ function LoginPageComponent() {
       // console.log(response);
       if (response.status === 200) {
         navigate("/");
-        localStorage.setItem("role", response.data.user.role);
+        localStorage.setItem("isLogin", "1");
         location.reload();
       }
     } catch (error) {
@@ -89,6 +89,6 @@ function LoginPageComponent() {
       <div className="my-3 text-sm text-center ">SNS 간편 로그인</div>
     </form>
   );
-}
+};
 
 export default LoginPageComponent;
