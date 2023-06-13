@@ -46,25 +46,44 @@ const MainPageComponent = () => {
   const { openModal } = useModalStore();
   const openInfoModal = (item) => {
     console.log(item);
+    const introduction = JSON.stringify(item.introduction);
+    const introductionText = introduction.replace(/"/g, "");
     openModal({
       modalType: "info",
       style: {
         backgroundColor: "white",
-        width: "50rem",
-        height: "20rem",
+        width: "70rem",
+        height: "30rem",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
         borderRadius: "10px",
       },
       title: (
-        <div className="text-center font-bold text-4xl">{item.name_ko}</div>
+        // <div className="text-center font-bold text-4xl">{item.name_ko}</div>
+        <div></div>
       ),
-      content: <div>{JSON.stringify(item.introduction)}</div>,
+      content: (
+        <div>
+          <div>
+            <img src={item.image} style={{ width: "20rem" }}></img>
+          </div>
+          {introductionText}
+        </div>
+      ),
     });
   };
 
+  const getUserData = async () => {
+    const result = await axios.get("http://localhost:3000/mypage", {
+      withCredentials: true,
+    });
+    console.log(result);
+  };
+
   useEffect(() => {
+    getUserData();
+
     getLocation();
   }, []);
 
