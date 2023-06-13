@@ -4,15 +4,42 @@ import addButton from "../../assets/addIcon.webp";
 import deletButton from "../../assets/deletIcon.webp";
 import goBackIcon from "../../assets/goBackIcon.webp";
 import { useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
 const TravelWrite = () => {
   const [selectImages, setSelectImages] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const images = selectImages.join(" ");
-  const location = useLocation();
-  const planId = location.state?.planId;
+  const [userTravelInfo, setUserTravelInfo] = useState({
+    plan_id: "",
+    username: "",
+    destination: "",
+  });
+  // const images = selectImages.join(" ");
+
+  const { postId } = useParams();
+  useEffect(() => {
+    const fetchUserTravelData = async () => {
+      try {
+        const getPostResponse = await axios.get(
+          `http://localhost:3000/travels/${postId}`,
+          {
+            params: {
+              plan_id: userTravelInfo.plan_id,
+              username: userTravelInfo.username,
+              destination: userTravelInfo.destination,
+            },
+            withCredentials: true,
+          }
+        );
+        console.log(getPostResponse);
+        setUserTravelInfo(getPostResponse.data.travelPlanData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    console.log({ postId });
+    fetchUserTravelData();
+  }, []);
 
   useEffect(() => {
     setSelectImages([...selectImages]);
@@ -27,7 +54,7 @@ const TravelWrite = () => {
     fileInput.click();
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = (event, index) => {
     const file = event.target.files[0];
 
     if (!file) {
@@ -60,42 +87,22 @@ const TravelWrite = () => {
     setContent(e.target.value);
   };
 
-  const [userTravelInfo, setUserTravelInfo] = useState({
-    plan_id: "",
-    username: "",
-    destination: "",
-  });
-
-  const { postId } = useParams();
-
-  useEffect(() => {
-    const fetchUserTravelData = async () => {
-      try {
-        const getPostResponse = await axios.get(
-          `http://localhost:3000/travels/${planId}`,
-          {
-            params: {
-              plan_id: userTravelInfo.plan_id,
-              username: userTravelInfo.username,
-              destination: userTravelInfo.destination,
-            },
-          }
-        );
-        console.log(getPostResponse);
-        setUserTravelInfo(getPostResponse.data.travelPlanData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUserTravelData();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("image", images);
-      const url = "http://localhost:3000/mypage/diary";
+      for (let i = 0; i < selectImages.length; i++) {
+        const imageFile = await fetch(selectImages[i])
+          .then((response) => response.blob())
+          .then(
+            (blob) =>
+              new File([blob], `image${i + 1}.png`, { type: "image/png" })
+          );
+        formData.append("image", imageFile);
+      }
+
+      //formData.append("image", selectImages);
+      const url = `http://localhost:3000/mypage/diary/${postId}`;
       const header = {
         headers: {
           "content-type": "multipart/form-data",
@@ -103,11 +110,10 @@ const TravelWrite = () => {
         withCredentials: true,
       };
       const body = {
-        username: userTravelInfo.username,
-        plan_id: userTravelInfo.plan_id,
+        //username: userTravelInfo.username,
         title: title,
         content: content,
-        destination: userTravelInfo.destination,
+        //destination: userTravelInfo.destination,
       };
 
       for (const key in body) {
@@ -211,7 +217,9 @@ const TravelWrite = () => {
                 <div className="py-4 px-4 text-lg font-normal justify-self-center select-none">
                   지역
                 </div>
-                <div className="py-2 px-4 select-none">제주도</div>
+                <div className="py-2 px-4 select-none">
+                  {userTravelInfo.destination}
+                </div>
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full border-b border-gray-300 h-1/6">
                 <div className="p-4 text-lg font-normal justify-self-center select-none">
@@ -247,7 +255,7 @@ const TravelWrite = () => {
               type="submit"
               value="여행기 작성"
               style={{ background: "#B09FCE" }}
-              className="my-5 mx-3 px-24 py-3 text-white text-xl font-bold rounded shadow-md"
+              className="my-5 mx-3 px-24 py-3 text-white text-xl font-bold rounded shadow-md cursor-pointer"
             />
           </div>
         </div>

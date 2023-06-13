@@ -9,16 +9,11 @@ import deleteBtn from "../../assets/close.webp";
 
 import userImg from "../../assets/user.webp";
 
-import seoul from "../../assets/seoul.webp";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const contentImages = [seoul, prevBtn, nextBtn, deleteBtn];
-
 function TravelPostDetail(props) {
-  const { openModal, closeModal } = useModalStore();
-  const [showComments, setShowComments] = useState(false);
-  const mainTextRef = useRef(null);
+  const { openModal } = useModalStore();
   const [post, setPost] = useState({
     id: "",
     username: "",
@@ -30,6 +25,7 @@ function TravelPostDetail(props) {
     created_at: "",
     updated_at: "",
   });
+
   const { postId } = useParams();
   // console.log(id);
   useEffect(() => {
@@ -40,7 +36,6 @@ function TravelPostDetail(props) {
           {
             params: {
               id: post.id,
-              username: post.username,
               plan_id: post.plan_id,
               title: post.title,
               content: post.content,
@@ -59,9 +54,36 @@ function TravelPostDetail(props) {
     };
     fetchPostDetailData();
   }, []);
+  const contentImages = post.image.split(" ");
 
   const CommentComponent = () => {
     // 댓글
+    useEffect(() => {
+      const fetchPostDetailData = async () => {
+        try {
+          const getPostResponse = await axios.get(
+            `http://localhost:3000/comments/diary/${postId}?page=1`,
+            {
+              params: {
+                id: post.id,
+                plan_id: post.plan_id,
+                title: post.title,
+                content: post.content,
+                image: post.image,
+                destination: post.destination,
+                created_at: post.created_at,
+                updated_at: post.updated_at,
+              },
+            }
+          );
+          console.log(getPostResponse);
+          setPost(getPostResponse.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchPostDetailData();
+    }, []);
 
     return (
       <form
@@ -311,7 +333,7 @@ function TravelPostDetail(props) {
               </button>
             </div>
             <div className="flex flex-col ">
-              <div>글쓴이 : {post.username}</div>
+              {/* <div>글쓴이 : {post.username}</div> */}
               <div>작성일(수정일) : {post.created_at}</div>
             </div>
           </div>
