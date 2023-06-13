@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
-import DestinationListAdd from "../DestinationListAdd/DestinationListAdd";
+// import DestinationListAdd from "../DestinationListAdd/DestinationListAdd";
 import mockData from "../../assets/mockData.json";
 
 const SearchMap = () => {
@@ -165,8 +165,12 @@ const SearchMap = () => {
   }, [markers, places]);
 
   const DatePickerComponent = useMemo(() => {
-    return <DatePicker getDateList={getDateList} />;
+    return <DatePicker />;
   });
+
+  // const DestinationListAdd = useMemo(() => {
+  //   return <DestinationListAdd />;
+  // });
 
   const getList = (list) => {
     setList(list);
@@ -242,7 +246,26 @@ const SearchMap = () => {
                 </div>
               </div>
             </div>
-            <div id="map" style={{ width: "1200px", height: "920px" }}></div>
+            <div
+              style={{ position: "relative", width: "1200px", height: "920px" }}
+            >
+              <div
+                id="map"
+                style={{ width: "100%", height: "100%", position: "absolute" }}
+              ></div>
+              <button
+                className="px-3 py-2 rounded bg-purple-500 text-white"
+                style={{
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                  zIndex: "1",
+                  margin: "20px 0 0 20px",
+                }}
+              >
+                일정 생성
+              </button>
+            </div>
           </div>
         </div>
         <div style={{ display: "flex ", justifyContent: "center" }}>
