@@ -6,6 +6,12 @@ const PlaceList = (props) => {
   const { places, infowindow, handleDisplayInfowindow } = props;
   const { openModal } = useModalStore();
 
+  const handlePlaceClick = (index) => {
+    const selectedPlace = places[index];
+    console.log(selectedPlace.address_name);
+    // 선택한 장소에 대한 추가적인 처리를 수행합니다.
+  };
+
   return (
     <div style={{ color: "black" }}>
       {places?.map((place, index) => {
@@ -110,7 +116,19 @@ const PlaceList = (props) => {
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/add_circle/v1/24px.svg"
                   alt="add_circle icon"
                   className="cursor-pointer"
+                  onClick={() => handlePlaceClick(index)}
                 />
+                {/* <div>
+                  {places?.map((place, index) => (
+                    <div
+                      key={index}
+                      className={selectedPlaceIndex === index ? "selected" : ""}
+                      onClick={() => handleClickPlaces(places)}
+                    >
+                      {place.address_name}
+                    </div>
+                  ))}
+                </div> */}
                 {/* <button
                   onClick={() => openInfoModal()}
                   className="rounded-md bg-purple-500/25 text-xs"
