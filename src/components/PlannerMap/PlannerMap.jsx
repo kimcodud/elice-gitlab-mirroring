@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
-// import DestinationListAdd from "../DestinationListAdd/DestinationListAdd";
 import mockData from "../../assets/mockData.json";
 
 const SearchMap = () => {
@@ -159,7 +158,6 @@ const SearchMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
-        // addPlaces={addPlaces}
       />
     );
   }, [markers, places]);
@@ -168,13 +166,9 @@ const SearchMap = () => {
     return <DatePicker />;
   });
 
-  // const DestinationListAdd = useMemo(() => {
-  //   return <DestinationListAdd />;
-  // });
-
   const getList = (list) => {
     setList(list);
-    console.log("list", list);
+    // console.log("list", list);
   };
 
   const handleClickAll = () => {
@@ -236,14 +230,7 @@ const SearchMap = () => {
                 {DatePickerComponent}
                 <div
                   style={{ display: "flex", justifyContent: "space-around" }}
-                >
-                  {/* <DestinationListAdd
-                    isAll={isAll}
-                    showDayList={showDayList}
-                    getList={getList}
-                    dateList={dateList}
-                  />  */}
-                </div>
+                ></div>
               </div>
             </div>
             <div
@@ -269,7 +256,6 @@ const SearchMap = () => {
           </div>
         </div>
         <div style={{ display: "flex ", justifyContent: "center" }}>
-          {/* <div id="map" style={{ width: "1200px", height: "920px" }} /> */}
           <div>
             <input
               type="text"
