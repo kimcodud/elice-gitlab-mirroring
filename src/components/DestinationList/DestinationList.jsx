@@ -11,6 +11,7 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
 
   const handleEnd = (result) => {
     console.log(
+      '?',
       items.itinerary_list
         .filter((item) => item.plan_id === 1)[0]
         .dates.filter((item) => item.id === dateIndex)[0]
@@ -28,6 +29,7 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
     updatedItems.splice(destination.index, 0, movedItem); //이동된 아이템 새 위치에 삽입
 
     setDayList(updatedItems);
+    // [dayList];
   };
 
   const handleClickDelete = useCallback(
@@ -53,10 +55,47 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
     <div>
       {list.itinerary_list[0].dates.map((item, index) => (
         <div key={item.id}>
-          <span>Day {index + 1}</span>
+          <div
+            style={{
+              width: '247px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ fontWeight: 700, fontSize: '20px' }}>
+              Day {index + 1}
+            </div>
+            <div
+              style={{
+                width: '247px',
+                height: '0px',
+                border: ' 1px solid #6645B9',
+                marginBottom: '10px',
+              }}
+            ></div>
+          </div>
           <ul display={{ display: 'flex', flexDirection: 'column' }}>
             {item.locations.map((loca, order) => (
-              <li key={order}>{loca.location}</li>
+              <li
+                style={{
+                  fontWeight: 700,
+                  fontSize: '15px',
+                  width: '247px',
+                  height: '74px',
+                  filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+                  marginBottom: '10px',
+                  backgroundColor: 'white',
+                  listStyle: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                key={order}
+              >
+                {loca.location}
+              </li>
             ))}
           </ul>
         </div>
@@ -66,8 +105,9 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
 
   const singleDayList = (
     <div>
-      <h1 style={{ borderBottom: '3px solid #6645B9' }}>선택목록</h1>
-      <button onClick={handleRemoveAll}>Delete All</button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button onClick={handleRemoveAll}>Delete All</button>
+      </div>
       <DragDropContext onDragEnd={handleEnd}>
         <Droppable droppableId="itemList">
           {(provided) => (
@@ -143,7 +183,9 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
         alignItems: 'center',
       }}
     >
-      {isAll ? allList : singleDayList}
+      <div style={{ height: '570px', overflow: 'auto' }}>
+        {isAll ? allList : singleDayList}
+      </div>
     </div>
   );
 }
