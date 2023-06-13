@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
-import { useHistory } from "react-router-dom";
 
 import basicUserImage from "../../assets/user.webp";
 import moveBtn from "../../assets/goBackIcon.webp";
@@ -15,7 +14,6 @@ const UserInfoPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { openModal } = useModalStore();
   const navigate = useNavigate();
-  const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -36,6 +34,7 @@ const UserInfoPage = () => {
       plan_end: plan.end_date,
       plan_update: plan.updated_at,
       plan_destination: plan.destination,
+      id: correspondingInfo ? correspondingInfo.updated_at : "",
       diary_update: correspondingInfo ? correspondingInfo.updated_at : "",
     };
   });
@@ -93,9 +92,10 @@ const UserInfoPage = () => {
       //여행기
       try {
         const userTravelInfoResponse = await axios.get(
-          " http://localhost:3000/mypage/diary",
+          "http://localhost:3000/mypage/diary",
           {
             params: {
+              id: userTravelInfo.id,
               plan_id: userTravelInfo.plan_id,
               updated_at: userTravelInfo.updated_at,
             },
@@ -107,7 +107,6 @@ const UserInfoPage = () => {
         console.log(error);
       }
     };
-
     const fetchUserTravelDate = async () => {
       //여행일정
       try {
@@ -147,6 +146,7 @@ const UserInfoPage = () => {
         console.log(error);
       }
     };
+    console.log(userTravelInfo);
 
     fetchUserInfo();
     fetchUserTravelInfo();
@@ -304,12 +304,20 @@ const UserInfoPage = () => {
             />
           </label>
         </div>
-        <input
-          className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
-          style={{ backgroundColor: "#B09FCE" }}
-          type="submit"
-          value="저장"
-        />
+        <div className="flex flex-row w-full justify-center items-center">
+          <input
+            className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
+            style={{ backgroundColor: "#B09FCE" }}
+            type="submit"
+            value="저장"
+          />
+          <input
+            className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
+            style={{ backgroundColor: "#B09FCE" }}
+            type="button"
+            value="탈퇴"
+          />
+        </div>
       </form>
     );
   };
@@ -448,13 +456,16 @@ const UserInfoPage = () => {
                         </div>
                         <div>
                           {mergedUserTravelInfo[currentIndex].diary_update && (
-                            <input
+                            <Link
+                              //to={`/TravelPostDetailPage/${mergedUserTravelInfo[currentIndex].id}`}
+                              key={mergedUserTravelInfo[currentIndex].plan_id}
                               className="text-lg text-center bg-red-400 px-3 cursor-pointer"
-                              type="button"
-                              value={changetoKoreaDate(
+                            >
+                              {" "}
+                              {changetoKoreaDate(
                                 mergedUserTravelInfo[currentIndex].diary_update
-                              )}
-                            />
+                              )}{" "}
+                            </Link>
                           )}
                         </div>
                       </div>
@@ -465,14 +476,26 @@ const UserInfoPage = () => {
                         >
                           일정 수정
                         </button>
-                        <Link
-                          to={`/TravelWritePage`}
-                          key={mergedUserTravelInfo[currentIndex].plan_id}
-                          style={{ backgroundColor: "#B09FCE" }}
-                          className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
-                        >
-                          여행기 작성
-                        </Link>
+                        {mergedUserTravelInfo[currentIndex].diary_update ? (
+                          <Link
+                            //to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].plan_id}`}
+                            key={mergedUserTravelInfo[currentIndex].plan_id}
+                            style={{ backgroundColor: "#B09FCE" }}
+                            className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
+                          >
+                            여행기 수정
+                          </Link>
+                        ) : (
+                          <Link
+                            to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].plan_id}`}
+                            key={mergedUserTravelInfo[currentIndex].plan_id}
+                            style={{ backgroundColor: "#B09FCE" }}
+                            className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
+                          >
+                            여행기 작성
+                          </Link>
+                        )}
+
                         <button
                           onClick={handleDeleteButtonClick}
                           style={{ backgroundColor: "#B09FCE" }}
@@ -516,7 +539,7 @@ const UserInfoPage = () => {
               </div>
             )}
           </div>
-          {travelInfoCount >= 1 && <div>- {currentIndex + 1} -</div>}
+          {travelPlanCount >= 1 && <div>- {currentIndex + 1} -</div>}
         </div>
         <ModalPortal>
           <Modal />
