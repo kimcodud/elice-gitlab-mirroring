@@ -8,7 +8,17 @@ function TravelBoard() {
   const [selectedNavIndex, setSelectedNavIndex] = useState(null);
   const [chosenPosts, setChosenPosts] = useState([]);
   const [selectedDropdown, setSelectedDropdown] = useState("기본값");
-
+  const [posts, setPosts] = useState({
+    id: "",
+    username: "",
+    plan_id: "",
+    title: "",
+    content: "",
+    image: "",
+    destination: "",
+    created_at: "",
+    updated_at: "",
+  });
   const handleFilterClick = (filter, index) => {
     setSelectedFilter(filter);
     setSelectedNavIndex(index);
@@ -39,37 +49,29 @@ function TravelBoard() {
   const sortedPosts = sortPosts(chosenPosts, selectedDropdown);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPostData = async () => {
       try {
-        const accessToken = await getAccessTokenFromCookie(); // 액세스 토큰 설정해야함
-        const header = {
-          header: {
-            Authorization: `Bearer ${accessToken}`,
+        const getResponse = await axios.get("http://localhost:3000/diaries/", {
+          params: {
+            id: posts.id,
+            username: posts.username,
+            plan_id: posts.title,
+            title: posts.title,
+            content: posts.content,
+            image: posts.image,
+            destination: posts.destination,
+            created_at: posts.created_at,
+            updated_at: posts.updated_at,
           },
-          withCrendentials: true,
-        };
-        const body = {
-          id: 2,
-          username: posts.username,
-          plan_id: posts.title,
-          title: posts.title,
-          content: posts.content,
-          image: posts.image,
-          destination: posts.destination,
-          created_at: posts.created_at,
-          updated_at: posts.updated_at,
-        };
-        const uri = "http://localhost:3000/users/";
-        const getResponse = await axios.get(uri, body, header);
+        });
 
-        const posts = getResponse.data;
+        setPosts(getResponse.data);
         setChosenPosts(posts);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("데이터를 가져오는 중에 오류가 발생했습니다.");
+        console.log(error);
       }
     };
-    fetchData();
+    fetchPostData();
   }, []);
 
   return (

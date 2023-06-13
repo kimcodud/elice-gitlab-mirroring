@@ -69,13 +69,13 @@ function TravelWrite() {
     <form onSubmit={handleSubmit}>
       <div
         className="flex justify-center items-center p-16"
-        style={{ height: "calc(100vh - 3.5rem)" }}
+        style={{ height: "calc(100vh - 7rem)" }}
       >
-        <div className="grid grid-cols-2 gap-8 w-4/5 h-full">
+        <div className="grid grid-cols-2 gap-4 w-4/5 h-full">
           <div style={{ width: "100%", height: "100%", margin: "2%" }}>
             <a
               href="/mypage"
-              className="flex flex-row items-center w-40 h-16 mb-3"
+              className="flex flex-row items-center w-full h-1/12 mb-3"
               style={{ cursor: "pointer" }}
             >
               <img
@@ -86,13 +86,13 @@ function TravelWrite() {
               <span className="text-2xl">마이페이지</span>
             </a>
             <div
-              className="grid grid-cols-2 grid-rows-2 w-full items-center"
+              className="grid grid-cols-2 grid-rows-2 w-5/6 h-5/6 my-6 justify-items-end items-end"
               style={{ height: "calc(100% - 5.5rem)" }}
             >
               {[...Array(4)].map((_, index) => (
                 <div
                   key={index}
-                  className={`imageBox flex justify-center items-center mb-3 h-0 relative cursor-pointer overflow-hidden rounded-2xl
+                  className={`imageBox w-full flex justify-center items-center mb-3 h-0 relative cursor-pointer overflow-hidden rounded-2xl
                 ${selectImages[index] ? "" : "emptyImage"}`}
                   style={{
                     width: "calc(95% - 1rem)",
