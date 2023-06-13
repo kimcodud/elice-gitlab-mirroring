@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+
+import TravelPostDetailPage from "../TravelPostDetailPage/TravelPostDetailPage";
 
 import image from "../../assets/seoul2.webp";
 
@@ -8,17 +11,7 @@ function TravelBoard() {
   const [selectedNavIndex, setSelectedNavIndex] = useState(null);
   const [chosenPosts, setChosenPosts] = useState([]);
   const [selectedDropdown, setSelectedDropdown] = useState("기본값");
-  const [posts, setPosts] = useState({
-    id: "",
-    username: "",
-    plan_id: "",
-    title: "",
-    content: "",
-    image: "",
-    destination: "",
-    created_at: "",
-    updated_at: "",
-  });
+  const [posts, setPosts] = useState([]);
   const handleFilterClick = (filter, index) => {
     setSelectedFilter(filter);
     setSelectedNavIndex(index);
@@ -54,8 +47,7 @@ function TravelBoard() {
         const getResponse = await axios.get("http://localhost:3000/diaries/", {
           params: {
             id: posts.id,
-            username: posts.username,
-            plan_id: posts.title,
+            plan_id: posts.plan_id,
             title: posts.title,
             content: posts.content,
             image: posts.image,
@@ -66,7 +58,7 @@ function TravelBoard() {
         });
 
         setPosts(getResponse.data);
-        setChosenPosts(posts);
+        setChosenPosts(getResponse.data);
       } catch (error) {
         console.log(error);
       }
@@ -177,8 +169,8 @@ function TravelBoard() {
             <div className="grid grid-cols-5 justify-items-center items-center gap-4 ">
               {sortedPosts.map((posts) => (
                 // 링크
-                <a
-                  href="/travelPostDetailPage"
+                <Link
+                  to={`/TravelPostDetailPage/${posts.id}`}
                   key={posts.id}
                   className="${posts.destination} ${posts.created_at}  ${posts.updated_at} w-full h-1/2 flex justify-center items-center"
                 >
@@ -192,18 +184,16 @@ function TravelBoard() {
                   >
                     <div className="postInfo flex flex-col justify-center items-center w-4/5 h-1/4 bg-white shadow-md rounded-full m-4">
                       <div className="postTittle text-lg font-semibold text-gray-600 select-none overflow-hidden">
-                        {posts.title.length > 10
-                          ? `${posts.title.slice(0, 10)}...`
+                        {posts.title.length > 9
+                          ? `${posts.title.slice(0, 9)}...`
                           : posts.title}
                       </div>
                       <div className="postWriter  select-none ">
-                        {posts.username.length > 10
-                          ? `${posts.username.slice(0, 10)}...`
-                          : posts.username}
+                        {posts.destination}
                       </div>
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

@@ -10,6 +10,7 @@ import deleteBtn from "../../assets/close.webp";
 import userImg from "../../assets/user.webp";
 
 import seoul from "../../assets/seoul.webp";
+import axios from "axios";
 
 const contentImages = [seoul, prevBtn, nextBtn, deleteBtn];
 
@@ -17,21 +18,48 @@ function TravelPostDetail() {
   const { openModal, closeModal } = useModalStore();
   const [showComments, setShowComments] = useState(false);
   const mainTextRef = useRef(null);
+  const [post, setPost] = useState({
+    id: "",
+    username: "",
+    plan_id: "",
+    title: "",
+    content: "",
+    image: "",
+    destination: "",
+    created_at: "",
+    updated_at: "",
+  });
 
   useEffect(() => {
-    document
-      .querySelector("#commentButton")
-      .addEventListener("click", openCommentModal);
-
-    return () => {
-      document
-        .querySelector("#commentButton")
-        .removeEventListener("click", openCommentModal);
+    const fetchPostDetailData = async () => {
+      try {
+        const getPostResponse = await axios.get(
+          `http://localhost:3000/diaries/${post.id}`,
+          {
+            params: {
+              id: post.id,
+              username: post.username,
+              plan_id: post.plan_id,
+              title: post.title,
+              content: post.content,
+              image: post.image,
+              destination: post.destination,
+              created_at: post.created_at,
+              updated_at: post.updated_at,
+            },
+          }
+        );
+        setPost(getPostResponse.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
+    fetchPostDetailData();
   }, []);
 
   const CommentComponent = () => {
     // 댓글
+
     return (
       <form
         action=""
@@ -39,7 +67,7 @@ function TravelPostDetail() {
       >
         <div className="grid grid-cols-[1fr,5fr] grid-rows-[1fr,auto] w-11/12 h-full mb-2">
           <div className="col-span-1 row-span-full w-full p-1">
-            <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-2xl">
+            <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-md">
               <img
                 className="mx-auto my-auto w-3/4"
                 src={userImg}
@@ -65,6 +93,7 @@ function TravelPostDetail() {
   };
 
   const ScheduleComponent = () => {
+    // 일정
     return (
       <div className="w-full flex flex-col justify-center items-center">
         <div className="mb-5">2020-02-20 ~ 2020-02-20</div>
@@ -80,6 +109,7 @@ function TravelPostDetail() {
   };
 
   const openScheduleModal = () => {
+    //일정 모달
     openModal({
       modalType: "schedule",
       style: {
@@ -103,31 +133,21 @@ function TravelPostDetail() {
   };
 
   const openCommentModal = () => {
-    setShowComments(true);
-    mainTextRef.current.classList.add("reduced-height");
+    //댓글 모달
 
     openModal({
       modalType: "comment",
       style: {
         backgroundColor: "rgb(249, 250, 251)",
         width: "32.8%",
-        height: "40%",
-        top: "80%",
-        left: "67.5%",
+        height: "82%",
+        top: "59%",
+        left: "32.7%",
         transform: "translate(-50%, -50%)",
       },
       title: <div className="border-b border-gray-300 pb-4">댓글</div>,
       content: <CommentComponent />,
-      onClose: handleCloseModal,
     });
-  };
-
-  const handleCloseModal = () => {
-    setShowComments(false);
-    closeModal();
-    if (mainTextRef.current) {
-      mainTextRef.current.classList.remove("reduced-height");
-    }
   };
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -160,9 +180,6 @@ function TravelPostDetail() {
           }
           #Imgbox:hover #imgCategory {
             display: flex;
-          }
-          .reduced-height {
-            max-height: 50%;
           }
           .overflow-x-uto {
             overflow: hidden;
@@ -258,7 +275,8 @@ function TravelPostDetail() {
               className="box-content w-full text-3xl font-bold"
               style={{ color: "#6645B9" }}
             >
-              <p>제목이 들어갈 곳</p>
+              제목
+              {post.title}
             </div>
             <button
               onClick={openScheduleModal}
@@ -270,30 +288,28 @@ function TravelPostDetail() {
           </div>
           <div
             id="mainText"
-            ref={mainTextRef}
-            className={`whitespace-pre-wrap overflow-x-auto overflow-y-hidden overflow-scroll w-full h-full p-5 border-b border-gray-400 ${
-              showComments ? "reduced-height" : ""
-            }`}
+            className="whitespace-pre-wrap overflow-x-auto overflow-scroll w-full h-full px-5 text-xl m-5"
           >
-            내용이 들어갈 곳
+            내용
+            {post.content}
           </div>
 
-          <div className="flex flex-row justify-between w-full pt-5 pb-3 px-3">
+          <div className="flex flex-row justify-between w-full pt-5 pb-3 px-3 border-t border-gray-400 py-6">
             <button
-              id="commentButton"
               onClick={openCommentModal}
               style={{ alignSelf: "flex-start" }}
             >
               댓글보기
             </button>
-            <div>
-              작성일 : 2020-02-20
-              <div className="flex flex-row justify-end">
-                <button style={{ display: "none" }}>수정</button>
-                <button style={{ display: "none" }} className="ml-3">
-                  삭제
-                </button>
-              </div>
+            <div className="flex flex-row justify-end">
+              <button style={{ display: "none" }}>수정</button>
+              <button style={{ display: "none" }} className="ml-3">
+                삭제
+              </button>
+            </div>
+            <div className="flex flex-col ">
+              <div>글쓴이 : {post.username}</div>
+              <div>작성일(수정일) : {post.created_at}</div>
             </div>
           </div>
           <div
@@ -318,7 +334,7 @@ function TravelPostDetail() {
         </div>
       </div>
       <ModalPortal>
-        <Modal onClose={handleCloseModal} />
+        <Modal />
       </ModalPortal>
     </div>
   );
