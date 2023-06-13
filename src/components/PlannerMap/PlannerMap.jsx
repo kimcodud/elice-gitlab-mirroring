@@ -1,14 +1,14 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
-import PlaceList from "../PlaceList/PlaceList";
-import DatePicker from "../DatePicker/DatePicker";
-import DestinationListAdd from "../DestinationListAdd/DestinationListAdd";
-import mockData from "../../assets/mockData.json";
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import PlaceList from '../PlaceList/PlaceList';
+import DatePicker from '../DatePicker/DatePicker';
+// import DestinationListAdd from "../DestinationListAdd/DestinationListAdd";
+import mockData from '../../assets/mockData.json';
 
 const SearchMap = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
   const [infowindow, setInfowindow] = useState();
   const [dateList, setDateList] = useState([]);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [places, setPlaces] = useState([]);
   const [markers, setMakers] = useState([]);
   const [isAll, setIsAll] = useState(true);
@@ -17,7 +17,7 @@ const SearchMap = () => {
 
   const createMarker = (position, index) => {
     const imageSrc =
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png";
+      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
     const imageSize = new window.kakao.maps.Size(36, 37);
     const imgOptions = {
       spriteSize: new window.kakao.maps.Size(36, 691),
@@ -55,7 +55,7 @@ const SearchMap = () => {
 
   const onSearch = useCallback(() => {
     if (!keyword.trim()) {
-      alert("키워드를 입력해주세요!");
+      alert('키워드를 입력해주세요!');
       return;
     }
     removeMarkers();
@@ -69,9 +69,9 @@ const SearchMap = () => {
       displayPagination(pagination);
       addPlaces(data);
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-      alert("검색 결과가 존재하지 않습니다.");
+      alert('검색 결과가 존재하지 않습니다.');
     } else if (status === window.kakao.maps.services.Status.ERROR) {
-      alert("검색 결과 중 오류가 발생했습니다.");
+      alert('검색 결과 중 오류가 발생했습니다.');
     }
   };
 
@@ -128,29 +128,29 @@ const SearchMap = () => {
   };
 
   const displayPagination = (pagination) => {
-    const paginationEl = document.getElementById("pagination");
-    removeAllChildNodes("pagination");
+    const paginationEl = document.getElementById('pagination');
+    removeAllChildNodes('pagination');
     for (let i = 1; i <= pagination.last; i++) {
-      const el = document.createElement("a");
-      el.href = "#";
+      const el = document.createElement('a');
+      el.href = '#';
       el.innerHTML = i;
 
       if (i === pagination.current) {
-        el.className = "on";
+        el.className = 'on';
       } else {
         el.onclick = () => {
           pagination.gotoPage(i);
         };
       }
-      el.style.marginRight = "10px";
-      el.style.fontSize = "20px";
+      el.style.marginRight = '10px';
+      el.style.fontSize = '20px';
       paginationEl.appendChild(el);
     }
   };
 
   const getDateList = (dateList) => {
     setDateList(dateList);
-    console.log("dateList", dateList);
+    console.log('dateList', dateList);
   };
 
   const PlaceListComponent = useMemo(() => {
@@ -170,7 +170,7 @@ const SearchMap = () => {
 
   const getList = (list) => {
     setList(list);
-    console.log("list", list);
+    console.log('list', list);
   };
 
   const handleClickAll = () => {
@@ -184,7 +184,7 @@ const SearchMap = () => {
   };
 
   const attachMapSdkScript = () => {
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
       import.meta.env.VITE_APP_KAKAOMAP_KEY
     }&libraries=services&autoload=false`;
@@ -194,7 +194,7 @@ const SearchMap = () => {
 
     script.onload = () => {
       kakao.maps.load(() => {
-        const mapContainer = document.getElementById("map");
+        const mapContainer = document.getElementById('map');
         const mapOptions = {
           center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
           level: 3,
@@ -212,7 +212,7 @@ const SearchMap = () => {
   }, []);
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onSearch();
     }
   };
@@ -221,27 +221,27 @@ const SearchMap = () => {
     <>
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
         <div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ marginRight: "10px" }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ marginRight: '10px' }}>
                 {DatePickerComponent}
                 <div
-                  style={{ display: "flex", justifyContent: "space-around" }}
+                  style={{ display: 'flex', justifyContent: 'space-around' }}
                 >
                   <div
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
+                      display: 'flex',
+                      flexDirection: 'column',
                     }}
                   >
                     <button
                       className="w-14 h-8 rounded"
-                      style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
+                      style={{ backgroundColor: '#E9EBED', color: '#B09FCE' }}
                       onClick={handleClickAll}
                     >
                       전체
@@ -250,8 +250,8 @@ const SearchMap = () => {
                       <button
                         className="w-14 h-8 rounded"
                         style={{
-                          backgroundColor: "#E9EBED",
-                          color: "#B09FCE",
+                          backgroundColor: '#E9EBED',
+                          color: '#B09FCE',
                         }}
                         key={index}
                         onClick={handleClickDay}
@@ -270,10 +270,10 @@ const SearchMap = () => {
                 </div>
               </div>
             </div>
-            <div id="map" style={{ width: "1200px", height: "920px" }}></div>
+            <div id="map" style={{ width: '1200px', height: '920px' }}></div>
           </div>
         </div>
-        <div style={{ display: "flex ", justifyContent: "center" }}>
+        <div style={{ display: 'flex ', justifyContent: 'center' }}>
           {/* <div id="map" style={{ width: "1200px", height: "920px" }} /> */}
           <div>
             <input
@@ -285,18 +285,18 @@ const SearchMap = () => {
               onKeyPress={handleKeyPress}
               placeholder=" 장소를 검색해보세요"
               style={{
-                marginLeft: "10px",
-                justifyContent: "center",
-                textAlign: "center",
+                marginLeft: '10px',
+                justifyContent: 'center',
+                textAlign: 'center',
               }}
             />
             <div className="drag-box">
               <div
                 id="placesList"
                 style={{
-                  height: "881px",
-                  whiteSpace: "nowrap",
-                  overflow: "auto",
+                  height: '881px',
+                  whiteSpace: 'nowrap',
+                  overflow: 'auto',
                 }}
               >
                 {PlaceListComponent}
@@ -304,7 +304,7 @@ const SearchMap = () => {
               <div
                 id="pagination"
                 className="drop-shadow-md cursor-pointer"
-                style={{ display: "flex", justifyContent: "center" }}
+                style={{ display: 'flex', justifyContent: 'center' }}
               />
             </div>
           </div>
