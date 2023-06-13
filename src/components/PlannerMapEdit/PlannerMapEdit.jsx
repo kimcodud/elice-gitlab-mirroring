@@ -5,7 +5,6 @@ import DestinationList from '../DestinationList/DestinationList';
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
 
-  const [dateList, setDateList] = useState([]);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [polyline, setPolyline] = useState(null);
@@ -13,8 +12,28 @@ function PlannerMapEdit() {
   const [isAll, setIsAll] = useState(true);
   const [dateIndex, setDateIndex] = useState();
 
+  const [allLocation, setAllLocation] = useState(
+    list.itinerary_list
+      .find((item) => item.plan_id === 1)
+      ?.dates.flatMap((date) => date.locations)
+  );
+
+  const whereToShow = () => {
+    if (isAll) {
+      return list.itinerary_list
+        .find((item) => item.plan_id === 1)
+        ?.dates.flatMap((date) => date.locations);
+    } else if (dateIndex !== null) {
+      const selectedDate = list.itinerary_list[0].dates[dateIndex - 1];
+      return selectedDate ? selectedDate.locations : null;
+    } else {
+      return null;
+    }
+  };
+
   const handleClickAll = () => {
     setIsAll(true);
+    setDateIndex(null);
   };
 
   const handleClickDay = (index) => {
@@ -27,11 +46,6 @@ function PlannerMapEdit() {
   const getList = (list) => {
     setList(list);
     console.log('list', list);
-  };
-
-  const getDateList = (dateList) => {
-    setDateList(dateList);
-    console.log('dateList', dateList);
   };
 
   const startDate = list.itinerary_list[0].start_date;
@@ -49,7 +63,7 @@ function PlannerMapEdit() {
       window.kakao.maps.load(() => {
         const mapContainer = document.getElementById('map');
         const mapOptions = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          center: new window.kakao.maps.LatLng(37.5665, 126.978),
           level: 3,
         };
         const newMap = new window.kakao.maps.Map(mapContainer, mapOptions);
@@ -73,7 +87,10 @@ function PlannerMapEdit() {
       const newMarkers = [];
       const linePath = [];
 
-      list.itinerary_list[0].dates.forEach((position) => {
+      const locationsToDisplay = whereToShow();
+
+      locationsToDisplay.forEach((position) => {
+        console.log('locationsToDisplay', locationsToDisplay);
         const latlng = new window.kakao.maps.LatLng(position.lat, position.lng);
 
         const marker = new window.kakao.maps.Marker({
@@ -110,7 +127,7 @@ function PlannerMapEdit() {
       setMarkers(newMarkers);
       setPolyline(newPolyline);
     }
-  }, [list, map]);
+  }, [list, map, isAll, dateIndex]);
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -191,7 +208,7 @@ function PlannerMapEdit() {
                   paddingLeft: '20px',
                 }}
               >
-                0 places
+                {allLocation.length} places
               </div>
             </div>
           </div>
@@ -268,7 +285,7 @@ function PlannerMapEdit() {
                 isAll={isAll}
                 list={list}
                 getList={getList}
-                dateList={dateList}
+                // dateList={dateList}
                 dateIndex={dateIndex}
               />
             </div>

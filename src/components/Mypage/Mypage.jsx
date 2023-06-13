@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Modal from "../modal/modal";
-import { ModalPortal } from "../modal/ModalPortal";
-import { useModalStore } from "../../store/store";
-import { useHistory } from "react-router-dom";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Modal from '../modal/modal';
+import { ModalPortal } from '../modal/ModalPortal';
+import { useModalStore } from '../../store/store';
+import { useHistory } from 'react-router-dom';
 
-import basicUserImage from "../../assets/user.webp";
-import moveBtn from "../../assets/goBackIcon.webp";
+import basicUserImage from '../../assets/user.webp';
+import moveBtn from '../../assets/goBackIcon.webp';
 
-import tempImage from "../../assets/main.jpg";
+import tempImage from '../../assets/main.jpg';
 
 const UserInfoPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,10 +18,10 @@ const UserInfoPage = () => {
   const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({
-    username: "",
-    name: "",
-    email: "",
-    password: "",
+    username: '',
+    name: '',
+    email: '',
+    password: '',
   });
   const [userTravelPlan, setUserTravelPlan] = useState([]); //여행일정
   const [userTravelInfo, setUserTravelInfo] = useState([]); //여행기
@@ -36,7 +36,7 @@ const UserInfoPage = () => {
       plan_end: plan.end_date,
       plan_update: plan.updated_at,
       plan_destination: plan.destination,
-      diary_update: correspondingInfo ? correspondingInfo.updated_at : "",
+      diary_update: correspondingInfo ? correspondingInfo.updated_at : '',
     };
   });
 
@@ -44,35 +44,35 @@ const UserInfoPage = () => {
   const travelInfoCount = userTravelInfo.length;
 
   const [area, setArea] = useState({
-    name_en: "",
-    name_ko: "",
-    image: "",
+    name_en: '',
+    name_ko: '',
+    image: '',
   });
 
   const changetoKoreaDate = (dateString) => {
     if (!dateString) {
-      return "";
+      return '';
     }
     const date = new Date(dateString);
 
-    return date.toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      timeZone: "Asia/Seoul",
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'Asia/Seoul',
     });
   };
 
   const handleWriteClick = () => {
     const planId = mergedUserTravelInfo[currentIndex].plan_id;
-    history.push("/TravelWritePage", { planId });
+    history.push('/TravelWritePage', { planId });
   };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const userInfoResponse = await axios.get(
-          "http://localhost:3000/mypage/",
+          'http://localhost:3000/mypage/',
           {
             params: {
               username: userInfo.username,
@@ -85,7 +85,7 @@ const UserInfoPage = () => {
         setUserInfo(userInfoResponse.data.userData);
       } catch (error) {
         console.log(error);
-        navigate("/login");
+        navigate('/login');
       }
     };
 
@@ -93,7 +93,7 @@ const UserInfoPage = () => {
       //여행기
       try {
         const userTravelInfoResponse = await axios.get(
-          " http://localhost:3000/mypage/diary",
+          ' http://localhost:3000/mypage/diary',
           {
             params: {
               plan_id: userTravelInfo.plan_id,
@@ -112,7 +112,7 @@ const UserInfoPage = () => {
       //여행일정
       try {
         const userTravelPlanResponse = await axios.get(
-          "http://localhost:3000/travels/",
+          'http://localhost:3000/travels/',
           {
             params: {
               plan_id: userTravelPlan.plan_id,
@@ -173,7 +173,7 @@ const UserInfoPage = () => {
       setUserTravelPlan((prevPlan) =>
         prevPlan.filter((plan) => plan.plan_id !== planIdToDelete)
       );
-      console.log("데이터가 성공적으로 삭제되었습니다.");
+      console.log('데이터가 성공적으로 삭제되었습니다.');
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -182,9 +182,9 @@ const UserInfoPage = () => {
 
   const UserInfoUpdateModalContent = () => {
     const [user, setUser] = useState({
-      email: "",
-      password: "",
-      passwordConfirm: "",
+      email: '',
+      password: '',
+      passwordConfirm: '',
     });
 
     const handleValueChange = ({ target: { value, name } }) => {
@@ -199,20 +199,20 @@ const UserInfoPage = () => {
 
       try {
         if (!user.email === userInfo.email) {
-          alert("새로운 이메일을 입력해주세요.");
+          alert('새로운 이메일을 입력해주세요.');
           return;
         } else if (user.password) {
           if (!passwordRegex.test(user.password)) {
-            alert("비밀번호에 문자, 숫자, 특수문자를 포함해야 합니다.");
+            alert('비밀번호에 문자, 숫자, 특수문자를 포함해야 합니다.');
             return;
           } else if (user.password !== user.passwordConfirm) {
-            alert("비밀번호가 일치하지 않습니다.");
+            alert('비밀번호가 일치하지 않습니다.');
             return;
           }
         }
 
         const updateResponse = await axios.patch(
-          "http://localhost:3000/users/",
+          'http://localhost:3000/users/',
           {
             password: user.password,
             email: user.email,
@@ -221,9 +221,9 @@ const UserInfoPage = () => {
         );
         setUserInfo(updateResponse.data);
         //console.log(updateResponse);
-        navigate("/");
+        navigate('/');
 
-        alert("회원정보가 수정되었습니다.");
+        alert('회원정보가 수정되었습니다.');
       } catch (error) {
         console.error(error);
       }
@@ -240,14 +240,14 @@ const UserInfoPage = () => {
         <div className="grid grid-cols-none grid-rows-4 justify-center items-center w-5/12 border-solid grid-underline text-center">
           <div
             className="grid grid-cols-[1fr,2fr] h-4/5 items-center justify-center gap-3 p-2"
-            style={{ borderBottom: "1px solid #6645B9" }}
+            style={{ borderBottom: '1px solid #6645B9' }}
           >
             <div className="text-lg cursor-pointer select-none">이름</div>
             <div className="text-lg select-none text-left">{userInfo.name}</div>
           </div>
           <label
             className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
-            style={{ borderBottom: "1px solid #6645B9" }}
+            style={{ borderBottom: '1px solid #6645B9' }}
           >
             <div className="text-lg select-none">이메일</div>
             <input
@@ -256,13 +256,13 @@ const UserInfoPage = () => {
               label="이메일"
               value={user.email}
               onChange={handleValueChange}
-              placeholder={"이메일을 입력해주세요."}
+              placeholder={'이메일을 입력해주세요.'}
               className="hide-input-focus outline-none w-full p-2 rounded border border-gray-100"
             />
           </label>
           <label
             className="grid grid-cols-[1fr,2fr]  h-full items-center justify-center gap-3 p-2"
-            style={{ borderBottom: "1px solid #6645B9" }}
+            style={{ borderBottom: '1px solid #6645B9' }}
           >
             <div className="text-lg select-none">비밀번호</div>
             <input
@@ -273,7 +273,7 @@ const UserInfoPage = () => {
               onChange={handleValueChange}
               minLength={10}
               maxLength={20}
-              placeholder={"비밀번호를 입력해주세요."}
+              placeholder={'비밀번호를 입력해주세요.'}
               className="hide-input-focus outline-none w-full rounded border border-gray-100 p-2"
             />
             {user.password !== user.passwordConfirm ? (
@@ -288,7 +288,7 @@ const UserInfoPage = () => {
           </label>
           <label
             className="grid grid-cols-[1fr,2fr] h-full items-center justify-center gap-3 p-2"
-            style={{ borderBottom: "1px solid #6645B9" }}
+            style={{ borderBottom: '1px solid #6645B9' }}
           >
             <div className="text-lg select-none">비밀번호 확인</div>
             <input
@@ -299,14 +299,14 @@ const UserInfoPage = () => {
               onChange={handleValueChange}
               minLength={10}
               maxLength={20}
-              placeholder={"비밀번호를 다시 입력해주세요."}
+              placeholder={'비밀번호를 다시 입력해주세요.'}
               className="hide-input-focus outline-none w-full rounded border border-gray-100 p-2"
             />
           </label>
         </div>
         <input
           className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
-          style={{ backgroundColor: "#B09FCE" }}
+          style={{ backgroundColor: '#B09FCE' }}
           type="submit"
           value="저장"
         />
@@ -316,14 +316,14 @@ const UserInfoPage = () => {
 
   const openUpdateUserInfoModal = () => {
     openModal({
-      modalType: "updateUserInfo",
+      modalType: 'updateUserInfo',
       style: {
-        backgroundColor: "rgb(249, 250, 251)",
-        width: "60%",
-        height: "85%",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        backgroundColor: 'rgb(249, 250, 251)',
+        width: '60%',
+        height: '85%',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
       },
       title: (
         <div className="text-center font-bold text-4xl">회원정보 수정</div>
@@ -333,7 +333,7 @@ const UserInfoPage = () => {
   };
 
   return (
-    <div className="w-full" style={{ height: "calc(100vh - 4rem)" }}>
+    <div className="w-full" style={{ height: 'calc(100vh - 4rem)' }}>
       <div className="w-full h-full">
         <div className="w-full h-full flex flex-col justify-center items-center text-center">
           <div className="h-1/5 border border-gray-100 rounded-full flex items-center justify-center shadow-lg">
@@ -344,7 +344,7 @@ const UserInfoPage = () => {
           </div>
           <button
             onClick={openUpdateUserInfoModal}
-            style={{ backgroundColor: "#B09FCE" }}
+            style={{ backgroundColor: '#B09FCE' }}
             className="text-white font-bold text-lg px-4 py-2 rounded shadow-md"
           >
             프로필 수정
@@ -354,7 +354,7 @@ const UserInfoPage = () => {
               <div className="py-1 text-slate-500">나의 일정</div>
               <div
                 className="text-5xl py-2 font-bold"
-                style={{ color: "#6645B9" }}
+                style={{ color: '#6645B9' }}
               >
                 {travelPlanCount}
               </div>
@@ -363,7 +363,7 @@ const UserInfoPage = () => {
               <div className="py-1 text-slate-500">나의 여행기</div>
               <div
                 className="text-5xl py-2 font-bold"
-                style={{ color: "#6645B9" }}
+                style={{ color: '#6645B9' }}
               >
                 {travelInfoCount}
               </div>
@@ -403,12 +403,12 @@ const UserInfoPage = () => {
                     <div className="flex flex-col justify-center">
                       <div
                         className="text-4xl py-2 font-bold"
-                        style={{ color: "#6645B9" }}
+                        style={{ color: '#6645B9' }}
                       >
                         {mergedUserTravelInfo[currentIndex].plan_destination}
                       </div>
                       <div className="text-2xl py-2 font-bold text-gray-500">
-                        대한민국{" "}
+                        대한민국{' '}
                         {mergedUserTravelInfo[currentIndex].plan_destination}
                       </div>
                     </div>
@@ -416,7 +416,7 @@ const UserInfoPage = () => {
                       <div className="grid grid-cols-[1fr,2fr] grid-rows-3 gap-4 m-7">
                         <div
                           className="font-bold text-lg"
-                          style={{ color: "#B09FCE" }}
+                          style={{ color: '#B09FCE' }}
                         >
                           여행일자
                         </div>
@@ -424,14 +424,14 @@ const UserInfoPage = () => {
                           {changetoKoreaDate(
                             mergedUserTravelInfo[currentIndex].plan_start
                           )}
-                          {" ~ "}
+                          {' ~ '}
                           {changetoKoreaDate(
                             mergedUserTravelInfo[currentIndex].plan_end
                           )}
                         </div>
                         <div
                           className="font-bold text-lg"
-                          style={{ color: "#B09FCE" }}
+                          style={{ color: '#B09FCE' }}
                         >
                           최종 수정 날짜
                         </div>
@@ -442,7 +442,7 @@ const UserInfoPage = () => {
                         </div>
                         <div
                           className="font-bold text-lg"
-                          style={{ color: "#B09FCE" }}
+                          style={{ color: '#B09FCE' }}
                         >
                           여행기 작성일
                         </div>
@@ -460,7 +460,7 @@ const UserInfoPage = () => {
                       </div>
                       <div className="flex flex-row justify-between mb-8 mx-7">
                         <button
-                          style={{ backgroundColor: "#B09FCE" }}
+                          style={{ backgroundColor: '#B09FCE' }}
                           className="text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md"
                         >
                           일정 수정
@@ -468,14 +468,14 @@ const UserInfoPage = () => {
                         <Link
                           to={`/TravelWritePage`}
                           key={mergedUserTravelInfo[currentIndex].plan_id}
-                          style={{ backgroundColor: "#B09FCE" }}
+                          style={{ backgroundColor: '#B09FCE' }}
                           className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
                         >
                           여행기 작성
                         </Link>
                         <button
                           onClick={handleDeleteButtonClick}
-                          style={{ backgroundColor: "#B09FCE" }}
+                          style={{ backgroundColor: '#B09FCE' }}
                           className="text-white  text-lg w-1/3 h-12 p-2 rounded  shadow-md"
                         >
                           삭제
@@ -501,7 +501,7 @@ const UserInfoPage = () => {
               <div className="flex flex-col justify-center items-center h-5/6 w-11/12 bg-white rounded-2xl shadow-xl">
                 <div
                   className="text-2xl font-bold select-none my-5"
-                  style={{ color: "#6645B9" }}
+                  style={{ color: '#6645B9' }}
                 >
                   대한민국에는 아직 당신이 경험해보지 못한 곳들이 너무나도
                   많아요!
@@ -509,7 +509,7 @@ const UserInfoPage = () => {
                 <a
                   href="/plannerMap"
                   className="text-white text-2xl p-3 mt-2 rounded-md shadow-md"
-                  style={{ backgroundColor: "#B09FCE" }}
+                  style={{ backgroundColor: '#B09FCE' }}
                 >
                   여행 시작하기
                 </a>
