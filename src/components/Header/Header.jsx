@@ -1,15 +1,11 @@
 import "./Header.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [role, setRole] = useState("");
-  const roleCheck = () => {
-    if (localStorage.getItem("role")) {
-      setRole(localStorage.getItem("role"));
-    }
-  };
-
+  const navigate = useNavigate();
   const logoutHandler = async () => {
     const res = await axios.post(
       "http://localhost:3000/users/logout",
@@ -19,59 +15,60 @@ const Header = () => {
       }
     );
     if (res.status === 200) {
+      navigate("/");
       location.reload();
     }
     console.log(res);
-    localStorage.removeItem("role");
+    localStorage.removeItem("isLogin");
+  };
+  const getUserData = async () => {
+    const result = await axios.get("http://localhost:3000/mypage", {
+      withCredentials: true,
+    });
+    if (result.status === 200) {
+      setRole(result.data.userData.role);
+    }
   };
 
   useEffect(() => {
-    roleCheck();
+    getUserData();
     // logoutHandler()
   }, []);
   return (
     <header className="h-14">
       <nav className="p-1 flex justify-start h-14">
-        <a href="/">
+        <Link to="/">
           <img
             src="/src/assets/starRoad_2.png"
             className="ml-6 mr-48 h-20 w-18 -mt-3"
           ></img>
-        </a>
-        <a href="/plannerMap" className="text-zinc-400 ml-auto p-3">
+        </Link>
+        <Link to="/plannerMap" className="text-zinc-400 ml-auto p-3">
           일정만들기(임시)
-        </a>
-        <a href="/plannerEdit" className="text-zinc-400 ml-auto p-3">
+        </Link>
+        <Link to="/plannerEdit" className="text-zinc-400 ml-auto p-3">
           일정 수정(임시)
-        </a>
+        </Link>
         {role === "ADMIN" && (
-          <a href="/admin" className="text-violet-600 font-bold ml-auto p-3">
+          <Link to="/admin" className="text-violet-600 font-bold ml-auto p-3">
             ADMIN
-          </a>
+          </Link>
         )}
-        <a
-          href="/travelBoard"
+        <Link
+          to="/travelBoard"
           className="text-zinc-400 ml-auto p-3 bg-white hover:bg-gray-100"
         >
           여행기
-        </a>
+        </Link>
         {!role && (
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
           >
             로그인
-          </a>
+          </Link>
         )}
         {role && (
-          // <button onClick={logoutHandler}>
-          //   <a
-          //     href="/"
-          //     className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
-          //   >
-          //     로그아웃
-          //   </a>
-          // </button>
           <button
             className="text-zinc-400 p-3 bg-white hover:bg-gray-100"
             onClick={logoutHandler}
@@ -80,16 +77,16 @@ const Header = () => {
           </button>
         )}
         {!role && (
-          <a
-            href="/signup"
+          <Link
+            to="/signup"
             className="text-zinc-400 mr-5 p-3 bg-white hover:bg-gray-100"
           >
             회원가입
-          </a>
+          </Link>
         )}
-        <a href="/mypage">
+        <Link to="/mypage">
           <img src="/src/assets/user.png" className="px-4 py-2 mr-2 h-12" />
-        </a>
+        </Link>
       </nav>
     </header>
   );
