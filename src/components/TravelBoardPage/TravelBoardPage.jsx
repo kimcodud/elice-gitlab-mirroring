@@ -49,38 +49,29 @@ function TravelBoard() {
   const sortedPosts = sortPosts(chosenPosts, selectedDropdown);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPostData = async () => {
       try {
-        // const accessToken = await getAccessTokenFromCookie(); // 액세스 토큰 설정해야함
-        // const header = {
-        //   header: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //   },
-        //   withCrendentials: true,
-        // };
-        const body = {
-          id: posts.id,
-          username: posts.username,
-          plan_id: posts.title,
-          title: posts.title,
-          content: posts.content,
-          image: posts.image,
-          destination: posts.destination,
-          created_at: posts.created_at,
-          updated_at: posts.updated_at,
-        };
+        const getResponse = await axios.get("http://localhost:3000/diaries/", {
+          params: {
+            id: posts.id,
+            username: posts.username,
+            plan_id: posts.title,
+            title: posts.title,
+            content: posts.content,
+            image: posts.image,
+            destination: posts.destination,
+            created_at: posts.created_at,
+            updated_at: posts.updated_at,
+          },
+        });
 
-        const uri = "http://localhost:3000/users/";
-        // const getResponse = await axios.get(uri, body, header);
-        const getResponse = await axios.get(uri, { data: body });
-
-        const fetchedPosts = getResponse.data;
-        setChosenPosts(fetchedPosts);
+        setPosts(getResponse.data);
+        setChosenPosts(posts);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchData();
+    fetchPostData();
   }, []);
 
   return (
