@@ -1,10 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link, Route, Routes } from "react-router-dom";
-
-import TravelPostDetailPage from "../TravelPostDetailPage/TravelPostDetailPage";
-
-import image from "../../assets/seoul2.webp";
+import { Link } from "react-router-dom";
 
 function TravelBoard() {
   const [selectedFilter, setSelectedFilter] = useState("전체");

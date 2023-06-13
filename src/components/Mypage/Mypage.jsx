@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
+import { useHistory } from "react-router-dom";
 
 import basicUserImage from "../../assets/user.webp";
-import prevBtn from "../../assets/prev.webp";
 import moveBtn from "../../assets/goBackIcon.webp";
 
 import tempImage from "../../assets/main.jpg";
@@ -15,6 +15,7 @@ const UserInfoPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { openModal } = useModalStore();
   const navigate = useNavigate();
+  const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -60,6 +61,11 @@ const UserInfoPage = () => {
       day: "2-digit",
       timeZone: "Asia/Seoul",
     });
+  };
+
+  const handleWriteClick = () => {
+    const planId = mergedUserTravelInfo[currentIndex].plan_id;
+    history.push("/TravelWritePage", { planId });
   };
 
   useEffect(() => {
@@ -459,12 +465,14 @@ const UserInfoPage = () => {
                         >
                           일정 수정
                         </button>
-                        <button
+                        <Link
+                          to={`/TravelWritePage`}
+                          key={mergedUserTravelInfo[currentIndex].plan_id}
                           style={{ backgroundColor: "#B09FCE" }}
                           className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
                         >
                           여행기 작성
-                        </button>
+                        </Link>
                         <button
                           onClick={handleDeleteButtonClick}
                           style={{ backgroundColor: "#B09FCE" }}
