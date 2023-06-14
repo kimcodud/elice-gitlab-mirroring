@@ -209,8 +209,8 @@ const UserInfoPage = () => {
           }
         }
 
-        const updateResponse = await axios.patch(
-          "http://localhost:3000/users/",
+        const updateResponse = await axios.put(
+          "http://localhost:3000/mypage/",
           {
             password: user.password,
             email: user.email,
@@ -219,11 +219,23 @@ const UserInfoPage = () => {
         );
         setUserInfo(updateResponse.data);
         //console.log(updateResponse);
-        navigate("/");
-
         alert("회원정보가 수정되었습니다.");
+        window.location.reload();
       } catch (error) {
         console.error(error);
+        alert(error);
+      }
+    };
+    const handleClickDeletUser = async () => {
+      try {
+        await axios.delete("http://localhost:3000/mypage/", {
+          withCredentials: true,
+        });
+        alert("별길과 함께하는 시간은 끝났지만 당신의 여행은 멈추지 않길!");
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+        alert("희희 못가");
       }
     };
 
@@ -306,14 +318,15 @@ const UserInfoPage = () => {
           <input
             className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
             style={{ backgroundColor: "#B09FCE" }}
-            type="submit"
-            value="저장"
+            onClick={handleClickDeletUser}
+            type="button"
+            value="탈퇴"
           />
           <input
             className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
             style={{ backgroundColor: "#B09FCE" }}
-            type="button"
-            value="탈퇴"
+            type="submit"
+            value="저장"
           />
         </div>
       </form>
@@ -454,15 +467,11 @@ const UserInfoPage = () => {
                         </div>
                         <div>
                           {mergedUserTravelInfo[currentIndex].diary_update && (
-                            <Link
-                              to={`/TravelPostDetailPage/${mergedUserTravelInfo[currentIndex].id}`}
-                              key={mergedUserTravelInfo[currentIndex].plan_id}
-                              className="text-lg text-center cursor-pointer"
-                            >
+                            <div className="text-lg text-center cursor-pointer">
                               {changetoKoreaDate(
                                 mergedUserTravelInfo[currentIndex].diary_update
                               )}
-                            </Link>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -475,12 +484,12 @@ const UserInfoPage = () => {
                         </button>
                         {mergedUserTravelInfo[currentIndex].diary_update ? (
                           <Link
-                            to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].id}`}
-                            key={mergedUserTravelInfo[currentIndex].id}
+                            to={`/TravelPostDetailPage/${mergedUserTravelInfo[currentIndex].id}`}
+                            key={mergedUserTravelInfo[currentIndex].plan_id}
                             style={{ backgroundColor: "#B09FCE" }}
                             className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
                           >
-                            여행기 수정
+                            여행기 보기
                           </Link>
                         ) : (
                           <Link
