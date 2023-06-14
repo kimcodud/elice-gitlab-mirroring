@@ -20,6 +20,15 @@ const Header = () => {
       localStorage.removeItem("isLogin");
     }
   };
+
+  useEffect(() => {
+    // console.log(localStorage.getItem("isLogin"));
+    if (localStorage.getItem("isLogin") === "1") {
+      getUserData();
+    }
+    // logoutHandler()
+  }, []);
+
   const getUserData = async () => {
     const result = await axios.get("http://localhost:3000/mypage", {
       withCredentials: true,
@@ -28,12 +37,6 @@ const Header = () => {
       setRole(result.data.userData.role);
     }
   };
-  console.log(document.cookie);
-
-  useEffect(() => {
-    getUserData();
-    // logoutHandler()
-  }, []);
   return (
     <header className="h-20">
       <nav

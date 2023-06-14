@@ -32,10 +32,10 @@ const Router = () => {
   useEffect(() => {
     if (localStorage.getItem("isLogin") === "1") {
       setIsLogin(true);
+      getUserData();
     } else {
       setIsLogin(false);
     }
-    getUserData();
   }, [location.pathname]);
   return (
     <Routes>
