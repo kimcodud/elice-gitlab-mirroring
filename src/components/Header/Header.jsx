@@ -17,9 +17,8 @@ const Header = () => {
     if (res.status === 200) {
       navigate("/");
       location.reload();
+      localStorage.removeItem("isLogin");
     }
-    console.log(res);
-    localStorage.removeItem("isLogin");
   };
   const getUserData = async () => {
     const result = await axios.get("http://localhost:3000/mypage", {
@@ -43,7 +42,7 @@ const Header = () => {
             className="ml-6 mr-48 h-20 w-18 -mt-3"
           ></img>
         </Link>
-        <Link to="/plannerMap" className="text-zinc-400 ml-auto p-3">
+        <Link to="/plannerMap/:id" className="text-zinc-400 ml-auto p-3">
           일정만들기(임시)
         </Link>
         <Link to="/plannerEdit" className="text-zinc-400 ml-auto p-3">

@@ -53,53 +53,54 @@ const MainPageComponent = () => {
       modalType: "info",
       style: {
         backgroundColor: "white",
-        width: "70rem",
+        width: "90rem",
         height: "30rem",
-        // top: "50%",
-        // left: "50%",
-        // transform: "translate(-50%, -50%)",
         borderRadius: "4px",
       },
       title: (
         // <div className="text-center font-bold text-4xl">{item.name_ko}</div>
-        <div></div>
+        <div style={{ display: "none" }}></div>
       ),
       content: (
         <div>
-          <div style={{}}>
-            {/* <img
+          <section className="overflow-hidden shadow-2xl md:grid md:grid-cols-3">
+            <img
+              alt="Trainer"
               src={item.image}
-              style={{ width: "20rem", height: "100%" }}
-            ></img>
-          </div>
-          {introductionText} */}
-            <div className="flex">
-              <div className="w-1/3">
-                <div
-                  className="h-full flex items-center justify-start"
-                  style={{ backgroundSize: "cover" }}
+              className="h-32 w-full object-cover"
+              style={{ height: "45vh" }}
+            />
+
+            <div className="p-4 text-center sm:p-6 md:col-span-2 lg:p-8">
+              <p className="text-sm font-semibold uppercase tracking-widest">
+                {item.name_ko}이 마음에 드신다면 여행을 계획해보세요!
+              </p>
+
+              <h2 className="mt-6 font-black uppercase">
+                <span className="text-4xl font-black sm:text-5xl lg:text-6xl mb-10">
+                  {item.name_en}
+                </span>
+
+                <span
+                  className="mt-16 block text-sm font-medium"
+                  style={{ textAlign: "left" }}
                 >
-                  <img
-                    src={item.image}
-                    alt="Modal Image"
-                    className="h-96 w-full"
-                  />
-                </div>
-              </div>
-              <div className="w-70 p-4">
-                <h2 className="text-lg font-bold mb-2">Modal Title</h2>
-                <p className="text-gray-700 mb-4">Modal content goes here.</p>
-                <div className="flex justify-end">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2">
-                    Close
-                  </button>
-                  <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
-                    Save
-                  </button>
-                </div>
-              </div>
+                  {introductionText}
+                </span>
+              </h2>
+
+              <Link
+                className="mt-8 inline-block w-full bg-black py-4 text-sm font-bold uppercase tracking-widest text-white"
+                to={`/plannerMap/${item.id}`}
+              >
+                일정 만들기
+              </Link>
+
+              <p className="mt-8 text-xs font-medium uppercase text-gray-400">
+                starRoad
+              </p>
             </div>
-          </div>
+          </section>
         </div>
       ),
     });
@@ -190,13 +191,15 @@ const MainPageComponent = () => {
         </Link>
         <button
           onClick={previousSlide}
-          className="absolute left-40 top-1/2 transform -translate-y-1/2 "
+          className="absolute top-1/2 transform -translate-y-1/2 "
+          style={{ marginLeft: "14rem" }}
         >
           <img src="/src/assets/prev.webp" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-40 top-1/2 transform -translate-y-1/2 "
+          className="absolute top-1/2 transform -translate-y-1/2 "
+          style={{ marginLeft: "108rem" }}
         >
           <img src="/src/assets/next.webp" />
         </button>
