@@ -127,6 +127,7 @@ const TravelWrite = () => {
         navigate("/");
       } else {
         console.log("등록에 실패했습니다.");
+        navigate(`/mypage`);
         console.log(response.status);
       }
     } catch (error) {
