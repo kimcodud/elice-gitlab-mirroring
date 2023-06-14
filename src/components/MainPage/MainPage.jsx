@@ -54,8 +54,9 @@ const MainPageComponent = () => {
       style: {
         backgroundColor: "white",
         width: "90rem",
-        height: "30rem",
+        height: "31rem",
         borderRadius: "4px",
+        overflow: "hidden",
       },
       title: (
         // <div className="text-center font-bold text-4xl">{item.name_ko}</div>
@@ -73,7 +74,7 @@ const MainPageComponent = () => {
 
             <div className="p-4 text-center sm:p-6 md:col-span-2 lg:p-8">
               <p className="text-sm font-semibold uppercase tracking-widest">
-                {item.name_ko}이 마음에 드신다면 여행을 계획해보세요!
+                {item.name_ko}에 관심이 있다면 여행을 계획해보세요!
               </p>
 
               <h2 className="mt-6 font-black uppercase">
@@ -90,10 +91,16 @@ const MainPageComponent = () => {
               </h2>
 
               <Link
-                className="mt-8 inline-block w-full bg-black py-4 text-sm font-bold uppercase tracking-widest text-white"
+                className="mt-10 inline-block w-1/3 mr-20 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
                 to={`/plannerMap/${item.id}`}
               >
                 일정 만들기
+              </Link>
+              <Link
+                className="mt-8 inline-block w-1/3 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
+                to={`/plannerMap/${item.id}`}
+              >
+                여행기
               </Link>
 
               <p className="mt-8 text-xs font-medium uppercase text-gray-400">
@@ -245,7 +252,7 @@ const MainPageComponent = () => {
                 style={{ height: "70%", cursor: "pointer" }}
               />
 
-              <div className="p-6">
+              <div className="p-10">
                 <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
                   {item.name_en}
                 </h5>
