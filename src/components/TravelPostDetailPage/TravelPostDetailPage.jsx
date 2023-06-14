@@ -190,7 +190,7 @@ function TravelPostDetail(props) {
 
   const handleClickDeletPost = async () => {
     try {
-      await axios.delete(`http://localhost:3000/diaries/mypage/${post.id}`, {
+      await axios.delete(`http://localhost:3000/mypage/diary/${post.id}`, {
         withCredentials: true,
       });
       navigate("/travelBoard");
@@ -199,7 +199,6 @@ function TravelPostDetail(props) {
       alert("삭제할 수 없습니다.");
     }
   };
-
   return (
     <div
       id="main"
