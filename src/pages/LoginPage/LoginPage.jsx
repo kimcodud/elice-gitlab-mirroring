@@ -5,8 +5,7 @@ const LoginPage = () => {
   return (
     <>
       <LoginPageComponent />
-      <Google />
-      <Kakao />
+      {/* <Kakao /> */}
     </>
   );
 };

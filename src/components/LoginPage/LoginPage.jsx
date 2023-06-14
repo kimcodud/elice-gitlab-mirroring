@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Google from "./Google";
 
 const LoginPageComponent = () => {
   const [user, setUser] = useState({
@@ -36,10 +37,10 @@ const LoginPageComponent = () => {
   };
 
   return (
-    <form className="max-w-md mx-auto mt-4 ">
+    <form className="max-w-md mx-auto mt-4">
       <div className="mb-10">
-        <h1 className="text-5xl text-center text-slate-600">LOG IN</h1>
-        <h6 className="text-xs text-center text-slate-400">
+        <h1 className="text-5xl text-center text-slate-600 mt-60">LOG IN</h1>
+        <h6 className="text-sm text-center text-slate-400">
           계정이 있으시다면 로그인하세요
         </h6>
       </div>
@@ -63,17 +64,29 @@ const LoginPageComponent = () => {
           value={user.password || ""}
           onChange={(e) => setUser({ ...user, password: e.target.value })}
           required
-          className="w-full p-1 border-b-2 outline-none border-b-violet-400 "
+          className="w-full p-1 border-b-2 outline-none border-b-violet-400 mb-6 "
         />
       </label>
 
       {/* <div className="text-sm text-violet-400">비밀번호를 잊으셨나요?</div> */}
-
+      <div style={{}}>
+        <div className="my-3 text-sm text-center">
+          <Google />
+        </div>
+      </div>
       <div className="flex items-center justify-center mt-5">
         <button
           onClick={handleSubmit}
           type="submit"
-          className="px-32 py-2 mt-6 text-white rounded bg-violet-400 "
+          className="px-52 mt-1 text-white rounded bg-violet-400"
+          style={{
+            fontSize: "1.1rem",
+            marginTop: "-1rem",
+            padding: "0.5rem",
+            width: "100%",
+            border: "1px solid gray", // 버튼의 상단 여백을 조정할 수 있습니다.
+            // 추가적인 스타일링 옵션을 여기에 작성할 수 있습니다.
+          }}
         >
           로그인
         </button>
@@ -85,8 +98,7 @@ const LoginPageComponent = () => {
           <a href="/signup">회원가입하기</a>
         </div>
       </div>
-      <p className="my-3 text-xs text-center text-slate-500">또는</p>
-      <div className="my-3 text-sm text-center ">SNS 간편 로그인</div>
+      {/* <p className="my-3 text-xs text-center text-slate-500">또는</p> */}
     </form>
   );
 };
