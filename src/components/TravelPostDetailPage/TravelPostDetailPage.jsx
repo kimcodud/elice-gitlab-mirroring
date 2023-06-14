@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal.jsx";
 import { useModalStore } from "../../store/store";
-
+import { useNavigate } from "react-router-dom";
 import prevBtn from "../../assets/prev.webp";
 import nextBtn from "../../assets/next.webp";
 import deleteBtn from "../../assets/close.webp";
@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 
 function TravelPostDetail(props) {
   const { openModal } = useModalStore();
+  const navigate = useNavigate();
   const [post, setPost] = useState({
     id: "",
     username: "",
@@ -25,6 +26,20 @@ function TravelPostDetail(props) {
     created_at: "",
     updated_at: "",
   });
+
+  const changetoKoreaDate = (dateString) => {
+    if (!dateString) {
+      return "";
+    }
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return `${year}.${month}.${day}`;
+  };
+
   const postImageArr = post.image ? JSON.parse(post.image) : [];
 
   const { postId } = useParams();
@@ -76,7 +91,7 @@ function TravelPostDetail(props) {
           <div className="col-span-1 row-span-full w-full p-1">
             <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-md">
               <img
-                className="mx-auto my-auto w-3/4"
+                className="mx-auto my-auto w-3/4 hover:"
                 src={userImg}
                 alt="유저이미지"
               />
@@ -171,6 +186,18 @@ function TravelPostDetail(props) {
 
   const handleClickThumbnail = (index) => {
     setCurrentIndex(index);
+  };
+
+  const handleClickDeletPost = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/diaries/mypage/${post.id}`, {
+        withCredentials: true,
+      });
+      navigate("/travelBoard");
+    } catch (error) {
+      console.log(error);
+      alert("삭제할 수 없습니다.");
+    }
   };
 
   return (
@@ -332,15 +359,20 @@ function TravelPostDetail(props) {
             >
               댓글보기
             </button>
-            <div className="flex flex-row justify-end">
-              <button style={{ display: "none" }}>수정</button>
-              <button style={{ display: "none" }} className="ml-3">
-                삭제
-              </button>
-            </div>
+
             <div className="flex flex-col ">
               {/* <div>글쓴이 : {post.username}</div> */}
-              <div>작성일(수정일) : {post.created_at}</div>
+              <div>
+                {changetoKoreaDate(post.created_at)}
+                {post.created_at !== post.updated_at &&
+                  ` (${changetoKoreaDate(post.created_at)})`}
+              </div>
+              <div className="flex flex-row justify-end">
+                <button>수정</button>
+                <button onClick={handleClickDeletPost} className="ml-5">
+                  삭제
+                </button>
+              </div>
             </div>
           </div>
           <div
