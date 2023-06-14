@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal.jsx";
 import { useModalStore } from "../../store/store";
@@ -20,41 +20,34 @@ function TravelPostDetail(props) {
     plan_id: "",
     title: "",
     content: "",
-    image: "",
+    image: [],
     destination: "",
     created_at: "",
     updated_at: "",
   });
 
   const { postId } = useParams();
-  // console.log(id);
+
   useEffect(() => {
     const fetchPostDetailData = async () => {
       try {
         const getPostResponse = await axios.get(
-          `http://localhost:3000/diaries/${postId}`,
-          {
-            params: {
-              id: post.id,
-              plan_id: post.plan_id,
-              title: post.title,
-              content: post.content,
-              image: post.image,
-              destination: post.destination,
-              created_at: post.created_at,
-              updated_at: post.updated_at,
-            },
-          }
+          `http://localhost:3000/diaries/${postId}`
         );
         console.log(getPostResponse);
-        setPost(getPostResponse.data);
+
+        setPost({
+          ...getPostResponse.data,
+          image: Array.isArray(getPostResponse.data.image)
+            ? getPostResponse.data.image
+            : [getPostResponse.data.image],
+        });
       } catch (error) {
         console.log(error);
       }
     };
     fetchPostDetailData();
-  }, []);
-  const contentImages = post.image.split(" ");
+  }, [postId]);
 
   const CommentComponent = () => {
     // 댓글
@@ -62,19 +55,7 @@ function TravelPostDetail(props) {
       const fetchPostDetailData = async () => {
         try {
           const getPostResponse = await axios.get(
-            `http://localhost:3000/comments/diary/${postId}?page=1`,
-            {
-              params: {
-                id: post.id,
-                plan_id: post.plan_id,
-                title: post.title,
-                content: post.content,
-                image: post.image,
-                destination: post.destination,
-                created_at: post.created_at,
-                updated_at: post.updated_at,
-              },
-            }
+            `http://localhost:3000/comments/diary/${postId}?page=1`
           );
           console.log(getPostResponse);
           setPost(getPostResponse.data);
@@ -83,7 +64,7 @@ function TravelPostDetail(props) {
         }
       };
       fetchPostDetailData();
-    }, []);
+    }, [postId]);
 
     return (
       <form
@@ -178,12 +159,12 @@ function TravelPostDetail(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleClickNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % contentImages.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % post.image.length);
   };
 
   const handleClickPrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? contentImages.length - 1 : prevIndex - 1
+      prevIndex === 0 ? post.image.length - 1 : prevIndex - 1
     );
   };
 
@@ -253,12 +234,38 @@ function TravelPostDetail(props) {
                 alt="이전"
               />
             </div>
-            <img
-              id="mainImg"
-              className="box-content w-full h-full object-cover rounded-2xl select-none"
-              src={contentImages[currentIndex]}
-              alt="Main"
-            />
+            {post.image.length > 0 && (
+              <img
+                id="mainImg"
+                className="box-content w-full h-full object-cover rounded-2xl select-none"
+                src={post.image[currentIndex]}
+                alt="Main"
+              />
+            )}
+
+            {post.image.length > 1 && (
+              // 이미지 썸네일 렌더링
+              <div
+                id="imgCategory"
+                className="hidden flex-row justify-center absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-50 rounded-2xl select-none mb-3 px-3 py-1"
+              >
+                {post.image.map((image, index) => (
+                  <div
+                    className={`w-${
+                      4 / post.image.length
+                    } p-1 hover:bg-gray-200 hover:bg-opacity-80 rounded-xl `}
+                    key={index}
+                    onClick={() => handleClickThumbnail(index)}
+                  >
+                    <img
+                      className="box-content w-6 h-6 rounded-xl"
+                      src={image}
+                      alt={`Thumbnail ${index}`}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
             <div
               onClick={handleClickNext}
               className="btn bg-transparent h-full w-1/6 hover:bg-gray-200 hover:bg-opacity-20 absolute top-1/2 px-3 right-0 transform -translate-y-1/2 flex flex-row justify-end select-none"
@@ -275,10 +282,10 @@ function TravelPostDetail(props) {
               id="imgCategory"
               className="hidden flex-row justify-center absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-50 rounded-2xl select-none mb-3 px-3 py-1"
             >
-              {contentImages.map((image, index) => (
+              {post.image.map((image, index) => (
                 <div
                   className={`w-${
-                    4 / contentImages.length
+                    4 / post.image.length
                   } p-1 hover:bg-gray-200 hover:bg-opacity-80 rounded-xl `}
                   key={index}
                   onClick={() => handleClickThumbnail(index)}
@@ -313,7 +320,7 @@ function TravelPostDetail(props) {
           </div>
           <div
             id="mainText"
-            className="whitespace-pre-wrap overflow-x-auto overflow-scroll w-full h-full px-5 text-xl m-5"
+            className="whitespace-pre-wrap overflow-x-auto overflow-scroll w-full h-full px-5 m-5"
           >
             내용
             {post.content}

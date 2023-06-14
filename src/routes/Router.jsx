@@ -53,7 +53,10 @@ const Router = () => {
         <>
           <Route path="/travelBoard" element={<TravelBoardPage />} />
           <Route path="/Mypage" element={<Mypage />} />
-          <Route path="/travelWritePage:postId" element={<TravelWritePage />} />
+          <Route
+            path="/travelWritePage/:postId"
+            element={<TravelWritePage />}
+          />
           <Route
             path="/TravelPostDetailPage/:postId"
             element={<TravelPostDetailPage />}
