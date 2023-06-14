@@ -25,6 +25,8 @@ const Router = () => {
     console.log(result.data.userData.role);
     if (result.data.userData.role === "ADMIN") {
       setIsAdmin(true);
+    } else if (result.status === 500) {
+      localStorage.removeItem("isLogin");
     }
   };
   useEffect(() => {
@@ -61,6 +63,7 @@ const Router = () => {
             path="/TravelPostDetailPage/:postId"
             element={<TravelPostDetailPage />}
           />
+          <Route path="/plannerMap/:id" element={<PlannerMap />} />
           <Route path="/plannerMap" element={<PlannerMap />} />
           <Route path="/plannerEdit" element={<PlannerEditPage />} />
         </>

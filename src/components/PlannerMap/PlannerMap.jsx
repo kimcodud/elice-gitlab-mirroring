@@ -1,18 +1,20 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
-import mockData from "../../assets/mockData.json";
 
 const SearchMap = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
   const [infowindow, setInfowindow] = useState();
-  const [dateList, setDateList] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
   const [markers, setMakers] = useState([]);
+
   const [isAll, setIsAll] = useState(true);
   const [showDayList, setShowDayList] = useState(false);
-  const [list, setList] = useState(mockData);
+
+  const [dateList, setDateList] = useState([]);
+  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [selectedDayPlaces, setSelectedDayPlaces] = useState(); //하루 장소 목록
 
   const createMarker = (position, index) => {
     const imageSrc =
@@ -115,10 +117,6 @@ const SearchMap = () => {
     setMakers([]);
   };
 
-  // const addPlaces = (data) => {
-  //   console.log(data);
-  // };
-
   const removeAllChildNodes = (elementId) => {
     const parent = document.getElementById(elementId);
     while (parent.firstChild) {
@@ -149,7 +147,7 @@ const SearchMap = () => {
 
   const getDateList = (dateList) => {
     setDateList(dateList);
-    console.log("dateList", dateList);
+    // console.log("dateList", dateList);
   };
 
   const PlaceListComponent = useMemo(() => {
@@ -158,28 +156,23 @@ const SearchMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
+        selectedPlaces={selectedPlaces}
+        setSelectedPlaces={setSelectedPlaces}
       />
     );
   }, [markers, places]);
 
   const DatePickerComponent = useMemo(() => {
-    return <DatePicker />;
+    return (
+      <DatePicker
+        selectedPlaces={selectedPlaces}
+        setSelectedPlaces={setSelectedPlaces}
+        getDateList={getDateList}
+        selectedDayPlaces={selectedDayPlaces}
+        setSelectedDayPlaces={setSelectedDayPlaces}
+      />
+    );
   });
-
-  const getList = (list) => {
-    setList(list);
-    // console.log("list", list);
-  };
-
-  const handleClickAll = () => {
-    setIsAll(true);
-    setShowDayList(false);
-  };
-
-  const handleClickDay = () => {
-    setShowDayList(true);
-    setIsAll(false);
-  };
 
   const attachMapSdkScript = () => {
     const script = document.createElement("script");
@@ -215,6 +208,16 @@ const SearchMap = () => {
     }
   };
 
+  // const handleClickAll = () => {
+  //   setIsAll(true);
+  //   setShowDayList(false);
+  // };
+
+  // const handleClickDay = () => {
+  //   setShowDayList(true);
+  //   setIsAll(false);
+  // };
+
   return (
     <>
       <div
@@ -228,6 +231,31 @@ const SearchMap = () => {
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ marginRight: "10px" }}>
                 {DatePickerComponent}
+                <div
+                  className="flex flex-col items-center mt-4"
+                  style={{
+                    height: "300px",
+                    whiteSpace: "nowrap",
+                    overflow: "auto",
+                  }}
+                >
+                  {/* <button
+                    className="px-3 py-2 rounded bg-purple-500 text-white"
+                    onClick={handleClickAll}
+                  >
+                    전체
+                  </button> */}
+                  {/* {dateList.map((date, index) => (
+                    <button
+                      className="px-3 py-2 rounded bg-white text-purple-500 shadow-sm"
+                      key={index}
+                      // onClick={handleClickDay}
+                    >
+                      Day{index + 1}
+                    </button>
+                  ))} */}
+                </div>
+
                 <div
                   style={{ display: "flex", justifyContent: "space-around" }}
                 ></div>
