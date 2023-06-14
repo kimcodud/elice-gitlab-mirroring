@@ -1,19 +1,25 @@
-import { useState } from "react";
-import Modal from "../modal/modal";
-import { ModalPortal } from "../modal/ModalPortal";
-import { useModalStore } from "../../store/store";
-import DatePicker from "../DatePicker/DatePicker";
+import { useState } from 'react';
+import Modal from '../modal/modal';
+import { ModalPortal } from '../modal/ModalPortal';
+import { useModalStore } from '../../store/store';
 
-const PlaceList = (props) => {
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const { places, infowindow, handleDisplayInfowindow } = props;
+const PlaceList = ({
+  places,
+  infowindow,
+  handleDisplayInfowindow,
+  selectedPlaces,
+  setSelectedPlaces,
+}) => {
+  // const [selectedPlace, setSelectedPlace] = useState([]);
+  // const { places, infowindow, handleDisplayInfowindow } = props;
   const { openModal } = useModalStore();
 
   // + 버튼 눌렀을 때 장소 넘겨주는 함수
 
-  const handlePlaceClick = (index) => {
-    const selectedPlace = places[index];
-    setSelectedPlace(selectedPlace);
+  const handleAddPlace = (index) => {
+    const place = places[index];
+    console.log('selectedPlace', place);
+    setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   };
 
   // const handlePlaceClick = (index) => {
@@ -39,24 +45,24 @@ const PlaceList = (props) => {
   // };
 
   return (
-    <div style={{ color: "black" }}>
+    <div style={{ color: 'black' }}>
       {places?.map((place, index) => {
         const openInfoModal = () => {
           openModal({
-            modalType: "info",
+            modalType: 'info',
             style: {
-              backgroundColor: "white",
-              width: "500px",
-              height: "180px",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              borderRadius: "10px",
+              backgroundColor: 'white',
+              width: '500px',
+              height: '180px',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              borderRadius: '10px',
             },
             title: (
               <div
                 className="subpixel-antialiased text-3xl font-bold text-purple-700"
-                style={{ textAlign: "left" }}
+                style={{ textAlign: 'left' }}
               >
                 {place.place_name}
               </div>
@@ -68,10 +74,10 @@ const PlaceList = (props) => {
                 </p>
                 <div
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    height: "100%",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    height: '100%',
                   }}
                 >
                   <div className="text-purple-500 font-semibold">
@@ -79,23 +85,26 @@ const PlaceList = (props) => {
                   </div>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
+                      display: 'flex',
+                      justifyContent: 'flex-end',
                     }}
                   >
                     <img
                       src="https://play-lh.googleusercontent.com/Nvrf8Z89_3S8H6YnOLgyAbe-PSSeCZnJDA8zv7LY04hEvi8atTgp_fmQ5RZ591Qpxh5G"
                       alt="kakaoMap image"
                       style={{
-                        width: "30px",
-                        height: "30px",
-                        marginRight: "10px",
+                        width: '30px',
+                        height: '30px',
+                        marginRight: '10px',
                       }}
                       onClick={() => {
-                        window.open(place.place_url, "_blank");
+                        window.open(place.place_url, '_blank');
                       }}
                     />
-                    <button className="rounded-md bg-purple-500/25 text-xs">
+                    <button
+                      className="rounded-md bg-purple-500/25 text-xs"
+                      onClick={() => handleAddPlace(index)}
+                    >
                       일정 추가
                     </button>
                   </div>
@@ -116,10 +125,10 @@ const PlaceList = (props) => {
             <span className={`markerbg marker${index + 1}`} />
             <div
               className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
-              style={{ marginLeft: "10px" }}
+              style={{ marginLeft: '10px' }}
             >
               <div className="font-bold text-sm">{place.place_name}</div>
-              <div style={{ display: "flex ", justifyContent: "right" }}>
+              <div style={{ display: 'flex ', justifyContent: 'right' }}>
                 <span className="text-xs">{place.category_group_name}</span>
                 <img
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/info/v1/24px.svg"
@@ -127,15 +136,15 @@ const PlaceList = (props) => {
                   onClick={() => openInfoModal()}
                   className="cursor-pointer"
                   style={{
-                    marginLeft: "auto",
-                    marginRight: "5px",
+                    marginLeft: 'auto',
+                    marginRight: '5px',
                   }}
                 />
                 <img
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/add_circle/v1/24px.svg"
                   alt="add_circle icon"
                   className="cursor-pointer"
-                  onClick={() => handlePlaceClick(index)}
+                  onClick={() => handleAddPlace(index)}
                 />
               </div>
             </div>

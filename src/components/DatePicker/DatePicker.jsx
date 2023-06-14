@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
-import AddDestination from "../AddDestination/AddDestination";
+import React, { useState, useEffect, useMemo } from 'react';
+import AddDestination from '../AddDestination/AddDestination';
 
 const DatePicker = ({ getDateList, handlePlaceClick }) => {
   const [dates, setDates] = useState([]); //선택된 날짜 목록
@@ -10,7 +10,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
   const [selectedDates, setSelectedDates] = useState([]);
 
   const handleClickDate = (date) => {
-    console.log("Clicked date:", date);
+    console.log('Clicked date:', date);
   };
 
   // 전체 날짜를 보여주는 함수
@@ -23,6 +23,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
     if (selectedStartDate !== null && selectedEndDate !== null) {
       const dates = getDatesBetween(selectedStartDate, selectedEndDate);
       setSelectedDates(dates);
+      getDateList(dates);
     }
   }, [selectedStartDate, selectedEndDate]);
 
@@ -126,7 +127,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
 
         // 시작일부터 완료일까지의 날짜 목록 생성
         const dates = getDatesBetween(selectedStartDate, date);
-        console.log("시작일부터 완료일까지 날짜 목록:", dates);
+        console.log('시작일부터 완료일까지 날짜 목록:', dates);
         setDates(dates);
       } else {
         //선택한 날짜가 시작일보다 빠른 경우 시작일 초기화
@@ -177,7 +178,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
         <div className="flex justify-between items-center">
           <button
             className="w-16 h-9 rounded"
-            style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
+            style={{ backgroundColor: '#E9EBED', color: '#B09FCE' }}
             onClick={handlePrevMonth}
           >
             Prev
@@ -185,7 +186,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
           <h3>{`${monthData.year}년 ${monthData.month}월`}</h3>
           <button
             className="w-16 h-9 rounded"
-            style={{ backgroundColor: "#E9EBED", color: "#B09FCE" }}
+            style={{ backgroundColor: '#E9EBED', color: '#B09FCE' }}
             onClick={handleNextMonth}
           >
             Next
@@ -193,20 +194,20 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
         </div>
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           <div
             style={{
-              height: "160px",
-              display: "flex",
-              flexDirection: "column",
-              alignContent: "center",
+              height: '160px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignContent: 'center',
             }}
           >
-            <div className="h-6" style={{ borderBottom: "2px solid black" }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="h-6" style={{ borderBottom: '2px solid black' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div className="w-8 flex justify-center">일</div>
                 <div className="w-8 flex justify-center">월</div>
                 <div className="w-8 flex justify-center">화</div>
@@ -220,8 +221,8 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
               {monthData.date.map((week, weekIndex) => (
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
+                    display: 'flex',
+                    justifyContent: 'space-between',
                   }}
                   key={weekIndex}
                 >
@@ -243,13 +244,13 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
                     let cellStyle = {};
                     if (isStartDate) {
                       cellStyle = {
-                        backgroundColor: "#B09FCE",
-                        borderRadius: "50%",
+                        backgroundColor: '#B09FCE',
+                        borderRadius: '50%',
                       };
                     } else if (isEndDate) {
                       cellStyle = {
-                        backgroundColor: "#B09FCE",
-                        borderRadius: "50%",
+                        backgroundColor: '#B09FCE',
+                        borderRadius: '50%',
                       };
                     } else if (isInRange) {
                       cellStyle = {
@@ -287,7 +288,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
         {dates.length} Day
       </div>
       <div className="w-72 h-72 drop-shadow bg-white rounded flex justify-center items-center">
-        <div style={{ width: "250px", height: "250px" }}>
+        <div style={{ width: '250px', height: '250px' }}>
           {renderDatePicker()}
         </div>
       </div>
@@ -296,25 +297,25 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
         <div className="text-sm">
           {selectedStartDate
             ? `${selectedStartDate.year}-${selectedStartDate.month}-${selectedStartDate.date} ~ `
-            : "0000-00-00 ~ "}
+            : '0000-00-00 ~ '}
           {selectedEndDate
             ? `${selectedEndDate.year}-${selectedEndDate.month}-${selectedEndDate.date}`
-            : "0000-00-00"}
+            : '0000-00-00'}
         </div>
       </div>
       <div>
-        <div className="flex justify-center w-48">
+        {/* <div className="flex justify-center w-48">
           <button
             className="px-3 py-2 rounded bg-purple-500 text-white"
             onClick={handleShowAllDates}
           >
             전체
           </button>
-        </div>
-        <AddDestination
+        </div> */}
+        {/* <AddDestination
           handleClickDate={handleClickDate}
           selectedDates={selectedDates}
-        />
+        /> */}
       </div>
     </div>
   );
