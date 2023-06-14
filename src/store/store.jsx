@@ -1,11 +1,11 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 const useModalStore = create((set) => ({
   isOpen: false,
-  modalType: '',
+  modalType: "",
   style: {},
-  title: '',
-  content: '',
+  title: "",
+  content: "",
   openModal: (modalData) => {
     set((state) => ({
       ...state,
@@ -20,10 +20,9 @@ const useModalStore = create((set) => ({
     set((state) => ({
       ...state,
       isOpen: false,
-      modalType: '',
+      modalType: "",
     }));
   },
 }));
-
 
 export { useModalStore };
