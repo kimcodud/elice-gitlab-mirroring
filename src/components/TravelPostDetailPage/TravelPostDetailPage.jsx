@@ -20,11 +20,12 @@ function TravelPostDetail(props) {
     plan_id: "",
     title: "",
     content: "",
-    image: [],
+    image: "",
     destination: "",
     created_at: "",
     updated_at: "",
   });
+  const postImageArr = post.image ? JSON.parse(post.image) : [];
 
   const { postId } = useParams();
 
@@ -34,7 +35,7 @@ function TravelPostDetail(props) {
         const getPostResponse = await axios.get(
           `http://localhost:3000/diaries/${postId}`
         );
-        console.log(getPostResponse);
+        //console.log(getPostResponse);
 
         setPost({
           ...getPostResponse.data,
@@ -51,20 +52,20 @@ function TravelPostDetail(props) {
 
   const CommentComponent = () => {
     // 댓글
-    useEffect(() => {
-      const fetchPostDetailData = async () => {
-        try {
-          const getPostResponse = await axios.get(
-            `http://localhost:3000/comments/diary/${postId}?page=1`
-          );
-          console.log(getPostResponse);
-          setPost(getPostResponse.data);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      fetchPostDetailData();
-    }, [postId]);
+    // useEffect(() => {
+    //   const fetchPostDetailData = async () => {
+    //     try {
+    //       const getPostResponse = await axios.get(
+    //         `http://localhost:3000/comments/diary/${postId}?page=1`
+    //       );
+    //       console.log(getPostResponse);
+    //       setPost(getPostResponse.data);
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   };
+    //   fetchPostDetailData();
+    // }, [postId]);
 
     return (
       <form
@@ -159,12 +160,12 @@ function TravelPostDetail(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleClickNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % post.image.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % postImageArr.length);
   };
 
   const handleClickPrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? post.image.length - 1 : prevIndex - 1
+      prevIndex === 0 ? postImageArr.length - 1 : prevIndex - 1
     );
   };
 
@@ -234,25 +235,25 @@ function TravelPostDetail(props) {
                 alt="이전"
               />
             </div>
-            {post.image.length > 0 && (
+            {postImageArr.length > 0 && (
               <img
                 id="mainImg"
                 className="box-content w-full h-full object-cover rounded-2xl select-none"
-                src={post.image[currentIndex]}
+                src={postImageArr[currentIndex]}
                 alt="Main"
               />
             )}
 
-            {post.image.length > 1 && (
+            {postImageArr.length > 1 && (
               // 이미지 썸네일 렌더링
               <div
                 id="imgCategory"
                 className="hidden flex-row justify-center absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-50 rounded-2xl select-none mb-3 px-3 py-1"
               >
-                {post.image.map((image, index) => (
+                {postImageArr.map((image, index) => (
                   <div
                     className={`w-${
-                      4 / post.image.length
+                      4 / postImageArr.length
                     } p-1 hover:bg-gray-200 hover:bg-opacity-80 rounded-xl `}
                     key={index}
                     onClick={() => handleClickThumbnail(index)}
@@ -282,10 +283,10 @@ function TravelPostDetail(props) {
               id="imgCategory"
               className="hidden flex-row justify-center absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gray-200 bg-opacity-50 rounded-2xl select-none mb-3 px-3 py-1"
             >
-              {post.image.map((image, index) => (
+              {postImageArr.map((image, index) => (
                 <div
                   className={`w-${
-                    4 / post.image.length
+                    4 / postImageArr.length
                   } p-1 hover:bg-gray-200 hover:bg-opacity-80 rounded-xl `}
                   key={index}
                   onClick={() => handleClickThumbnail(index)}
@@ -307,7 +308,6 @@ function TravelPostDetail(props) {
               className="box-content w-full text-3xl font-bold"
               style={{ color: "#6645B9" }}
             >
-              제목
               {post.title}
             </div>
             <button
@@ -322,7 +322,6 @@ function TravelPostDetail(props) {
             id="mainText"
             className="whitespace-pre-wrap overflow-x-auto overflow-scroll w-full h-full px-5 m-5"
           >
-            내용
             {post.content}
           </div>
 

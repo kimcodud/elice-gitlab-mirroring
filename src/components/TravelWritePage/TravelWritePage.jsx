@@ -3,9 +3,9 @@ import axios from "axios";
 import addButton from "../../assets/addIcon.webp";
 import deletButton from "../../assets/deletIcon.webp";
 import goBackIcon from "../../assets/goBackIcon.webp";
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
 const TravelWrite = () => {
+  const navigate = useNavigate();
   const [selectImages, setSelectImages] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -124,8 +124,10 @@ const TravelWrite = () => {
 
       if (response.status === 200) {
         console.log("등록되었습니다!");
+        navigate("/");
       } else {
         console.log("등록에 실패했습니다.");
+        console.log(response.status);
       }
     } catch (error) {
       console.log("API 호출 중 오류가 발생했습니다:", error);
