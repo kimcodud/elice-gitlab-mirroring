@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
@@ -9,6 +10,9 @@ const PlaceList = (props) => {
     handleDisplayInfowindow,
     selectedPlaces,
     setSelectedPlaces,
+
+    selectedDayPlaces,
+    setSelectedDayPlaces,
   } = props;
   const { openModal } = useModalStore();
 

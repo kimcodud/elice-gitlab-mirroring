@@ -117,10 +117,6 @@ const SearchMap = () => {
     setMakers([]);
   };
 
-  // const addPlaces = (data) => {
-  //   console.log(data);
-  // };
-
   const removeAllChildNodes = (elementId) => {
     const parent = document.getElementById(elementId);
     while (parent.firstChild) {
@@ -172,6 +168,8 @@ const SearchMap = () => {
         selectedPlaces={selectedPlaces}
         setSelectedPlaces={setSelectedPlaces}
         getDateList={getDateList}
+        selectedDayPlaces={selectedDayPlaces}
+        setSelectedDayPlaces={setSelectedDayPlaces}
       />
     );
   });
@@ -210,15 +208,15 @@ const SearchMap = () => {
     }
   };
 
-  const handleClickAll = () => {
-    setIsAll(true);
-    setShowDayList(false);
-  };
+  // const handleClickAll = () => {
+  //   setIsAll(true);
+  //   setShowDayList(false);
+  // };
 
-  const handleClickDay = () => {
-    setShowDayList(true);
-    setIsAll(false);
-  };
+  // const handleClickDay = () => {
+  //   setShowDayList(true);
+  //   setIsAll(false);
+  // };
 
   return (
     <>
@@ -241,21 +239,21 @@ const SearchMap = () => {
                     overflow: "auto",
                   }}
                 >
-                  <button
+                  {/* <button
                     className="px-3 py-2 rounded bg-purple-500 text-white"
                     onClick={handleClickAll}
                   >
                     전체
-                  </button>
-                  {dateList.map((date, index) => (
+                  </button> */}
+                  {/* {dateList.map((date, index) => (
                     <button
                       className="px-3 py-2 rounded bg-white text-purple-500 shadow-sm"
                       key={index}
-                      onClick={handleClickDay}
+                      // onClick={handleClickDay}
                     >
                       Day{index + 1}
                     </button>
-                  ))}
+                  ))} */}
                 </div>
 
                 <div
