@@ -1,19 +1,22 @@
-import { useState } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
-import DatePicker from "../DatePicker/DatePicker";
 
 const PlaceList = (props) => {
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const { places, infowindow, handleDisplayInfowindow } = props;
+  const {
+    places,
+    infowindow,
+    handleDisplayInfowindow,
+    selectedPlaces,
+    setSelectedPlaces,
+  } = props;
   const { openModal } = useModalStore();
 
   // + 버튼 눌렀을 때 장소 넘겨주는 함수
-
-  const handlePlaceClick = (index) => {
-    const selectedPlace = places[index];
-    setSelectedPlace(selectedPlace);
+  const handleAddPlace = (index) => {
+    const place = places[index];
+    console.log("selectedPlace", place);
+    setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   };
 
   // const handlePlaceClick = (index) => {
@@ -95,7 +98,10 @@ const PlaceList = (props) => {
                         window.open(place.place_url, "_blank");
                       }}
                     />
-                    <button className="rounded-md bg-purple-500/25 text-xs">
+                    <button
+                      className="rounded-md bg-purple-500/25 text-xs"
+                      onClick={() => handleAddPlace(index)}
+                    >
                       일정 추가
                     </button>
                   </div>
@@ -135,7 +141,7 @@ const PlaceList = (props) => {
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/add_circle/v1/24px.svg"
                   alt="add_circle icon"
                   className="cursor-pointer"
-                  onClick={() => handlePlaceClick(index)}
+                  onClick={() => handleAddPlace(index)}
                 />
               </div>
             </div>

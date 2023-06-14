@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import AddDestination from "../AddDestination/AddDestination";
 
-const DatePicker = ({ getDateList, handlePlaceClick }) => {
+const DatePicker = ({ getDateList, selectedPlaces, setSelectedPlaces }) => {
   const [dates, setDates] = useState([]); //선택된 날짜 목록
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -23,6 +23,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
     if (selectedStartDate !== null && selectedEndDate !== null) {
       const dates = getDatesBetween(selectedStartDate, selectedEndDate);
       setSelectedDates(dates);
+      getDateList(dates);
     }
   }, [selectedStartDate, selectedEndDate]);
 
@@ -126,7 +127,7 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
 
         // 시작일부터 완료일까지의 날짜 목록 생성
         const dates = getDatesBetween(selectedStartDate, date);
-        console.log("시작일부터 완료일까지 날짜 목록:", dates);
+        // console.log("시작일부터 완료일까지 날짜 목록:", dates);
         setDates(dates);
       } else {
         //선택한 날짜가 시작일보다 빠른 경우 시작일 초기화
@@ -303,17 +304,12 @@ const DatePicker = ({ getDateList, handlePlaceClick }) => {
         </div>
       </div>
       <div>
-        <div className="flex justify-center w-48">
-          <button
-            className="px-3 py-2 rounded bg-purple-500 text-white"
-            onClick={handleShowAllDates}
-          >
-            전체
-          </button>
-        </div>
+        <div className="flex justify-center w-48"></div>
         <AddDestination
           handleClickDate={handleClickDate}
           selectedDates={selectedDates}
+          selectedPlaces={selectedPlaces}
+          setSelectedPlaces={setSelectedPlaces}
         />
       </div>
     </div>
