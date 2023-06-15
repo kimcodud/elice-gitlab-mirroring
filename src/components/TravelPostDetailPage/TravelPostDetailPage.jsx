@@ -248,6 +248,27 @@ function TravelPostDetail(props) {
       alert("나의 여행기가 아닙니다.\n삭제할 수 없습니다.");
     }
   };
+  const [comment, setComment] = useState("");
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleCommentSubmit = async () => {
+    //댓글 달기 post
+    try {
+      const url = `http://localhost:3000/comments/`;
+      const header = {
+        withCredentials: true,
+      };
+      const body = {
+        diary_id: postId,
+        comment: comment,
+      };
+      const response = await axios.post(url, header, body); // 결과에 따라
+    } catch {
+      console.log("API 호출 중 오류가 발생했습니다:", error);
+    }
+  };
   return (
     <div
       id="main"
@@ -425,7 +446,8 @@ function TravelPostDetail(props) {
               </div>
             </div>
           </div>
-          <div
+          <form
+            onSubmit={handleCommentSubmit}
             id="commentBox"
             className="grid grid-cols-[1fr,10fr,1.5fr] gap-2 justify-items-center items-center bg-gray-100 w-full p-3 mt-3 rounded-2xl bottom-0"
           >
@@ -435,6 +457,8 @@ function TravelPostDetail(props) {
             <input
               type="text"
               placeholder="댓글을 작성해주세요."
+              value={comment}
+              onChange={handleCommentChange}
               className="bg-transparent justify-self-center w-full h-8 px-4 bg-white rounded-2xl hide-input-focus outline-none"
             />
             <input
@@ -443,7 +467,7 @@ function TravelPostDetail(props) {
               className="box-content text-white rounded w-16 py-1 mr-2 cursor-pointer"
               style={{ backgroundColor: "#B09FCE" }}
             />
-          </div>
+          </form>
         </div>
       </div>
       <ModalPortal>
