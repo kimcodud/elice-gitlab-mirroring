@@ -53,12 +53,13 @@ const UserInfoPage = () => {
       return "";
     }
     const date = new Date(dateString);
+    date.setHours(date.getHours() + 9); // 9시간 추가
 
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
+    const koreaYear = date.getFullYear();
+    const koreaMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+    const koreaDay = date.getDate().toString().padStart(2, "0");
 
-    return `${year}.${month}.${day}`;
+    return `${koreaYear}.${koreaMonth}.${koreaDay}`;
   };
 
   const handleWriteClick = () => {
