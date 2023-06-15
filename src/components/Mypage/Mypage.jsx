@@ -224,7 +224,6 @@ const UserInfoPage = () => {
         window.location.reload();
       } catch (error) {
         console.error(error);
-        alert(error);
       }
     };
     const handleClickDeletUser = async () => {
@@ -264,6 +263,7 @@ const UserInfoPage = () => {
             <input
               type="text"
               name="email"
+              required
               label="이메일"
               value={user.email}
               onChange={handleValueChange}
@@ -280,6 +280,7 @@ const UserInfoPage = () => {
               type="password"
               label="비밀번호"
               name="password"
+              required
               value={user.password}
               onChange={handleValueChange}
               minLength={10}
@@ -306,6 +307,7 @@ const UserInfoPage = () => {
               type="password"
               label="비밀번호 확인"
               name="passwordConfirm"
+              required
               value={user.passwordConfirm}
               onChange={handleValueChange}
               minLength={10}
@@ -365,7 +367,7 @@ const UserInfoPage = () => {
           <button
             onClick={openUpdateUserInfoModal}
             style={{ backgroundColor: "#B09FCE" }}
-            className="text-white font-bold text-lg px-4 py-2 rounded shadow-md"
+            className="text-white font-bold text-lg px-4 py-2 rounded shadow-md select-none"
           >
             프로필 수정
           </button>
@@ -480,7 +482,7 @@ const UserInfoPage = () => {
                         <Link
                           to={`/plannerEdit/${mergedUserTravelInfo[currentIndex].plan_id}`}
                           style={{ backgroundColor: "#B09FCE" }}
-                          className="text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md"
+                          className="text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md select-none"
                         >
                           일정 조회
                         </Link>
@@ -488,7 +490,7 @@ const UserInfoPage = () => {
                           <Link
                             to={`/TravelPostDetailPage/${mergedUserTravelInfo[currentIndex].id}`}
                             style={{ backgroundColor: "#B09FCE" }}
-                            className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
+                            className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md select-none"
                           >
                             여행기 보기
                           </Link>
@@ -496,7 +498,7 @@ const UserInfoPage = () => {
                           <Link
                             to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].plan_id}`}
                             style={{ backgroundColor: "#B09FCE" }}
-                            className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
+                            className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md select-none"
                           >
                             여행기 작성
                           </Link>
@@ -505,7 +507,7 @@ const UserInfoPage = () => {
                         <button
                           onClick={handleDeleteButtonClick}
                           style={{ backgroundColor: "#B09FCE" }}
-                          className="text-white  text-lg w-1/3 h-12 p-2 rounded  shadow-md"
+                          className="text-white  text-lg w-1/3 h-12 p-2 rounded  shadow-md select-none"
                         >
                           삭제
                         </button>
@@ -545,7 +547,9 @@ const UserInfoPage = () => {
               </div>
             )}
           </div>
-          {travelPlanCount >= 1 && <div>- {currentIndex + 1} -</div>}
+          {travelPlanCount >= 1 && (
+            <div className="select-none">- {currentIndex + 1} -</div>
+          )}
         </div>
         <ModalPortal>
           <Modal />
