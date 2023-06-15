@@ -228,6 +228,7 @@ const UserInfoPage = () => {
         });
         alert("별길과 함께하는 시간은 끝났지만 당신의 여행은 멈추지 않길!");
         navigate("/");
+        closeModal();
       } catch (error) {
         console.log(error);
         alert("희희 못가");
@@ -319,21 +320,23 @@ const UserInfoPage = () => {
         <div className="flex flex-row w-full justify-center items-center">
           <input
             className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
-            style={{ backgroundColor: "#B09FCE" }}
+            style={{ backgroundColor: "#B09FCE", cursor: "pointer" }}
             onClick={handleClickDeletUser}
             type="button"
             value="탈퇴"
           />
           <input
             className="m-5 w-1/6 text-white font-bold text-lg px-4 py-2 rounded shadow-md"
-            style={{ backgroundColor: "#B09FCE" }}
+            style={{ backgroundColor: "#B09FCE", cursor: "pointer" }}
             type="submit"
             value="저장"
+            onClick={closeModal}
           />
         </div>
       </form>
     );
   };
+  const { closeModal } = useModalStore();
 
   const openUpdateUserInfoModal = () => {
     openModal({
