@@ -69,11 +69,7 @@ const LoginPageComponent = () => {
       </label>
 
       {/* <div className="text-sm text-violet-400">비밀번호를 잊으셨나요?</div> */}
-      <div style={{}}>
-        <div className="my-3 text-sm text-center">
-          <Google />
-        </div>
-      </div>
+
       <div className="flex items-center justify-center mt-5">
         <button
           onClick={handleSubmit}
@@ -90,6 +86,11 @@ const LoginPageComponent = () => {
         >
           로그인
         </button>
+      </div>
+      <div style={{}}>
+        <div className="my-3 text-sm text-center">
+          <Google />
+        </div>
       </div>
 
       <div className="flex items-center justify-center mt-5">
