@@ -1,16 +1,9 @@
 import { useState, useEffect } from "react";
-import Modal from "../modal/modal";
-import { ModalPortal } from "../modal/ModalPortal.jsx";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useModalStore } from "../../store/store";
-import { useNavigate, Link } from "react-router-dom";
-import prevBtn from "/public/assets/prev.webp";
-import nextBtn from "/public/assets/next.webp";
-import deleteBtn from "/public/assets/close.webp";
-
-import userImg from "/public/assets/user.webp";
-
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { ModalPortal } from "../modal/ModalPortal.jsx";
+import Modal from "../modal/modal";
 
 function TravelPostDetail(props) {
   const { openModal } = useModalStore();
@@ -97,7 +90,7 @@ function TravelPostDetail(props) {
             <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-md">
               <img
                 className="mx-auto my-auto w-3/4 hover:"
-                src={userImg}
+                src="/public/assets/user.webp"
                 alt="유저이미지"
               />
             </div>
@@ -108,7 +101,11 @@ function TravelPostDetail(props) {
               <span className="text-gray-400">2020-02-20</span>
             </div>
             <div className="flex justify-end items-start w-1/12 cursor-pointer select-none ">
-              <img className="w-2/3" src={deleteBtn} alt="댓글삭제" />
+              <img
+                className="w-2/3"
+                src="/public/assets/close.webp"
+                alt="댓글삭제"
+              />
             </div>
           </div>
           <div className="flex flex-row items-start w-full h-full">
@@ -309,7 +306,7 @@ function TravelPostDetail(props) {
                 id="prevBtn"
                 className="hidden absolute top-1/2 w-1/2"
                 style={{ transform: "translateY(-50%)" }}
-                src={prevBtn}
+                src="/public/assets/prev.webp"
                 alt="이전"
               />
             </div>
@@ -353,7 +350,7 @@ function TravelPostDetail(props) {
                 id="nextBtn"
                 className="hidden absolute top-1/2 w-1/2"
                 style={{ transform: "translateY(-50%)" }}
-                src={nextBtn}
+                src="/public/assets/next.webp"
                 alt="다음"
               />
             </div>
@@ -433,7 +430,7 @@ function TravelPostDetail(props) {
             className="grid grid-cols-[1fr,10fr,1.5fr] gap-2 justify-items-center items-center bg-gray-100 w-full p-3 mt-3 rounded-2xl bottom-0"
           >
             <div className="box-content bg-white h-8 w-8 rounded-full align-middle shadow-2xl">
-              <img src={userImg} alt="유저이미지" />
+              <img src="/public/assets/user.webp" alt="유저이미지" />
             </div>
             <input
               type="text"

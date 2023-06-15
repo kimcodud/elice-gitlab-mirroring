@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import addButton from "/public/assets/addIcon.webp";
-import deletButton from "/public/assets/deletIcon.webp";
-import goBackIcon from "/public/assets/goBackIcon.webp";
 import { useParams, useNavigate } from "react-router-dom";
 
 const TravelPostEdit = () => {
@@ -150,7 +147,7 @@ const TravelPostEdit = () => {
               style={{ cursor: "pointer" }}
             >
               <img
-                src={goBackIcon}
+                src="/public/assets/goBackIcon.webp"
                 className="w-6 h-6 mr-6"
                 alt="go back to mypage"
               />
@@ -180,7 +177,7 @@ const TravelPostEdit = () => {
                         className="absolute top-0 left-0 w-full h-full object-cover"
                       />
                       <img
-                        src={deletButton}
+                        src="/public/assets/deletIcon.webp"
                         onClick={() => handleImageDelete(index)}
                         className="absolute bottom-0 right-0 object-cover w-1/6"
                         style={{ transform: "translate(-30%, -30%)" }}
@@ -199,7 +196,7 @@ const TravelPostEdit = () => {
                       <img
                         className="absolute bottom-0 right-0 object-cover w-1/6"
                         style={{ transform: "translate(-30%, -30%)" }}
-                        src={addButton}
+                        src="/public/assets/addIcon.webp"
                         alt="Add Image"
                       />
                     </div>
