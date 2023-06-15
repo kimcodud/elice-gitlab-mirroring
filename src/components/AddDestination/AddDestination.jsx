@@ -25,6 +25,8 @@ const AddDestination = (props) => {
       "AddDestination",
       clickPlaces[0][clickPlaces[0].length - 1].place_name
     );
+
+    // setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   }
 
   // const renderPlaces = () => {
@@ -106,33 +108,48 @@ const AddDestination = (props) => {
         </div>
         <div>
           {/* 두 번째 요소 */}
-          {clickPlaces.map((el) =>
-            el.map((_, idx) => (
-              <div
-                className="info box-sizing: border-box h-20 w-60 p-4 border-2 shadow-lg rounded"
-                style={{ marginLeft: "10px" }}
-                key={idx}
-              >
-                <div className="font-bold text-sm">
-                  {clickPlaces[0][clickPlaces[0].length - 1].place_name}
-                </div>
-                <div style={{ display: "flex ", justifyContent: "right" }}>
-                  <span className="text-xs">
-                    {
-                      clickPlaces[0][clickPlaces[0].length - 1]
-                        .category_group_name
-                    }
-                  </span>
-                  <img
-                    src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-                    alt="remove icon"
-                    className="cursor-pointer"
-                    onClick={() => handleDeleteSelectedPlanDate()}
-                  />
-                </div>
-              </div>
-            ))
-          )}
+          <div
+            className="flex flex-col items-center mt-4"
+            style={{
+              height: "300px",
+              whiteSpace: "nowrap",
+              overflow: "auto",
+            }}
+          >
+            {clickPlaces.map((el) => {
+              console.log("------------------------", el);
+              el.map((_, idx) => {
+                <div
+                  className="info box-sizing: border-box h-20 w-60 p-4 border-2 shadow-lg rounded"
+                  style={{ marginLeft: "10px" }}
+                  key={idx}
+                >
+                  <div className="font-bold text-sm">
+                    {clickPlaces[0][clickPlaces[0].length - 1].place_name}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex ",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span className="text-xs mt-3">
+                      {
+                        clickPlaces[0][clickPlaces[0].length - 1]
+                          .category_group_name
+                      }
+                    </span>
+                    <img
+                      src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
+                      alt="remove icon"
+                      className="cursor-pointer mt-2"
+                      onClick={() => handleDeleteSelectedPlanDate()}
+                    />
+                  </div>
+                </div>;
+              });
+            })}
+          </div>
           {/* {clickPlaces.map((_, idx) => (
             <div
               className="info box-sizing: border-box h-20 w-60 p-4 border-2 shadow-lg rounded"

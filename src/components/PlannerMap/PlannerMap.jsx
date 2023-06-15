@@ -70,8 +70,8 @@ const SearchMap = () => {
 
   // 일정등록할 때 addPlanInfo 보내면 됨
   const [addPlanInfo, setAddPlanInfo] = useState({
-    start_date: "",
-    end_date: "",
+    startDate: "",
+    endDate: "",
     destination: "",
     dates: [],
   });
@@ -208,15 +208,15 @@ const SearchMap = () => {
   const getDateList = (dateList) => {
     setDateList(dateList);
     console.log("dateList", dateList);
-    const { year: startYear, month: startMonth, date: startDate } = dateList[0];
+    const { year: startYear, month: startMonth, date: start } = dateList[0];
     const {
       year: endYear,
       month: endMonth,
-      date: endDate,
+      date: end,
     } = dateList[dateList.length - 1];
-    const start_date = `${startYear}-${startMonth}-${startDate}`;
-    const end_date = `${endYear}-${endMonth}-${endDate}`;
-    setAddPlanInfo((prev) => ({ ...prev, start_date, end_date }));
+    const startDate = `${startYear}-${startMonth}-${start}`;
+    const endDate = `${endYear}-${endMonth}-${end}`;
+    setAddPlanInfo((prev) => ({ ...prev, startDate, endDate }));
   };
 
   const onClickPlaceItem = (item) => {
@@ -351,12 +351,8 @@ const SearchMap = () => {
     try {
       const result = await axios.post(
         "http://localhost:3000/travels",
-        {
-          withCredentials: true,
-        },
-        {
-          planData,
-        }
+        planData,
+        { withCredentials: true }
       );
       console.log(result);
     } catch (error) {
@@ -385,7 +381,7 @@ const SearchMap = () => {
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ marginRight: "3px" }}>
                 <div className="h-20 text-2xl font-medium flex justify-center items-center">
-                  {destination && destination.name_ko}
+                  {destination && destination.nameKo}
                 </div>
                 {DatePickerComponent}
                 <div
