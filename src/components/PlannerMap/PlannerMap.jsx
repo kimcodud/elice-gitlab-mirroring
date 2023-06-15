@@ -50,15 +50,19 @@ const SearchMap = () => {
   const [destination, setDestination] = useState("");
 
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
   const getDestination = async () => {
     const result = await axios.get(`http://localhost:3000/destinations/${id}`); // 나중 수정
     setDestination(result.data.data.destination);
-    console.log(result.data.data.destination);
+    // console.log(result.data.data.destination);
   };
 
-  const latitude = destination.latitude;
-  const longitude = destination.longitude;
+  // const latitude = destination.latitude;
+  // const longitude = destination.longitude;
+
+  useEffect(() => {
+    getDestination();
+  }, []);
 
   useEffect(() => {
     console.log({ selectedDay });
@@ -258,8 +262,8 @@ const SearchMap = () => {
       kakao.maps.load(() => {
         const mapContainer = document.getElementById("map");
         const mapOptions = {
-          center: new window.kakao.maps.LatLng(latitude, longitude),
-          level: 10,
+          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+          level: 5,
         };
         const newKakaoMap = new window.kakao.maps.Map(mapContainer, mapOptions);
         setKakaoMap(newKakaoMap);
@@ -317,6 +321,7 @@ const SearchMap = () => {
 
   // 제거 함수
   const handleDeleteSelectedPlanDate = (id) => {
+    console.log("handleDeleteSelectedPlanDate");
     if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
     const newPlaceList = selectedPlanDate[selectedDay].filter(
       (_, index, array) =>
@@ -325,7 +330,7 @@ const SearchMap = () => {
     setSelectedPlanDate((prev) => ({ ...prev, [selectedDay]: newPlaceList }));
   };
 
-  const handleClickCreatePlan = () => {
+  const handleClickCreatePlan = async () => {
     const dates = Object.keys(selectedPlanDate).map((date, index) => {
       return {
         date,
@@ -344,6 +349,18 @@ const SearchMap = () => {
     };
     console.log(planData);
     // api.post(planData);
+    try {
+      const result = await axios.post(
+        "http://localhost:3000/travels",
+        {
+          withCredentials: true,
+        },
+        planData
+      );
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const contextValue = {
@@ -377,23 +394,7 @@ const SearchMap = () => {
                     whiteSpace: "nowrap",
                     overflow: "auto",
                   }}
-                >
-                  {/* <button
-                    className="px-3 py-2 rounded bg-purple-500 text-white"
-                    onClick={handleClickAll}
-                  >
-                    전체
-                  </button> */}
-                  {/* {dateList.map((date, index) => (
-                    <button
-                      className="px-3 py-2 rounded bg-white text-purple-500 shadow-sm"
-                      key={index}
-                      // onClick={handleClickDay}
-                    >
-                      Day{index + 1}
-                    </button>
-                  ))} */}
-                </div>
+                ></div>
 
                 <div
                   style={{ display: "flex", justifyContent: "space-around" }}

@@ -1,37 +1,36 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
-import MainPage from '../pages/MainPage/MainPage';
-import LoginPage from '../pages/LoginPage/LoginPage';
-import SignUpPage from '../pages/SigUpPage/SignUpPage';
-import TravelBoardPage from '../pages/TravelBoardPage/TravelBoardPage';
-import Mypage from '../pages/Mypage/Mypage';
-import TravelWritePage from '../pages/TravelWritePage/TravelWritePage';
-import TravelPostDetailPage from '../pages/TravelPostDetailPage/TravelPostDetailPage';
-import TravelPostEditPage from '../pages/TravelPostEditPage/TravelPostEditPage';
-import PlannerMap from '../components/PlannerMap/PlannerMap';
-import PlannerEditPage from '../pages/PlannerEditPage/PlannerEditPage';
-import AdminPage from '../pages/AdminPage/AdminPage';
-import PageNotFound from '../components/PageNotFound/PageNotFound';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import MainPage from "../pages/MainPage/MainPage";
+import LoginPage from "../pages/LoginPage/LoginPage";
+import SignUpPage from "../pages/SigUpPage/SignUpPage";
+import TravelBoardPage from "../pages/TravelBoardPage/TravelBoardPage";
+import Mypage from "../pages/Mypage/Mypage";
+import TravelWritePage from "../pages/TravelWritePage/TravelWritePage";
+import TravelPostDetailPage from "../pages/TravelPostDetailPage/TravelPostDetailPage";
+import TravelPostEditPage from "../pages/TravelPostEditPage/TravelPostEditPage";
+import PlannerMap from "../components/PlannerMap/PlannerMap";
+import PlannerEditPage from "../pages/PlannerEditPage/PlannerEditPage";
+import AdminPage from "../pages/AdminPage/AdminPage";
+import PageNotFound from "../components/PageNotFound/PageNotFound";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Router = () => {
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const getUserData = async () => {
-    const result = await axios.get('http://localhost:3000/mypage', {
+    const result = await axios.get("http://localhost:3000/mypage", {
       withCredentials: true,
     });
-    console.log(result.data.userData.role);
-    if (result.data.userData.role === 'ADMIN') {
+    if (result.data.userData.role === "ADMIN") {
       setIsAdmin(true);
     } else if (result.status === 500) {
-      localStorage.removeItem('isLogin');
+      localStorage.removeItem("isLogin");
     }
   };
   useEffect(() => {
-    if (localStorage.getItem('isLogin') === '1') {
+    if (localStorage.getItem("isLogin") === "1") {
       setIsLogin(true);
       getUserData();
     } else {

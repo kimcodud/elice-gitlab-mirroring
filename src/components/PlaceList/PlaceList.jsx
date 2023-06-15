@@ -13,6 +13,7 @@ const PlaceList = (props) => {
     onClickPlaceItem, // callback props 자식 -> 부모 컴포넌트로 props(데이터)를 끌어올림
     selectedDayPlaces,
     setSelectedDayPlaces,
+    renderPlaces,
   } = props;
   const { openModal } = useModalStore();
   const [selectedPlaces, setSelectedPlaces] = useState([]);
@@ -52,7 +53,10 @@ const PlaceList = (props) => {
   // };
 
   const AddDestinationComponents = useMemo(() => {
-    <AddDestination handleAddPlace={handleAddPlace} />;
+    <AddDestination
+      handleAddPlace={handleAddPlace}
+      renderPlaces={renderPlaces}
+    />;
   });
 
   return (
