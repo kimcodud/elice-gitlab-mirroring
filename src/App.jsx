@@ -4,11 +4,19 @@ import Footer from "./components/Footer/Footer";
 import Router from "./routes/Router";
 
 const App = () => {
+  const excludedPage = "/plannerMap";
+
+  const currentPath = window.location.pathname;
+
+  const shouldRenderFooter = () => {
+    return currentPath !== excludedPage;
+  };
+
   return (
     <div>
       <Header />
       <Router />
-      <Footer />
+      {shouldRenderFooter() && <Footer />}
     </div>
   );
 };
