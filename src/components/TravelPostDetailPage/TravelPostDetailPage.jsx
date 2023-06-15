@@ -26,20 +26,31 @@ function TravelPostDetail(props) {
     created_at: "",
     updated_at: "",
   });
+  const [travelInfo, setTravelInfo] = useState({
+    start_date: "",
+    end_date: "",
+    username: "",
+    destination: "",
+    dates: [],
+  });
 
   const changetoKoreaDate = (dateString) => {
     if (!dateString) {
       return "";
     }
     const date = new Date(dateString);
+    date.setHours(date.getHours() + 9); // 9시간 추가
 
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
+    const koreaYear = date.getFullYear();
+    const koreaMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+    const koreaDay = date.getDate().toString().padStart(2, "0");
 
-    return `${year}.${month}.${day}`;
+    return `${koreaYear}.${koreaMonth}.${koreaDay}`;
   };
-
+  const travelStart = changetoKoreaDate(travelInfo.start_date);
+  const travelEnd = changetoKoreaDate(travelInfo.end_date);
+  const travelDayCount = travelEnd.slice(-2) - travelStart.slice(-2);
+  console.log(travelInfo.start_date);
   const postImageArr = post.image ? JSON.parse(post.image) : [];
 
   const { postId } = useParams();
@@ -114,11 +125,44 @@ function TravelPostDetail(props) {
     );
   };
 
+  useEffect(() => {
+    //특정여행기 가져오기
+    const fetchTravelPlanData = async () => {
+      try {
+        const getTravelPlanResponse = await axios.get(
+          `http://localhost:3000/travels/${post.plan_id}`,
+          {
+            params: {
+              start_date: travelInfo.start_date,
+              end_date: travelInfo.end_date,
+              username: travelInfo.username,
+              destination: travelInfo.destination,
+              dates: travelInfo.dates,
+            },
+            withCredentials: true,
+          }
+        );
+        setTravelInfo(getTravelPlanResponse.data.travelPlanData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (post.plan_id) {
+      fetchTravelPlanData();
+    }
+  }, [post.plan_id]);
+
+  console.log(travelInfo.dates);
   const ScheduleComponent = () => {
     // 일정
+
     return (
       <div className="w-full flex flex-col justify-center items-center">
-        <div className="mb-5">2020-02-20 ~ 2020-02-20</div>
+        <div className="mb-5">
+          {travelStart} ~ {travelEnd} {travelDayCount}
+        </div>
+        {travelInfo.dates.map(travelDayCount)}
         <div className="bg-gray-100 w-4/5 flex flex-col justify-center items-center rounded-2xl my-3 py-5 shadow-md">
           <div className="text-2xl text-center">{}1 일차</div>
           <div className="flex flex-col w-4/5 bg-white py-1 px-4 my-2 rounded">
@@ -196,7 +240,7 @@ function TravelPostDetail(props) {
       navigate("/travelBoard");
     } catch (error) {
       console.log(error);
-      //alert("삭제할 수 없습니다.");
+      alert("나의 여행기가 아닙니다.\n삭제할 수 없습니다.");
     }
   };
   return (
@@ -352,14 +396,16 @@ function TravelPostDetail(props) {
           </div>
 
           <div className="flex flex-row justify-between w-full pt-5 pb-3 px-3 border-t border-gray-400 py-6">
-            <button
-              onClick={openCommentModal}
-              style={{ alignSelf: "flex-start" }}
-            >
-              댓글보기
-            </button>
-
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
+              <div>글쓴이 : {travelInfo.username}</div>
+              <button
+                onClick={openCommentModal}
+                style={{ alignSelf: "flex-start" }}
+              >
+                댓글보기
+              </button>
+            </div>
+            <div className="flex flex-col">
               {/* <div>글쓴이 : {post.username}</div> */}
               <div>
                 {changetoKoreaDate(post.created_at)}
