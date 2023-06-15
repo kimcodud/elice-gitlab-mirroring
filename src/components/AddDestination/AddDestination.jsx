@@ -1,5 +1,5 @@
-import { useState } from "react";
-import PlaceList from "../PlaceList/PlaceList";
+import { useEffect, useState } from "react";
+import { usePlannerMapContext } from "../PlannerMap/PlannerMap";
 
 const AddDestination = (props) => {
   const {
@@ -16,7 +16,17 @@ const AddDestination = (props) => {
   const [showDayList, setShowDayList] = useState(false);
   const [items, setItems] = useState(selectedPlaces);
 
-  console.log("items", items);
+  const { setSelectedDay, selectedPlanDate, handleDeleteSelectedPlanDate } =
+    usePlannerMapContext();
+
+  useEffect(() => {
+    console.log("AddDestination", selectedPlanDate);
+  }, [selectedPlanDate]);
+
+  const handleClickDateButton = (date) => {
+    const formatDate = `${date.year}-${date.month}-${date.date}`;
+    setSelectedDay(formatDate);
+  };
 
   const handleClickAll = () => {
     setIsAll(true);
@@ -53,10 +63,13 @@ const AddDestination = (props) => {
             }}
             key={index}
             data={selectedPlaces}
-            onClick={() => {
-              handleClickDay();
-              handleClickDate(date);
-            }}
+            // onClick={() => {
+            //   // handleClickDay();
+            //   // handleClickDate(date);
+
+            //   setSelectedDay(`${date.year}-${date.month}-${date.date}`);
+            // }}
+            onClick={() => handleClickDateButton(date)}
           >
             DAY {index + 1}
           </button>

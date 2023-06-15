@@ -1,6 +1,32 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+  createContext,
+  useContext,
+} from "react";
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
+import axios from "axios";
+
+const PlannerMapContext = createContext({
+  onSelectPlace: () => {},
+  // selectedPlace: {},
+  setSelectedDay: () => {},
+  selectedDay: "",
+  selectedPlanDate: {},
+  handleDeleteSelectedPlanDate: () => {},
+});
+
+export const usePlannerMapContext = () => {
+  const context = useContext(PlannerMapContext);
+  // context API는 더 상위에서 사용 못함 (예외 처리)
+  if (!context) {
+    throw new Error("PlannerMapContext를 호출할 수 없는 범위 입니다.");
+  }
+  return context;
+};
 
 const SearchMap = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
@@ -15,6 +41,34 @@ const SearchMap = () => {
   const [dateList, setDateList] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
   const [selectedDayPlaces, setSelectedDayPlaces] = useState(); //하루 장소 목록
+
+  /*******************/
+  // const [selectedPlace, setSelectedPlace] = useState({});
+  const [selectedDay, setSelectedDay] = useState(""); // DAY 기억하는 상태
+  const [selectedPlanDate, setSelectedPlanDate] = useState({});
+  const [destination, setDestination] = useState("");
+
+  const getDestination = async () => {
+    // const result = await axios.get("http://localhost:3000/destinations/10"); // 나중 수정
+    // setDestination(result.data.destination.name_ko);
+    setDestination("그랜드 캐니언");
+  };
+
+  useEffect(() => {
+    getDestination();
+  }, []);
+
+  useEffect(() => {
+    console.log({ selectedDay });
+  }, [selectedDay]);
+
+  // 일정등록할 때 addPlanInfo 보내면 됨
+  const [addPlanInfo, setAddPlanInfo] = useState({
+    start_date: "",
+    end_date: "",
+    destination: "",
+    dates: [],
+  });
 
   const createMarker = (position, index) => {
     const imageSrc =
@@ -147,7 +201,20 @@ const SearchMap = () => {
 
   const getDateList = (dateList) => {
     setDateList(dateList);
-    // console.log("dateList", dateList);
+    console.log("dateList", dateList);
+    const { year: startYear, month: startMonth, date: startDate } = dateList[0];
+    const {
+      year: endYear,
+      month: endMonth,
+      date: endDate,
+    } = dateList[dateList.length - 1];
+    const start_date = `${startYear}-${startMonth}-${startDate}`;
+    const end_date = `${endYear}-${endMonth}-${endDate}`;
+    setAddPlanInfo((prev) => ({ ...prev, start_date, end_date }));
+  };
+
+  const onClickPlaceItem = (item) => {
+    console.log(item);
   };
 
   const PlaceListComponent = useMemo(() => {
@@ -156,12 +223,14 @@ const SearchMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
+        onClickPlaceItem={onClickPlaceItem}
         // selectedPlaces={selectedPlaces}
         // setSelectedPlaces={setSelectedPlaces}
       />
     );
   }, [markers, places]);
 
+  // useMemo (markers places)가 바뀔때마다 리렌더링되는 것을 막기 위해 useMemo써야함
   const DatePickerComponent = useMemo(() => {
     return (
       <DatePicker
@@ -172,7 +241,7 @@ const SearchMap = () => {
         setSelectedDayPlaces={setSelectedDayPlaces}
       />
     );
-  });
+  }, []);
 
   const attachMapSdkScript = () => {
     const script = document.createElement("script");
@@ -218,8 +287,73 @@ const SearchMap = () => {
   //   setIsAll(false);
   // };
 
+  useEffect(() => {
+    console.log({ selectedPlanDate });
+  }, [selectedPlanDate]);
+
+  const onSelectPlace = (place) => {
+    console.log({ place });
+    // 1) 현재 선택된 DAY가 없으면 return;
+    if (!selectedDay) return;
+    // 2) 현재 선택된 DAY가 있으면,
+    const currentPlaceList = [
+      ...(selectedPlanDate[selectedDay] || []),
+      place,
+    ] || [place];
+
+    // id가 같으면 안쌓임
+    const newPlaceList = currentPlaceList.filter(
+      (currentPlace, index, array) =>
+        index === array.findIndex((_place) => _place.id === currentPlace.id)
+    );
+
+    setSelectedPlanDate((prev) => ({
+      ...prev,
+      [selectedDay]: newPlaceList,
+    })); // {"2020-12-12": [place], "2022-12-13": [place1, place2]}
+  };
+
+  // 제거 함수
+  const handleDeleteSelectedPlanDate = (id) => {
+    if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
+    const newPlaceList = selectedPlanDate[selectedDay].filter(
+      (_, index, array) =>
+        index !== array.findIndex((_place) => (_place.id = id))
+    );
+    setSelectedPlanDate((prev) => ({ ...prev, [selectedDay]: newPlaceList }));
+  };
+
+  const handleClickCreatePlan = () => {
+    const dates = Object.keys(selectedPlanDate).map((date, index) => {
+      return {
+        date,
+        locations: selectedPlanDate[date].map((place) => ({
+          location: place.address_name,
+          latitude: place.y,
+          longitude: place.x,
+          order: index + 1,
+        })),
+      };
+    });
+    const planData = {
+      ...addPlanInfo, //{start_date, end_date},
+      destination,
+      dates,
+    };
+    console.log(planData);
+    // api.post(planData);
+  };
+
+  const contextValue = {
+    onSelectPlace,
+    selectedDay,
+    setSelectedDay,
+    selectedPlanDate,
+    handleDeleteSelectedPlanDate,
+  };
+
   return (
-    <>
+    <PlannerMapContext.Provider value={contextValue}>
       <div
         style={{
           display: "flex",
@@ -277,6 +411,7 @@ const SearchMap = () => {
                   zIndex: "1",
                   margin: "20px 0 0 20px",
                 }}
+                onClick={handleClickCreatePlan}
               >
                 일정 생성
               </button>
@@ -319,7 +454,7 @@ const SearchMap = () => {
           </div>
         </div>
       </div>
-    </>
+    </PlannerMapContext.Provider>
   );
 };
 export default SearchMap;

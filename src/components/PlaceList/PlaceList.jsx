@@ -3,25 +3,30 @@ import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
 import AddDestination from "../AddDestination/AddDestination";
+import { usePlannerMapContext } from "../PlannerMap/PlannerMap";
 
 const PlaceList = (props) => {
   const {
     places,
     infowindow,
     handleDisplayInfowindow,
-
+    onClickPlaceItem, // callback props 자식 -> 부모 컴포넌트로 props(데이터)를 끌어올림
     selectedDayPlaces,
     setSelectedDayPlaces,
   } = props;
   const { openModal } = useModalStore();
   const [selectedPlaces, setSelectedPlaces] = useState([]);
 
-  // + 버튼 눌렀을 때 장소 넘겨주는 함수
+  const { onSelectPlace } = usePlannerMapContext();
 
+  // + 버튼 눌렀을 때 장소 넘겨주는 함수
   const handleAddPlace = (index) => {
     const place = places[index];
-    console.log("selectedPlace", selectedPlaces);
-    setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
+    onClickPlaceItem(place);
+    onSelectPlace(place);
+
+    // console.log("selectedPlace", selectedPlaces);
+    // setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   };
 
   // const handlePlaceClick = (index) => {
@@ -29,20 +34,20 @@ const PlaceList = (props) => {
   //   console.log(selectedPlace);
 
   //   // return (
-  //   //   <div
-  //   //     className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
-  //   //     style={{ marginLeft: "10px" }}
-  //   //   >
-  //   //     <div className="font-bold text-sm">{selectedPlace.place_name}</div>
-  //   //     <div style={{ display: "flex ", justifyContent: "right" }}>
-  //   //       <span className="text-xs">{selectedPlace.category_group_name}</span>
-  //   //       <img
-  //   //         src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-  //   //         alt="remove icon"
-  //   //         className="cursor-pointer"
-  //   //       />
-  //   //     </div>
-  //   //   </div>
+  //   <div
+  //     className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
+  //     style={{ marginLeft: "10px" }}
+  //   >
+  //     <div className="font-bold text-sm">{selectedPlace.place_name}</div>
+  //     <div style={{ display: "flex ", justifyContent: "right" }}>
+  //       <span className="text-xs">{selectedPlace.category_group_name}</span>
+  //       <img
+  //         src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
+  //         alt="remove icon"
+  //         className="cursor-pointer"
+  //       />
+  //     </div>
+  //   </div>
   //   // );
   // };
 
