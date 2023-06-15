@@ -4,6 +4,7 @@ import { useModalStore } from "../../store/store";
 import axios from "axios";
 import { ModalPortal } from "../modal/ModalPortal.jsx";
 import Modal from "../modal/modal";
+import { useInView } from "react-intersection-observer";
 
 function TravelPostDetail(props) {
   const { openModal, closeModal } = useModalStore();
@@ -62,26 +63,44 @@ function TravelPostDetail(props) {
     fetchPostDetailData();
   }, []);
 
-  const [commentBoard, setCommentBoard] = useState([]);
-  // 댓글 조회
-  useEffect(() => {
-    const fetchPostCommetData = async () => {
+  const CommentComponent = () => {
+    // 댓글 조회
+    const [commentBoard, setCommentBoard] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const fetchComment = async () => {
       try {
         const getCommentResponse = await axios.get(
-          `http://localhost:3000/comments/diary/${postId}?page=1`
-          //{withCredentials: true,}
+          `http://localhost:3000/comments/diary/${postId}?page=${page}`,
+          {
+            withCredentials: true,
+          }
         );
-        setCommentBoard(getCommentResponse.data.comments);
+
+        setCommentBoard((prevCommentBoard) => [
+          ...prevCommentBoard,
+          ...getCommentResponse.data.comments,
+        ]);
+        setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchPostCommetData();
-    console.log(commentBoard);
-  }, [postId]);
 
-  const CommentComponent = () => {
-    // 댓글 조회
+    useEffect(() => {
+      fetchComment(); 
+    }, [postId]);
+
+    const [ref, inView] = useInView();
+
+    useEffect(() => {
+      if (inView) {
+        console.log(inView, "무한 스크롤 요청");
+        fetchComment();
+      }
+    }, [inView]);
+    console.log(commentBoard);
+
     return (
       <div className="w-full h-full flex flex-col justify-center items-center">
         {commentBoard.map((comment, index) => (
@@ -136,6 +155,7 @@ function TravelPostDetail(props) {
             </div>
           </div>
         ))}
+        <div ref={ref}>댓글이 더 이상 없습니다.</div>
       </div>
     );
   };
@@ -281,6 +301,7 @@ function TravelPostDetail(props) {
 
   const handleCommentSubmit = async (e) => {
     // 댓글 달기 post
+    e.preventDefault();
     try {
       const url = `http://localhost:3000/comments`;
       const header = {
@@ -291,6 +312,7 @@ function TravelPostDetail(props) {
         comment: comment,
       };
       const response = await axios.post(url, body, header);
+      setComment("");
       alert("댓글 작성이 완료되었습니다.");
     } catch (error) {
       console.log("API 호출 중 오류가 발생했습니다:", error);
