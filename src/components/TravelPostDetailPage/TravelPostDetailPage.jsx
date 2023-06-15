@@ -38,19 +38,13 @@ function TravelPostDetail(props) {
     if (!dateString) {
       return "";
     }
-    const date = new Date(dateString);
-    date.setHours(date.getHours() + 9); // 9시간 추가
-
-    const koreaYear = date.getFullYear();
-    const koreaMonth = (date.getMonth() + 1).toString().padStart(2, "0");
-    const koreaDay = date.getDate().toString().padStart(2, "0");
-
-    return `${koreaYear}.${koreaMonth}.${koreaDay}`;
+    return dateString.slice(0, -14);
   };
+
   const travelStart = changetoKoreaDate(travelInfo.start_date);
   const travelEnd = changetoKoreaDate(travelInfo.end_date);
-  const travelDayCount = travelEnd.slice(-2) - travelStart.slice(-2);
-  console.log(travelInfo.start_date);
+  const travelDayCount = travelInfo.dates.length;
+  console.log(travelDayCount);
   const postImageArr = post.image ? JSON.parse(post.image) : [];
 
   const { postId } = useParams();
@@ -159,17 +153,30 @@ function TravelPostDetail(props) {
 
     return (
       <div className="w-full flex flex-col justify-center items-center">
-        <div className="mb-5">
-          {travelStart} ~ {travelEnd} {travelDayCount}
+        <div className="mb-3 text-center">
+          {travelDayCount === 0
+            ? "당일치기"
+            : `${travelDayCount - 1}박 ${travelDayCount}일`}
+          <br />
+          {travelStart} ~ {travelEnd}
         </div>
-        {travelInfo.dates.map(travelDayCount)}
-        <div className="bg-gray-100 w-4/5 flex flex-col justify-center items-center rounded-2xl my-3 py-5 shadow-md">
-          <div className="text-2xl text-center">{}1 일차</div>
-          <div className="flex flex-col w-4/5 bg-white py-1 px-4 my-2 rounded">
-            <div className="font-bold">경복궁</div>
-            <div>경기도 경기시 경기구 경기경기로 1234-1</div>
+        {[...Array(travelDayCount)].map((_, main) => (
+          <div
+            key={main}
+            className="bg-gray-100 w-4/5 flex flex-col justify-center items-center rounded-2xl my-3 py-5 shadow-md"
+          >
+            <div className="text-2xl text-center">{main + 1} 일차</div>
+            {travelInfo.dates[main].locations.map((location, sub) => (
+              <div
+                key={sub}
+                className="flex flex-col w-4/5 bg-white py-1 px-4 my-2 rounded"
+              >
+                <div className="font-bold">{location.location}</div>
+                {/* <div>경기도 경기시 경기구 경기경기로 1234-1</div> */}
+              </div>
+            ))}
           </div>
-        </div>
+        ))}
       </div>
     );
   };
@@ -237,6 +244,7 @@ function TravelPostDetail(props) {
       await axios.delete(`http://localhost:3000/mypage/diary/${post.id}`, {
         withCredentials: true,
       });
+      alert("여행기가 삭제되었습니다.");
       navigate("/travelBoard");
     } catch (error) {
       console.log(error);
