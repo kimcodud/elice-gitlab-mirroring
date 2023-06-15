@@ -17,39 +17,40 @@ function PlannerMapEdit() {
 
   const { id } = useParams();
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/travels/${id}`, {
+        withCredentials: true,
+      });
+      const { data } = response;
+
+      const startDate = data.travelPlanData.start_date;
+      const endDate = data.travelPlanData.end_date;
+      const destination = data.travelPlanData.destination;
+      const dates = data.travelPlanData.dates;
+
+      // console.log('Start Date:', startDate);
+      // console.log('End Date:', endDate);
+      // console.log('Destination:', destination);
+      // console.log('Dates:', dates);
+      // console.log('response', response.data.travelPlanData);
+
+      console.log(response.data);
+      setList(response.data.travelPlanData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/travels/${id}`,
-          {
-            withCredentials: true,
-          }
-        );
-        const { data } = response;
-
-        const startDate = data.travelPlanData.start_date;
-        const endDate = data.travelPlanData.end_date;
-        const destination = data.travelPlanData.destination;
-        const dates = data.travelPlanData.dates;
-
-        console.log('Start Date:', startDate);
-        console.log('End Date:', endDate);
-        console.log('Destination:', destination);
-        console.log('Dates:', dates);
-        console.log('response', response.data.travelPlanData);
-
-        setList(response.data.travelPlanData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchData();
+    console.log(list);
   }, [id]);
 
   useEffect(() => {
     if (list && list.dates) {
       setAllLocation(list.dates.flatMap((date) => date.locations));
+      console.log(list);
     }
   }, [list]);
 
@@ -76,19 +77,15 @@ function PlannerMapEdit() {
 
   // useEffect(() => console.log(dateIndex), [dateIndex]);
 
-  const getList = (list) => {
-    setList(list);
-    console.log('list', list);
-  };
+  // const getList = (list) => {
+  //   setList(list);
+  //   console.log('list', list);
+  // };
 
   const attachMapSdkScript = () => {
     const script = document.createElement('script');
-    // script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${
-    //   import.meta.env.VITE_APP_KAKAOMAP_KEY
-    // }&libraries=services&autoload=false`;
-    script.defer = true;
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=d145ecfcdc4bbf38af236641650d650f&libraries=services&autoload=false`;
+    const KAKAO_MAP_KEY = import.meta.env.VITE_APP_KAKAOMAP_KEY;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&libraries=services&autoload=false`;
     script.defer = true;
     script.async = true;
 
@@ -354,17 +351,13 @@ function PlannerMapEdit() {
                     ))}
                   </div>
                   <div>
-                    {list ? (
-                      <DestinationList
-                        isAll={isAll}
-                        list={list}
-                        getList={getList}
-                        // dateList={dateList}
-                        dateIndex={dateIndex}
-                      />
-                    ) : (
-                      ''
-                    )}
+                    <DestinationList
+                      isAll={isAll}
+                      list={list}
+                      // getList={getList}
+                      // dateList={dateList}
+                      dateIndex={dateIndex}
+                    />
                   </div>
                 </div>
               </div>
