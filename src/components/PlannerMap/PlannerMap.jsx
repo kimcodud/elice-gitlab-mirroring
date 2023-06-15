@@ -348,14 +348,15 @@ const SearchMap = () => {
       dates,
     };
     console.log(planData);
-    // api.post(planData);
     try {
       const result = await axios.post(
         "http://localhost:3000/travels",
         {
           withCredentials: true,
         },
-        planData
+        {
+          planData,
+        }
       );
       console.log(result);
     } catch (error) {
