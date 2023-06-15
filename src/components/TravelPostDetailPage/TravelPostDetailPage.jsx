@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal.jsx";
 import { useModalStore } from "../../store/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import prevBtn from "../../assets/prev.webp";
 import nextBtn from "../../assets/next.webp";
 import deleteBtn from "../../assets/close.webp";
@@ -196,7 +196,7 @@ function TravelPostDetail(props) {
       navigate("/travelBoard");
     } catch (error) {
       console.log(error);
-      alert("삭제할 수 없습니다.");
+      //alert("삭제할 수 없습니다.");
     }
   };
   return (
@@ -367,7 +367,7 @@ function TravelPostDetail(props) {
                   ` (${changetoKoreaDate(post.created_at)})`}
               </div>
               <div className="flex flex-row justify-end">
-                <button>수정</button>
+                <Link to={`/TravelEditPage/${post.id}`}>수정</Link>
                 <button onClick={handleClickDeletPost} className="ml-5">
                   삭제
                 </button>

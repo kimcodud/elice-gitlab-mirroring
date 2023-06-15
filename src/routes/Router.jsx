@@ -7,6 +7,7 @@ import TravelBoardPage from "../pages/TravelBoardPage/TravelBoardPage";
 import Mypage from "../pages/Mypage/Mypage";
 import TravelWritePage from "../pages/TravelWritePage/TravelWritePage";
 import TravelPostDetailPage from "../pages/TravelPostDetailPage/TravelPostDetailPage";
+import TravelPostEditPage from "../pages/TravelPostEditPage/TravelPostEditPage";
 import PlannerMap from "../components/PlannerMap/PlannerMap";
 import PlannerEditPage from "../pages/PlannerEditPage/PlannerEditPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
@@ -58,6 +59,10 @@ const Router = () => {
           <Route
             path="/travelWritePage/:postId"
             element={<TravelWritePage />}
+          />
+          <Route
+            path="/travelPostEditPage/:postId"
+            element={<TravelPostEditPage />}
           />
           <Route
             path="/TravelPostDetailPage/:postId"

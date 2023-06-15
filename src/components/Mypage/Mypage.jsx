@@ -476,16 +476,16 @@ const UserInfoPage = () => {
                         </div>
                       </div>
                       <div className="flex flex-row justify-between mb-8 mx-7">
-                        <button
+                        <Link
+                          to={`/plannerEdit/${mergedUserTravelInfo[currentIndex].plan_id}`}
                           style={{ backgroundColor: "#B09FCE" }}
                           className="text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md"
                         >
-                          일정 수정
-                        </button>
+                          일정 조회
+                        </Link>
                         {mergedUserTravelInfo[currentIndex].diary_update ? (
                           <Link
                             to={`/TravelPostDetailPage/${mergedUserTravelInfo[currentIndex].id}`}
-                            key={mergedUserTravelInfo[currentIndex].plan_id}
                             style={{ backgroundColor: "#B09FCE" }}
                             className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
                           >
@@ -494,7 +494,6 @@ const UserInfoPage = () => {
                         ) : (
                           <Link
                             to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].plan_id}`}
-                            key={mergedUserTravelInfo[currentIndex].plan_id}
                             style={{ backgroundColor: "#B09FCE" }}
                             className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md"
                           >
