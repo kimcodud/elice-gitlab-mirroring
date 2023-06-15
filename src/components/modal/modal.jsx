@@ -1,5 +1,4 @@
 import { useModalStore } from "../../store/store";
-import closeIcon from "/public/assets/close.webp";
 function Modal() {
   const {
     isOpen,
@@ -89,7 +88,7 @@ function Modal() {
               <div className="modalhead">
                 <div className="modaltitle text-center font-bold">{title}</div>
                 <button className="modalCloseBtn" onClick={onClose}>
-                  <img src={closeIcon} alt="Close" />
+                  <img src="/public/assets/close.webp" alt="Close" />
                 </button>
               </div>
               <div className="modalBody">
