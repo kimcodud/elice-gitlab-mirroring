@@ -66,28 +66,30 @@ const MainPageComponent = () => {
       style: {
         backgroundColor: "white",
         width: "90rem",
-        height: "50%",
+        height: "35rem",
         borderRadius: "4px",
         overflow: "hidden",
       },
       title: (
         // <div className="text-center font-bold text-4xl">{item.name_ko}</div>
-        <div style={{ display: "none" }}></div>
+        <div style={{ display: "none", width: "0", height: "0" }}></div>
       ),
       content: (
         <div>
           <section
             className="overflow-hidden shadow-2xl md:grid md:grid-cols-3"
             style={{
-              height: "100rem",
+              height: "90rem",
             }}
           >
-            <img
-              alt="Trainer"
-              src={item.image}
-              className="h-32 w-full object-cover"
-              style={{ height: "45vh" }}
-            />
+            <div>
+              <img
+                alt="Trainer"
+                src={item.image}
+                className=" w-full"
+                style={{ height: "35%" }}
+              />
+            </div>
 
             <div className="p-4 text-center sm:p-6 md:col-span-2 lg:p-8">
               <p className="text-sm font-semibold uppercase tracking-widest">
@@ -241,16 +243,17 @@ const MainPageComponent = () => {
       </div>
       <div
         style={{
-          marginLeft: "6%",
-          fontSize: "1rem",
+          marginLeft: "5rem",
+          fontSize: "1.5rem",
           marginTop: "2rem",
           fontWeight: "700",
+          color: "#2C2C2C",
         }}
       >
         지역
       </div>
       <div
-        style={{ marginLeft: "5rem", marginRight: "5rem", marginTop: "2rem" }}
+        style={{ marginLeft: "5rem", marginRight: "5rem", marginTop: "1rem" }}
       >
         <div className="grid grid-cols-4 gap-4">
           {destination.map((item, idx) => (

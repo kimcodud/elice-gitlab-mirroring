@@ -88,7 +88,7 @@ function Modal() {
               <div className="modalhead">
                 <div className="modaltitle text-center font-bold">{title}</div>
                 <button className="modalCloseBtn" onClick={onClose}>
-                  <img src="/public/assets/close.webp" alt="Close" />
+                  <img src="/assets/close.webp" alt="Close" />
                 </button>
               </div>
               <div className="modalBody">

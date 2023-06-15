@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Google from "./Google";
+import Kakao from "./Kakao";
 
 const LoginPageComponent = () => {
   const [user, setUser] = useState({
@@ -90,6 +91,11 @@ const LoginPageComponent = () => {
       <div style={{}}>
         <div className="my-3 text-sm text-center">
           <Google />
+        </div>
+        <div className="my-3 text-sm text-center">
+          <div className="my-3 text-sm text-center">
+            <Kakao />
+          </div>
         </div>
       </div>
 

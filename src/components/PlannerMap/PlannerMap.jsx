@@ -9,6 +9,7 @@ import {
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
 import axios from "axios";
+import { useParams } from "react-router";
 
 const PlannerMapContext = createContext({
   onSelectPlace: () => {},
@@ -48,15 +49,16 @@ const SearchMap = () => {
   const [selectedPlanDate, setSelectedPlanDate] = useState({});
   const [destination, setDestination] = useState("");
 
+  const { id } = useParams();
+  console.log(id);
   const getDestination = async () => {
-    // const result = await axios.get("http://localhost:3000/destinations/10"); // 나중 수정
-    // setDestination(result.data.destination.name_ko);
-    setDestination("그랜드 캐니언");
+    const result = await axios.get(`http://localhost:3000/destinations/${id}`); // 나중 수정
+    setDestination(result.data.data.destination);
+    console.log(result.data.data.destination);
   };
 
-  useEffect(() => {
-    getDestination();
-  }, []);
+  const latitude = destination.latitude;
+  const longitude = destination.longitude;
 
   useEffect(() => {
     console.log({ selectedDay });
@@ -256,8 +258,8 @@ const SearchMap = () => {
       kakao.maps.load(() => {
         const mapContainer = document.getElementById("map");
         const mapOptions = {
-          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          level: 3,
+          center: new window.kakao.maps.LatLng(latitude, longitude),
+          level: 10,
         };
         const newKakaoMap = new window.kakao.maps.Map(mapContainer, mapOptions);
         setKakaoMap(newKakaoMap);
@@ -364,6 +366,9 @@ const SearchMap = () => {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ marginRight: "3px" }}>
+                <div className="h-20 text-2xl font-medium flex justify-center items-center">
+                  {destination && destination.name_ko}
+                </div>
                 {DatePickerComponent}
                 <div
                   className="flex flex-col items-center mt-4"

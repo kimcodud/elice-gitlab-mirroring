@@ -53,9 +53,7 @@ const Header = () => {
           <Link to="/plannerMap/:id" className="text-zinc-400 ml-auto p-3">
             일정만들기(임시)
           </Link>
-          <Link to="/plannerEdit" className="text-zinc-400 ml-auto p-3">
-            일정 수정(임시)
-          </Link>
+
           {role === "ADMIN" && (
             <Link to="/admin" className="text-violet-600 font-bold ml-auto p-3">
               ADMIN

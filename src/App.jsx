@@ -4,7 +4,7 @@ import Footer from "./components/Footer/Footer";
 import Router from "./routes/Router";
 
 const App = () => {
-  const excludedPage = "/plannerMap";
+  const excludedPage = "/plannerMap/:id";
 
   const currentPath = window.location.pathname;
 

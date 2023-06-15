@@ -1,7 +1,12 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import AddDestination from "../AddDestination/AddDestination";
 
-const DatePicker = ({ getDateList, selectedPlaces, setSelectedPlaces }) => {
+const DatePicker = ({
+  getDateList,
+  selectedPlaces,
+  setSelectedPlaces,
+  destination,
+}) => {
   const [dates, setDates] = useState([]); //선택된 날짜 목록
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -9,6 +14,7 @@ const DatePicker = ({ getDateList, selectedPlaces, setSelectedPlaces }) => {
   const [showAllDates, setShowAllDates] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
 
+  console.log(destination);
   const handleClickDate = (date) => {
     console.log("Clicked date:", date);
   };
@@ -281,9 +287,6 @@ const DatePicker = ({ getDateList, selectedPlaces, setSelectedPlaces }) => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="h-20 text-2xl font-medium flex justify-center items-center">
-        장소
-      </div>
       <div className="h-20 text-2xl font-medium flex justify-center items-center">
         {dates.length} Day
       </div>
