@@ -14,7 +14,6 @@ const TravelWrite = () => {
     username: "",
     destination: "",
   });
-  // const images = selectImages.join(" ");
 
   const { postId } = useParams();
   useEffect(() => {
@@ -89,7 +88,13 @@ const TravelWrite = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      if (selectImages.length === 0) {
+        alert("이미지를 등록해주세요.");
+        return;
+      }
+
       const formData = new FormData();
       for (let i = 0; i < selectImages.length; i++) {
         const imageFile = await fetch(selectImages[i])
@@ -110,10 +115,8 @@ const TravelWrite = () => {
         withCredentials: true,
       };
       const body = {
-        //username: userTravelInfo.username,
         title: title,
         content: content,
-        //destination: userTravelInfo.destination,
       };
 
       for (const key in body) {
@@ -122,19 +125,12 @@ const TravelWrite = () => {
 
       const response = await axios.post(url, formData, header);
 
-      if (response.status === 200) {
-        console.log("등록되었습니다!");
-        navigate("/");
-      } else {
-        console.log("등록에 실패했습니다.");
-        navigate(`/mypage`);
-        console.log(response.status);
-      }
+      alert("여행기 작성이 완료되었습니다.");
+      navigate("/mypage");
     } catch (error) {
       console.log("API 호출 중 오류가 발생했습니다:", error);
     }
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <div
@@ -231,8 +227,8 @@ const TravelWrite = () => {
                 <div className="h-full p-4">
                   <input
                     type="text"
-                    onChange={handleTittleChange} //임시
-                    value={title} //임시
+                    onChange={handleTittleChange}
+                    value={title}
                     placeholder="제목을 입력해주세요."
                     style={{ border: "1px solid #B09FCE" }}
                     className="w-full h-full text-lg px-4 py-2  hide-input-focus outline-none"
@@ -245,7 +241,7 @@ const TravelWrite = () => {
                 </div>
                 <div className="h-full p-4">
                   <textarea
-                    onChange={handleContentChange} //임시
+                    onChange={handleContentChange}
                     value={content} //임시
                     placeholder="본문 내용을 입력해주세요."
                     style={{ border: "1px solid #B09FCE" }}
