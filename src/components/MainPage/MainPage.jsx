@@ -97,12 +97,12 @@ const MainPageComponent = () => {
 
             <div className="p-4 text-center sm:p-6 md:col-span-2 lg:p-8">
               <p className="text-sm font-semibold uppercase tracking-widest">
-                {item.name_ko}에 관심이 있다면 여행을 계획해보세요!
+                {item.nameKo}에 관심이 있다면 여행을 계획해보세요!
               </p>
 
               <h2 className="mt-6 font-black uppercase">
                 <span className="text-4xl font-black sm:text-5xl lg:text-6xl mb-10">
-                  {item.name_en}
+                  {item.nameEn}
                 </span>
 
                 <span
