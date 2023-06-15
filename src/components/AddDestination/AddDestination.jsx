@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PlaceList from "../PlaceList/PlaceList";
 
 const AddDestination = (props) => {
   const {
@@ -6,12 +7,16 @@ const AddDestination = (props) => {
     handleClickDate,
     selectedDayPlaces,
     setSelectedDayPlaces,
-
+    handleAddPlace,
     selectedPlaces,
+    setSelectedPlaces,
   } = props;
 
   const [isAll, setIsAll] = useState(true);
   const [showDayList, setShowDayList] = useState(false);
+  const [items, setItems] = useState(selectedPlaces);
+
+  console.log("items", items);
 
   const handleClickAll = () => {
     setIsAll(true);
@@ -22,10 +27,6 @@ const AddDestination = (props) => {
     setShowDayList(true);
     setIsAll(false);
   };
-
-  const [items, setItems] = useState(selectedPlaces);
-
-  console.log("items", items);
 
   if (selectedDates.length > 0) {
     return (
@@ -43,7 +44,7 @@ const AddDestination = (props) => {
         >
           전체
         </button>
-        {selectedDates.map((date, index) => (
+        {selectedDates.map((date, index, selectedPlaces) => (
           <button
             className="w-14 h-8 rounded mt-2"
             style={{
@@ -51,6 +52,7 @@ const AddDestination = (props) => {
               color: "#B09FCE",
             }}
             key={index}
+            data={selectedPlaces}
             onClick={() => {
               handleClickDay();
               handleClickDate(date);

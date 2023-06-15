@@ -1,25 +1,26 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
+import AddDestination from "../AddDestination/AddDestination";
 
 const PlaceList = (props) => {
   const {
     places,
     infowindow,
     handleDisplayInfowindow,
-    selectedPlaces,
-    setSelectedPlaces,
 
     selectedDayPlaces,
     setSelectedDayPlaces,
   } = props;
   const { openModal } = useModalStore();
+  const [selectedPlaces, setSelectedPlaces] = useState([]);
 
   // + 버튼 눌렀을 때 장소 넘겨주는 함수
+
   const handleAddPlace = (index) => {
     const place = places[index];
-    console.log("selectedPlace", place);
+    console.log("selectedPlace", selectedPlaces);
     setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   };
 
@@ -44,6 +45,10 @@ const PlaceList = (props) => {
   //   //   </div>
   //   // );
   // };
+
+  const AddDestinationComponents = useMemo(() => {
+    <AddDestination handleAddPlace={handleAddPlace} />;
+  });
 
   return (
     <div style={{ color: "black" }}>
@@ -126,7 +131,7 @@ const PlaceList = (props) => {
             <span className={`markerbg marker${index + 1}`} />
             <div
               className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
-              style={{ marginLeft: "10px" }}
+              style={{ marginLeft: "3px" }}
             >
               <div className="font-bold text-sm">{place.place_name}</div>
               <div style={{ display: "flex ", justifyContent: "right" }}>
@@ -138,7 +143,7 @@ const PlaceList = (props) => {
                   className="cursor-pointer"
                   style={{
                     marginLeft: "auto",
-                    marginRight: "5px",
+                    marginRight: "3px",
                   }}
                 />
                 <img

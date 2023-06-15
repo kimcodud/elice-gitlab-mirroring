@@ -10,7 +10,6 @@ import moveBtn from "/public/assets/goBackIcon.webp";
 
 import tempImage from "/public/assets/main.jpg";
 
-
 const UserInfoPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { openModal } = useModalStore();

@@ -156,8 +156,8 @@ const SearchMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
-        selectedPlaces={selectedPlaces}
-        setSelectedPlaces={setSelectedPlaces}
+        // selectedPlaces={selectedPlaces}
+        // setSelectedPlaces={setSelectedPlaces}
       />
     );
   }, [markers, places]);
@@ -165,8 +165,8 @@ const SearchMap = () => {
   const DatePickerComponent = useMemo(() => {
     return (
       <DatePicker
-        selectedPlaces={selectedPlaces}
-        setSelectedPlaces={setSelectedPlaces}
+        // selectedPlaces={selectedPlaces}
+        // setSelectedPlaces={setSelectedPlaces}
         getDateList={getDateList}
         selectedDayPlaces={selectedDayPlaces}
         setSelectedDayPlaces={setSelectedDayPlaces}
@@ -229,7 +229,7 @@ const SearchMap = () => {
         <div>
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ marginRight: "10px" }}>
+              <div style={{ marginRight: "3px" }}>
                 {DatePickerComponent}
                 <div
                   className="flex flex-col items-center mt-4"
@@ -294,7 +294,7 @@ const SearchMap = () => {
               onKeyPress={handleKeyPress}
               placeholder=" 장소를 검색해보세요"
               style={{
-                marginLeft: "10px",
+                marginLeft: "3px",
                 justifyContent: "center",
                 textAlign: "center",
               }}
@@ -303,7 +303,7 @@ const SearchMap = () => {
               <div
                 id="placesList"
                 style={{
-                  height: "881px",
+                  height: "850px",
                   whiteSpace: "nowrap",
                   overflow: "auto",
                 }}
