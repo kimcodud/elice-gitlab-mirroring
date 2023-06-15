@@ -367,9 +367,7 @@ function TravelPostDetail(props) {
                   ` (${changetoKoreaDate(post.created_at)})`}
               </div>
               <div className="flex flex-row justify-end">
-                <Link to={`/TravelPostEditPage/${post.id}`} key={post.id}>
-                  수정
-                </Link>
+                <Link to={`/TravelEditPage/${post.id}`}>수정</Link>
                 <button onClick={handleClickDeletPost} className="ml-5">
                   삭제
                 </button>
