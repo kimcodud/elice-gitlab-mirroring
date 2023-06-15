@@ -61,7 +61,7 @@ const Router = () => {
             element={<TravelWritePage />}
           />
           <Route
-            path="/travelPostEditPage/:postId"
+            path="/travelEditPage/:postId"
             element={<TravelPostEditPage />}
           />
           <Route
