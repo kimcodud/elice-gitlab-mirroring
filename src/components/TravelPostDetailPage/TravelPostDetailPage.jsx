@@ -82,7 +82,6 @@ function TravelPostDetail(props) {
 
   const CommentComponent = () => {
     // 댓글 조회
-
     return (
       <div className="w-full h-full flex flex-col justify-center items-center">
         {commentBoard.map((comment, index) => (
@@ -105,13 +104,32 @@ function TravelPostDetail(props) {
                 <span className="pr-2">{comment.username}</span>
                 <span className="text-gray-400"></span>
               </div>
-              <div className="flex justify-end items-start w-1/12 cursor-pointer select-none ">
+              <button
+                onClick={async () => {
+                  try {
+                    await axios.delete(
+                      `http://localhost:3000/comments/${comment.id}`,
+                      {
+                        withCredentials: true,
+                      }
+                    );
+                    window.location.reload();
+                    alert("댓글이 삭제되었습니다.");
+                  } catch (error) {
+                    console.log(error);
+                    alert(
+                      "본인이 작성한 댓글이 아닙니다.\n삭제할 수 없습니다."
+                    );
+                  }
+                }}
+                className="flex justify-end items-start w-1/12 select-none "
+              >
                 <img
                   className="w-2/3"
                   src="/assets/close.webp"
                   alt="댓글삭제"
                 />
-              </div>
+              </button>
             </div>
             <div className="flex flex-row items-start w-full h-full">
               {comment.comment}
@@ -261,8 +279,8 @@ function TravelPostDetail(props) {
     setComment(e.target.value);
   };
 
-  const handleCommentSubmit = async () => {
-    //댓글 달기 post
+  const handleCommentSubmit = async (e) => {
+    // 댓글 달기 post
     try {
       const url = `http://localhost:3000/comments`;
       const header = {
@@ -272,14 +290,14 @@ function TravelPostDetail(props) {
         diary_id: `${postId}`,
         comment: comment,
       };
-      const response = await axios.post(url, header, body);
-      alert(response);
-      console.log(response); // 결과에 따라
-    } catch {
+      const response = await axios.post(url, body, header);
+      alert("댓글 작성이 완료되었습니다.");
+    } catch (error) {
       console.log("API 호출 중 오류가 발생했습니다:", error);
-      alert(response);
+      alert("회원만 작성이 가능합니다.");
     }
   };
+
   return (
     <div
       id="main"
