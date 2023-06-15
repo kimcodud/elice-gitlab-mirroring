@@ -143,7 +143,7 @@ const TravelWrite = () => {
               style={{ cursor: "pointer" }}
             >
               <img
-                src="/public/assets/goBackIcon.webp"
+                src="/assets/goBackIcon.webp"
                 className="w-6 h-6 mr-6"
                 alt="go back to mypage"
               />
@@ -173,7 +173,7 @@ const TravelWrite = () => {
                         className="absolute top-0 left-0 w-full h-full object-cover"
                       />
                       <img
-                        src="/public/assets/deletIcon.webp"
+                        src="/assets/deletIcon.webp"
                         onClick={() => handleImageDelete(index)}
                         className="absolute bottom-0 right-0 object-cover w-1/6"
                         style={{ transform: "translate(-30%, -30%)" }}
@@ -192,7 +192,7 @@ const TravelWrite = () => {
                       <img
                         className="absolute bottom-0 right-0 object-cover w-1/6"
                         style={{ transform: "translate(-30%, -30%)" }}
-                        src="/public/assets/addIcon.webp"
+                        src="/assets/addIcon.webp"
                         alt="Add Image"
                       />
                     </div>

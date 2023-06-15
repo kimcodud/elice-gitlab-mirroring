@@ -241,11 +241,7 @@ const UserInfoPage = () => {
         className="w-full flex flex-col justify-center items-center my-5 h-5/6"
       >
         <div className="w-1/6 mb-5 border bg-white border-gray-100 rounded-full flex items-center justify-center shadow-lg">
-          <img
-            className="h-full"
-            src="/public/assets/user.webp"
-            alt="유저이미지"
-          />
+          <img className="h-full" src="/assets/user.webp" alt="유저이미지" />
         </div>
         <div className="grid grid-cols-none grid-rows-4 justify-center items-center w-5/12 border-solid grid-underline text-center">
           <div
@@ -361,11 +357,7 @@ const UserInfoPage = () => {
       <div className="w-full h-full">
         <div className="w-full h-full flex flex-col justify-center items-center text-center">
           <div className="h-1/5 border border-gray-100 rounded-full flex items-center justify-center shadow-lg">
-            <img
-              className="h-full"
-              src="/public/assets/user.webp"
-              alt="유저이미지"
-            />
+            <img className="h-full" src="/assets/user.webp" alt="유저이미지" />
           </div>
           <div className="text-gray-500 font-bold text-lg m-3">
             {userInfo.username} 님 안녕하세요!
@@ -412,7 +404,7 @@ const UserInfoPage = () => {
                   >
                     <img
                       id="prevBtn"
-                      src="/public/assets/goBackIcon.webp"
+                      src="/assets/goBackIcon.webp"
                       alt="이전"
                       className="w-2/5  object-contain select-none"
                     />
@@ -424,7 +416,7 @@ const UserInfoPage = () => {
                     <div className="flex items-center justify-center p-5">
                       <img
                         className="h-full"
-                        src="/public/assets/main.jpg"
+                        src="/assets/main.jpg"
                         alt="여행지 이미지"
                       />
                     </div>
@@ -527,7 +519,7 @@ const UserInfoPage = () => {
                   >
                     <img
                       id="nextBtn"
-                      src="/public/assets/goBackIcon.webp"
+                      src="/assets/goBackIcon.webp"
                       alt="다음"
                       className="w-2/5  object-contain transform scale-x-[-1] select-none"
                     />
