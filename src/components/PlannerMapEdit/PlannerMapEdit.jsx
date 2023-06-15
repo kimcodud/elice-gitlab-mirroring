@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import mockData from '../../assets/mockData.json';
 import DestinationList from '../DestinationList/DestinationList';
+import axios from 'axios';
 
 function PlannerMapEdit() {
   const [list, setList] = useState(mockData);
+  // const [list, setList] = useState([]);
 
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -17,6 +19,21 @@ function PlannerMapEdit() {
       .find((item) => item.plan_id === 1)
       ?.dates.flatMap((date) => date.locations)
   );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/travels/', {
+          withCredentials: true,
+        });
+        console.log('response', response.data);
+        // setList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const whereToShow = () => {
     if (isAll) {
@@ -90,7 +107,7 @@ function PlannerMapEdit() {
       const locationsToDisplay = whereToShow();
 
       locationsToDisplay.forEach((position) => {
-        console.log('locationsToDisplay', locationsToDisplay);
+        // console.log('locationsToDisplay', locationsToDisplay);
         const latlng = new window.kakao.maps.LatLng(position.lat, position.lng);
 
         const marker = new window.kakao.maps.Marker({
@@ -126,6 +143,12 @@ function PlannerMapEdit() {
 
       setMarkers(newMarkers);
       setPolyline(newPolyline);
+
+      const bounds = new window.kakao.maps.LatLngBounds();
+      newMarkers.forEach((marker) => {
+        bounds.extend(marker.getPosition());
+      });
+      map.setBounds(bounds);
     }
   }, [list, map, isAll, dateIndex]);
 
@@ -155,7 +178,6 @@ function PlannerMapEdit() {
                 style={{
                   width: '300px',
                   height: '77px',
-                  // marginTop: '16px',
                   fontWeight: 700,
                   fontSize: '30px',
                   color: '#6645B9',
