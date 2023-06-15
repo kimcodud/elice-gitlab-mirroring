@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import addButton from "../../assets/addIcon.webp";
-import deletButton from "../../assets/deletIcon.webp";
-import goBackIcon from "../../assets/goBackIcon.webp";
+import addButton from "/public/assets/addIcon.webp";
+import deletButton from "/public/assets/deletIcon.webp";
+import goBackIcon from "/public/assets/goBackIcon.webp";
 import { useParams, useNavigate } from "react-router-dom";
+
 const TravelPostEdit = () => {
   const navigate = useNavigate();
   const [selectImages, setSelectImages] = useState([]);
@@ -115,8 +116,8 @@ const TravelPostEdit = () => {
         formData.append("image", imageFile);
       }
 
-      formData.append("title", title); // title 추가
-      formData.append("content", content); // content 추가
+      formData.append("title", title);
+      formData.append("content", content);
 
       const url = `http://localhost:3000/mypage/diary/${postId}`;
       const header = {
@@ -254,7 +255,7 @@ const TravelPostEdit = () => {
             </div>
             <input
               type="submit"
-              value="여행기 작성"
+              value="여행기 수정"
               style={{ background: "#B09FCE" }}
               className="my-5 mx-3 px-24 py-3 text-white text-xl font-bold rounded shadow-md cursor-pointer"
             />

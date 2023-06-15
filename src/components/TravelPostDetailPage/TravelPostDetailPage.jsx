@@ -3,11 +3,11 @@ import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal.jsx";
 import { useModalStore } from "../../store/store";
 import { useNavigate, Link } from "react-router-dom";
-import prevBtn from "../../assets/prev.webp";
-import nextBtn from "../../assets/next.webp";
-import deleteBtn from "../../assets/close.webp";
+import prevBtn from "/public/assets/prev.webp";
+import nextBtn from "/public/assets/next.webp";
+import deleteBtn from "/public/assets/close.webp";
 
-import userImg from "../../assets/user.webp";
+import userImg from "/public/assets/user.webp";
 
 import axios from "axios";
 import { useParams } from "react-router-dom";
