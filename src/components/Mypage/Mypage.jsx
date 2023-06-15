@@ -5,10 +5,10 @@ import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
 
-import basicUserImage from "../../assets/user.webp";
-import moveBtn from "../../assets/goBackIcon.webp";
+import basicUserImage from "/public/assets/user.webp";
+import moveBtn from "/public/assets/goBackIcon.webp";
 
-import tempImage from "../../assets/main.jpg";
+import tempImage from "/public/assets/main.jpg";
 
 const UserInfoPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

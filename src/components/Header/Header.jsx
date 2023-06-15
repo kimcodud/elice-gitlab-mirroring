@@ -46,7 +46,7 @@ const Header = () => {
         >
           <Link to="/">
             <img
-              src="/src/assets/starRoad_2.png"
+              src="/assets/starRoad_2.png"
               className="ml-6 mr-48 h-24 w-18 -mt-0"
             ></img>
           </Link>
@@ -89,7 +89,7 @@ const Header = () => {
             </Link>
           )}
           <Link to="/mypage">
-            <img src="/src/assets/user.png" className="px-4 py-2 mr-2 h-12" />
+            <img src="/assets/user.png" className="px-4 py-2 mr-2 h-12" />
           </Link>
         </nav>
       </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import addButton from "../../assets/addIcon.webp";
-import deletButton from "../../assets/deletIcon.webp";
-import goBackIcon from "../../assets/goBackIcon.webp";
+import addButton from "/public/assets/addIcon.webp";
+import deletButton from "/public/assets/deletIcon.webp";
+import goBackIcon from "/public/assets/goBackIcon.webp";
 import { useParams, useNavigate } from "react-router-dom";
 const TravelPostEdit = () => {
   const navigate = useNavigate();

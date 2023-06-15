@@ -19,11 +19,11 @@ const MainPageComponent = () => {
   }, [cookies]);
 
   const images = [
-    "/src/assets/main2.webp",
-    "/src/assets/main.webp",
-    "/src/assets/seoul.webp",
-    "/src/assets/busan.webp",
-    "/src/assets/seoul2.webp",
+    "/assets/main2.webp",
+    "/assets/main.webp",
+    "/assets/seoul.webp",
+    "/assets/busan.webp",
+    "/assets/seoul2.webp",
   ]; // 임시 데이터
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -188,7 +188,7 @@ const MainPageComponent = () => {
             </button>
           </div>
           <img
-            src="/src/assets/main2.webp"
+            src="/assets/main2.webp"
             className="mainImg"
             style={{ marginBottom: "10rem" }}
           />
@@ -215,14 +215,14 @@ const MainPageComponent = () => {
           className="absolute top-1/2 transform -translate-y-1/2 "
           style={{ marginLeft: "12%" }}
         >
-          <img src="/src/assets/prev.webp" />
+          <img src="/assets/prev.webp" />
         </button>
         <button
           onClick={nextSlide}
           className="absolute top-1/2 transform -translate-y-1/2 "
           style={{ marginLeft: "85%" }}
         >
-          <img src="/src/assets/next.webp" />
+          <img src="/assets/next.webp" />
         </button>
       </div>
       <div
