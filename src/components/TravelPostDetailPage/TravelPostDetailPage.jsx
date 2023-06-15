@@ -4,6 +4,7 @@ import { useModalStore } from "../../store/store";
 import axios from "axios";
 import { ModalPortal } from "../modal/ModalPortal.jsx";
 import Modal from "../modal/modal";
+import { useInView } from "react-intersection-observer";
 
 function TravelPostDetail(props) {
   const { openModal, closeModal } = useModalStore();
@@ -37,7 +38,6 @@ function TravelPostDetail(props) {
   const travelStart = changetoKoreaDate(travelInfo.start_date);
   const travelEnd = changetoKoreaDate(travelInfo.end_date);
   const travelDayCount = travelInfo.dates.length;
-  console.log(travelDayCount);
   const postImageArr = post.image ? JSON.parse(post.image) : [];
 
   const { postId } = useParams();
@@ -61,59 +61,107 @@ function TravelPostDetail(props) {
       }
     };
     fetchPostDetailData();
-  }, [postId]);
-  const CommentComponent = () => {
-    // 댓글
+  }, []);
 
-    // useEffect(() => {
-    //   const fetchPostDetailData = async () => {
-    //     try {
-    //       const getPostResponse = await axios.get(
-    //         `http://localhost:3000/comments/diary/${postId}?page=1`
-    //       );
-    //       console.log(getPostResponse);
-    //       setPost(getPostResponse.data);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
-    //   fetchPostDetailData();
-    // }, [postId]);
+  const CommentComponent = () => {
+    // 댓글 조회
+    const [commentBoard, setCommentBoard] = useState([]);
+    const [page, setPage] = useState(1);
+
+    const fetchComment = async () => {
+      try {
+        const getCommentResponse = await axios.get(
+          `http://localhost:3000/comments/diary/${postId}?page=${page}`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        setCommentBoard((prevCommentBoard) => [
+          ...prevCommentBoard,
+          ...getCommentResponse.data.comments,
+        ]);
+        setPage((prevPage) => prevPage + 1);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    useEffect(() => {
+      fetchComment(); 
+    }, [postId]);
+
+    const [ref, inView] = useInView();
+
+    useEffect(() => {
+      if (inView) {
+        console.log(inView, "무한 스크롤 요청");
+        fetchComment();
+      }
+    }, [inView]);
+    console.log(commentBoard);
 
     return (
-      <form
-        action=""
-        className="w-full h-full flex justify-center items-center"
-      >
-        <div className="grid grid-cols-[1fr,5fr] grid-rows-[1fr,auto] w-11/12 h-full mb-2">
-          <div className="col-span-1 row-span-full w-full p-1">
-            <div className="flex justify-center items-center w-3/4 bg-white rounded-full align-middle shadow-md">
-              <img
-                className="mx-auto my-auto w-3/4 hover:"
-                src="/assets/user.webp"
-                alt="유저이미지"
-              />
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        {commentBoard.map((comment, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-[1fr,8fr] grid-rows-[1fr,auto] w-11/12 h-full mb-6"
+          >
+            <div className="col-span-1 row-span-full w-full p-1">
+              <div
+                style={{
+                  backgroundImage: `url("/assets/user.webp")`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                className="flex justify-center items-center w-9 h-9 bg-white rounded-full align-middle shadow-md"
+              ></div>
+            </div>
+            <div className="flex flex-row justify-between w-full h-full ">
+              <div className="m-0">
+                <span className="pr-2">{comment.username}</span>
+                <span className="text-gray-400"></span>
+              </div>
+              <button
+                onClick={async () => {
+                  try {
+                    await axios.delete(
+                      `http://localhost:3000/comments/${comment.id}`,
+                      {
+                        withCredentials: true,
+                      }
+                    );
+                    window.location.reload();
+                    alert("댓글이 삭제되었습니다.");
+                  } catch (error) {
+                    console.log(error);
+                    alert(
+                      "본인이 작성한 댓글이 아닙니다.\n삭제할 수 없습니다."
+                    );
+                  }
+                }}
+                className="flex justify-end items-start w-1/12 select-none "
+              >
+                <img
+                  className="w-2/3"
+                  src="/assets/close.webp"
+                  alt="댓글삭제"
+                />
+              </button>
+            </div>
+            <div className="flex flex-row items-start w-full h-full">
+              {comment.comment}
             </div>
           </div>
-          <div className="flex flex-row justify-between w-full h-full ">
-            <div>
-              <span className="pr-2">유저이름</span>{" "}
-              <span className="text-gray-400">2020-02-20</span>
-            </div>
-            <div className="flex justify-end items-start w-1/12 cursor-pointer select-none ">
-              <img className="w-2/3" src="/assets/close.webp" alt="댓글삭제" />
-            </div>
-          </div>
-          <div className="flex flex-row items-start w-full h-full">
-            댓글내용 짱짱 유익함 멋져용 와웅댓글내용 짱짱 유익함 멋져용 와웅
-          </div>
-        </div>
-      </form>
+        ))}
+        <div ref={ref}>댓글이 더 이상 없습니다.</div>
+      </div>
     );
   };
 
   useEffect(() => {
-    //특정여행기 가져오기
+    //특정여행일정 가져오기
     const fetchTravelPlanData = async () => {
       try {
         const getTravelPlanResponse = await axios.get(
@@ -140,7 +188,6 @@ function TravelPostDetail(props) {
     }
   }, [post.plan_id]);
 
-  console.log(travelInfo.dates);
   const ScheduleComponent = () => {
     // 일정
     return (
@@ -193,7 +240,11 @@ function TravelPostDetail(props) {
           여행 일정
         </div>
       ),
-      content: <ScheduleComponent />,
+      content: (
+        <div>
+          <ScheduleComponent />
+        </div>
+      ),
     });
   };
 
@@ -248,22 +299,27 @@ function TravelPostDetail(props) {
     setComment(e.target.value);
   };
 
-  const handleCommentSubmit = async () => {
-    //댓글 달기 post
+  const handleCommentSubmit = async (e) => {
+    // 댓글 달기 post
+    e.preventDefault();
     try {
-      const url = `http://localhost:3000/comments/`;
+      const url = `http://localhost:3000/comments`;
       const header = {
         withCredentials: true,
       };
       const body = {
-        diary_id: postId,
+        diary_id: `${postId}`,
         comment: comment,
       };
-      const response = await axios.post(url, header, body); // 결과에 따라
-    } catch {
+      const response = await axios.post(url, body, header);
+      setComment("");
+      alert("댓글 작성이 완료되었습니다.");
+    } catch (error) {
       console.log("API 호출 중 오류가 발생했습니다:", error);
+      alert("회원만 작성이 가능합니다.");
     }
   };
+
   return (
     <div
       id="main"
