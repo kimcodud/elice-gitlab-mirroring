@@ -15,8 +15,12 @@ const LoginPageComponent = () => {
     e.preventDefault();
 
     try {
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
       const response = await axios.post(
-        "http://localhost:3000/users/login",
+        `${apiUrl}/users/login`,
         {
           username: user.userId,
           password: user.password,
@@ -25,7 +29,6 @@ const LoginPageComponent = () => {
           withCredentials: true,
         }
       );
-      // console.log(response);
       if (response.status === 200) {
         navigate("/");
         localStorage.setItem("isLogin", "1");
@@ -33,7 +36,6 @@ const LoginPageComponent = () => {
       }
     } catch (error) {
       console.log(error);
-      // alert(error.response.data.error.message);
     }
   };
 
@@ -53,7 +55,6 @@ const LoginPageComponent = () => {
           label="아이디"
           value={user.userId || ""}
           onChange={(e) => setUser({ ...user, userId: e.target.value })}
-          required
           className="w-full p-1 border-b-2 outline-none border-b-violet-400"
         />
       </label>

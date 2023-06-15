@@ -50,7 +50,11 @@ const MainPageComponent = () => {
 
   const [destination, setDestination] = useState([]);
   const getLocation = async () => {
-    const result = await axios.get("http://localhost:3000/destinations");
+    const apiUrl =
+      import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+        ? import.meta.env.VITE_APP_API_DEV_URL
+        : import.meta.env.VITE_APP_API_PROD_URL;
+    const result = await axios.get(`${apiUrl}/destinations`);
     console.log(result.data.data.destinations);
     setDestination(result.data.data.destinations);
   };
@@ -271,10 +275,10 @@ const MainPageComponent = () => {
 
               <div className="p-10">
                 <h5 className="mb-2 text-2xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-                  {item.name_en}
+                  {item.nameEn}
                 </h5>
                 <p className="mb-4 text-lg text-neutral-600 dark:text-neutral-200">
-                  {item.name_ko}
+                  {item.nameKo}
                 </p>
               </div>
             </div>
