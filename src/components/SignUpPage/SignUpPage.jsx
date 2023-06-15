@@ -37,15 +37,16 @@ function SignUpPageComponent() {
         alert("아이디는 6자이상 20자 이하로 작성해주세요");
         return;
       } else {
-        const response = await axios.post(
-          "http://localhost:3000/users/signup",
-          {
-            email: user.email,
-            name: user.name,
-            username: user.userId,
-            password: user.password,
-          }
-        );
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const response = await axios.post(`${apiUrl}/users/signup`, {
+          email: user.email,
+          name: user.name,
+          username: user.userId,
+          password: user.password,
+        });
         console.log(response.data);
         navicate("/login");
         alert("회원가입을 축하합니다");

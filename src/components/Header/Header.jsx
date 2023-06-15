@@ -7,8 +7,12 @@ const Header = () => {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
   const logoutHandler = async () => {
+    const apiUrl =
+      import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+        ? import.meta.env.VITE_APP_API_DEV_URL
+        : import.meta.env.VITE_APP_API_PROD_URL;
     const res = await axios.post(
-      "http://localhost:3000/users/logout",
+      `${apiUrl}/users/logout`,
       {},
       {
         withCredentials: true,
@@ -30,7 +34,11 @@ const Header = () => {
   }, []);
 
   const getUserData = async () => {
-    const result = await axios.get("http://localhost:3000/mypage", {
+    const apiUrl =
+      import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+        ? import.meta.env.VITE_APP_API_DEV_URL
+        : import.meta.env.VITE_APP_API_PROD_URL;
+    const result = await axios.get(`${apiUrl}/mypage`, {
       withCredentials: true,
     });
     if (result.status === 200) {

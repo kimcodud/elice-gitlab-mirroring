@@ -31,16 +31,19 @@ const AdminPageComponent = () => {
   const handleIntroductionChange = (e) => {
     setIntroduction(e.target.value);
   };
-
+  console.log(import.meta.env.VITE_APP_API_DEV_URL);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // FormData 객체를 사용하여 이미지와 텍스트 데이터를 전송
-
     try {
       const formData = new FormData();
       formData.append("image", image);
-      const url = "http://localhost:3000/admin/locations";
-      // const url = "/api/admin/locations";
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      const url = `${apiUrl}/admin/locations`;
+
       const header = {
         headers: {
           "content-type": "multipart/form-data",
@@ -48,8 +51,8 @@ const AdminPageComponent = () => {
         withCredentials: true,
       };
       const body = {
-        name_en: name_en,
-        name_ko: name_ko,
+        nameEn: name_en,
+        nameKo: name_ko,
         introduction: introduction,
         latitude: latitude,
         longitude: longitude,
