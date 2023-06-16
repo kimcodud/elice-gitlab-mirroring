@@ -42,13 +42,26 @@ const Kakao = () => {
   };
 
   return (
-    <div>
-      <KakaoLogin
-        token={"769ab816c7034fe8dcb3567bdbf49cae"}
-        onSuccess={handleLoginSuccess}
-        onFail={handleLoginFail}
-        onLogout={handleLogout}
-      />
+    <div style={{ display: "flex" }}>
+      <div style={{ display: "inline-block" }}>
+        <KakaoLogin
+          style={{ marginBottom: "1px", marginRight: "0.1rem" }}
+          token={"769ab816c7034fe8dcb3567bdbf49cae"}
+          onSuccess={handleLoginSuccess}
+          onFail={handleLoginFail}
+          onLogout={handleLogout}
+        >
+          <img
+            src="/assets/kakao.png"
+            style={{
+              width: "30rem",
+              height: "90%",
+              // border: "1px solid rgb(165, 165, 165)",
+              borderRadius: "0px",
+            }}
+          />
+        </KakaoLogin>
+      </div>
     </div>
   );
 };

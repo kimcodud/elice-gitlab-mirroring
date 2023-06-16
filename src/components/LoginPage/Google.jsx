@@ -19,7 +19,7 @@ const Google = () => {
         className="mt-1 text-black rounded w-full"
         style={{
           border: "1px solid rgb(165, 165, 165)",
-          padding: "0.5rem",
+          padding: "0.9rem",
           width: "",
         }}
       >

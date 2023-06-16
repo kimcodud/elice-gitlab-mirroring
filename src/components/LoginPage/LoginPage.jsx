@@ -79,9 +79,9 @@ const LoginPageComponent = () => {
           type="submit"
           className="px-52 mt-1 text-white rounded bg-violet-400"
           style={{
-            fontSize: "1.1rem",
+            fontSize: "1.2rem",
             marginTop: "-1rem",
-            padding: "0.5rem",
+            padding: "1rem",
             width: "100%",
             border: "1px solid gray", // 버튼의 상단 여백을 조정할 수 있습니다.
             // 추가적인 스타일링 옵션을 여기에 작성할 수 있습니다.
@@ -95,15 +95,13 @@ const LoginPageComponent = () => {
           <Google />
         </div>
         <div className="my-3 text-sm text-center">
-          <div className="my-3 text-sm text-center">
-            <Kakao />
-          </div>
+          <Kakao />
         </div>
       </div>
 
       <div className="flex items-center justify-center mt-5">
         <p className="pr-3 text-sm">회원이 아니세요?</p>
-        <div className="text-sm text-violet-400">
+        <div className="text-sm font-medium text-violet-400">
           <a href="/signup">회원가입하기</a>
         </div>
       </div>

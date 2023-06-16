@@ -57,7 +57,7 @@ function SignUpPageComponent() {
   };
 
   return (
-    <form className="max-w-md mx-auto mt-4 ">
+    <form className="max-w-md mx-auto mt-36">
       <div className="mb-10">
         <h1 className="text-5xl text-center text-slate-600">SIGN UP</h1>
         <h6 className="text-xs text-center text-slate-400">
