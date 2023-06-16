@@ -25,32 +25,7 @@ const PlaceList = (props) => {
     const place = places[index];
     onClickPlaceItem(place);
     onSelectPlace(place);
-
-    // console.log("selectedPlace", selectedPlaces);
-    // setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   };
-
-  // const handlePlaceClick = (index) => {
-  //   const selectedPlace = places[index];
-  //   console.log(selectedPlace);
-
-  //   // return (
-  //   <div
-  //     className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
-  //     style={{ marginLeft: "10px" }}
-  //   >
-  //     <div className="font-bold text-sm">{selectedPlace.place_name}</div>
-  //     <div style={{ display: "flex ", justifyContent: "right" }}>
-  //       <span className="text-xs">{selectedPlace.category_group_name}</span>
-  //       <img
-  //         src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-  //         alt="remove icon"
-  //         className="cursor-pointer"
-  //       />
-  //     </div>
-  //   </div>
-  //   // );
-  // };
 
   const AddDestinationComponents = useMemo(() => {
     <AddDestination
