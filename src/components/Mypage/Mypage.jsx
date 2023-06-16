@@ -69,7 +69,7 @@ const UserInfoPage = () => {
           import.meta.env.VITE_APP_SERVER_MODE === "DEV"
             ? import.meta.env.VITE_APP_API_DEV_URL
             : import.meta.env.VITE_APP_API_PROD_URL;
-        const userInfoResponse = await axios.get(`${apiUrl}mypage/`, {
+        const userInfoResponse = await axios.get(`${apiUrl}/mypage/`, {
           params: {
             username: userInfo.username,
             name: userInfo.name,
