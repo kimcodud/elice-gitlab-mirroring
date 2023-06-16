@@ -68,9 +68,9 @@ const SearchMap = () => {
     getDestination();
   }, []);
 
-  useEffect(() => {
-    console.log({ selectedDay });
-  }, [selectedDay]);
+  // useEffect(() => {
+  //   console.log({ selectedDay });
+  // }, [selectedDay]);
 
   // 일정등록할 때 addPlanInfo 보내면 됨
   const [addPlanInfo, setAddPlanInfo] = useState({
