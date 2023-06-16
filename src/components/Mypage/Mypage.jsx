@@ -499,7 +499,7 @@ const UserInfoPage = () => {
                       </div>
                       <div className="flex flex-row justify-between mb-8 mx-7">
                         <Link
-                          to={`/plannerEdit/${mergedUserTravelInfo[currentIndex].planId}`}
+                          to={`/travelPlan/${mergedUserTravelInfo[currentIndex].planId}`}
                           style={{ backgroundColor: "#B09FCE" }}
                           className="text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md select-none"
                         >
