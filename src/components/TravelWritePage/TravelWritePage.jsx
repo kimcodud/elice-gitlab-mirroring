@@ -8,7 +8,7 @@ const TravelWrite = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userTravelInfo, setUserTravelInfo] = useState({
-    plan_id: "",
+    planId: "",
     username: "",
     destination: "",
   });
@@ -23,7 +23,7 @@ const TravelWrite = () => {
             : import.meta.env.VITE_APP_API_PROD_URL;
         const getPostResponse = await axios.get(`${apiUrl}/travels/${postId}`, {
           params: {
-            plan_id: userTravelInfo.plan_id,
+            planId: userTravelInfo.planId,
             username: userTravelInfo.username,
             destination: userTravelInfo.destination,
           },
@@ -110,7 +110,7 @@ const TravelWrite = () => {
         import.meta.env.VITE_APP_SERVER_MODE === "DEV"
           ? import.meta.env.VITE_APP_API_DEV_URL
           : import.meta.env.VITE_APP_API_PROD_URL;
-      const url = `${apiUrl}/mypage/diary/${postId}`;
+      const url = `${apiUrl}/mypage/diaries/${postId}`;
       const header = {
         headers: {
           "content-type": "multipart/form-data",
