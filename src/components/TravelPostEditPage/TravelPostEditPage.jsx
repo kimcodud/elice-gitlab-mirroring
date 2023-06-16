@@ -10,13 +10,13 @@ const TravelPostEdit = () => {
   const [post, setPost] = useState({
     id: "",
     username: "",
-    plan_id: "",
+    planId: "",
     title: "",
     content: "",
     image: "",
     destination: "",
-    created_at: "",
-    updated_at: "",
+    createdAt: "",
+    updatedAt: "",
   });
 
   //디테일 페이지에서 가져온 사진 배열
@@ -123,7 +123,7 @@ const TravelPostEdit = () => {
         import.meta.env.VITE_APP_SERVER_MODE === "DEV"
           ? import.meta.env.VITE_APP_API_DEV_URL
           : import.meta.env.VITE_APP_API_PROD_URL;
-      const url = `${apiUrl}/diary/${postId}`;
+      const url = `${apiUrl}/diaries/${postId}`;
       const header = {
         headers: {
           "content-type": "multipart/form-data",
