@@ -79,9 +79,9 @@ function TravelPostDetail(props) {
           `${apiUrl}/comments/diaries/${postId}?page=${page}`,
           {
             withCredentials: true,
-          }
+          } //예외처리
         );
-
+        console.log("ㅇㅇ", getCommentResponse.data.comments);
         if (page === 1) {
           setCommentBoard(getCommentResponse.data.comments);
         } else {
@@ -90,7 +90,6 @@ function TravelPostDetail(props) {
             ...getCommentResponse.data.comments,
           ]);
         }
-
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.log(error);
@@ -149,7 +148,8 @@ function TravelPostDetail(props) {
       }
     };
 
-    const handleEditCommentSubmit = async (commentId) => {
+    const handleEditCommentSubmit = async (commentId, e) => {
+      e.preventDefault();
       try {
         const commentToUpdate = commentBoard.find(
           (comment) => comment.id === commentId
@@ -179,13 +179,14 @@ function TravelPostDetail(props) {
             return comment;
           })
         );
+        closeModal();
         alert("댓글이 수정되었습니다.");
       } catch (error) {
         console.log(error);
         alert("본인이 작성한 댓글이 아닙니다.\n수정할 수 없습니다.");
       }
     };
-
+    console.log(comment.comment);
     return (
       <div className="w-full h-full flex flex-col justify-center items-center">
         {commentBoard.map((comment, index) => (
@@ -208,7 +209,7 @@ function TravelPostDetail(props) {
                 <span className="pr-2">{comment.username}</span>
                 {comment.editing ? (
                   <button
-                    onClick={() => handleEditCommentSubmit(comment.id)}
+                    onClick={(e) => handleEditCommentSubmit(comment.id, e)}
                     className="text-gray-400 text-xs"
                   >
                     완료
