@@ -73,7 +73,7 @@ const Router = () => {
           />
           <Route path="/plannerMap/:id" element={<PlannerMap />} />
           <Route path="/plannerMap" element={<PlannerMap />} />
-          <Route path="/plannerEdit/:id" element={<PlannerEditPage />} />
+          <Route path="/travelPlan/:id" element={<PlannerEditPage />} />
         </>
       )}
       {isAdmin && <Route path="/admin" element={<AdminPage />} />}
