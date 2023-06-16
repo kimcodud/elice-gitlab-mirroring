@@ -30,12 +30,13 @@ const LoginPageComponent = () => {
         }
       );
       if (response.status === 200) {
-        navigate("/");
         localStorage.setItem("isLogin", "1");
+        navigate("/");
         location.reload();
       }
     } catch (error) {
-      console.log(error);
+      alert(error.response.data.error.message);
+      console.log(error.response.data.error);
     }
   };
 
