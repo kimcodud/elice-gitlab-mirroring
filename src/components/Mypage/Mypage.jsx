@@ -20,17 +20,17 @@ const UserInfoPage = () => {
   const [userTravelInfo, setUserTravelInfo] = useState([]); //여행기
   const mergedUserTravelInfo = userTravelPlan.map((plan) => {
     const correspondingInfo = userTravelInfo.find(
-      (info) => info.plan_id === plan.plan_id
+      (info) => info.planId === plan.planId
     );
 
     return {
-      plan_id: plan.plan_id,
-      plan_start: plan.start_date,
-      plan_end: plan.end_date,
-      plan_update: plan.updated_at,
-      plan_destination: plan.destination,
+      planId: plan.planId,
+      planStart: plan.startDate,
+      planEnd: plan.endDate,
+      planUpdate: plan.updatedAt,
+      planDestination: plan.destination,
       id: correspondingInfo ? correspondingInfo.id : "",
-      diary_update: correspondingInfo ? correspondingInfo.updated_at : "",
+      diaryUpdate: correspondingInfo ? correspondingInfo.updatedAt : "",
     };
   });
 
@@ -38,8 +38,8 @@ const UserInfoPage = () => {
   const travelInfoCount = userTravelInfo.length;
 
   const [area, setArea] = useState({
-    name_en: "",
-    name_ko: "",
+    nameEn: "",
+    nameKo: "",
     image: "",
   });
 
@@ -58,7 +58,7 @@ const UserInfoPage = () => {
   };
 
   const handleWriteClick = () => {
-    const planId = mergedUserTravelInfo[currentIndex].plan_id;
+    const planId = mergedUserTravelInfo[currentIndex].planId;
     history.push("/TravelWritePage", { planId });
   };
 
@@ -69,7 +69,7 @@ const UserInfoPage = () => {
           import.meta.env.VITE_APP_SERVER_MODE === "DEV"
             ? import.meta.env.VITE_APP_API_DEV_URL
             : import.meta.env.VITE_APP_API_PROD_URL;
-        const userInfoResponse = await axios.get(`${apiUrl}mypage/`, {
+        const userInfoResponse = await axios.get(`${apiUrl}/mypage/`, {
           params: {
             username: userInfo.username,
             name: userInfo.name,
@@ -96,8 +96,8 @@ const UserInfoPage = () => {
           {
             params: {
               id: userTravelInfo.id,
-              plan_id: userTravelInfo.plan_id,
-              updated_at: userTravelInfo.updated_at,
+              planId: userTravelInfo.planId,
+              updatedAt: userTravelInfo.updatedAt,
             },
             withCredentials: true,
           }
@@ -116,11 +116,11 @@ const UserInfoPage = () => {
             : import.meta.env.VITE_APP_API_PROD_URL;
         const userTravelPlanResponse = await axios.get(`${apiUrl}/travels/`, {
           params: {
-            plan_id: userTravelPlan.plan_id,
-            start_date: userTravelPlan.start_date,
-            end_date: userTravelPlan.end_date,
+            planId: userTravelPlan.planId,
+            startDate: userTravelPlan.startDate,
+            endDate: userTravelPlan.endDate,
             destination: userTravelPlan.destination,
-            updated_at: userTravelPlan.updated_at,
+            updatedAt: userTravelPlan.updatedAt,
           },
           withCredentials: true,
         });
@@ -137,11 +137,11 @@ const UserInfoPage = () => {
             ? import.meta.env.VITE_APP_API_DEV_URL
             : import.meta.env.VITE_APP_API_PROD_URL;
         const areaResponse = await axios.get(
-          `${apiUrl}/destinations/${area.location_id}`,
+          `${apiUrl}/destinations/${area.locationId}`,
           {
             params: {
-              name_en: area.name_en,
-              name_ko: area.name_ko,
+              nameEn: area.nameEn,
+              nameKo: area.nameKo,
               image: area.image,
             },
           }
@@ -170,7 +170,7 @@ const UserInfoPage = () => {
 
   const handleDeleteButtonClick = async () => {
     try {
-      const planIdToDelete = mergedUserTravelInfo[currentIndex].plan_id;
+      const planIdToDelete = mergedUserTravelInfo[currentIndex].planId;
       const apiUrl =
         import.meta.env.VITE_APP_SERVER_MODE === "DEV"
           ? import.meta.env.VITE_APP_API_DEV_URL
@@ -179,7 +179,7 @@ const UserInfoPage = () => {
         withCredentials: true,
       });
       setUserTravelPlan((prevPlan) =>
-        prevPlan.filter((plan) => plan.plan_id !== planIdToDelete)
+        prevPlan.filter((plan) => plan.planId !== planIdToDelete)
       );
       console.log("데이터가 성공적으로 삭제되었습니다.");
       window.location.reload();
@@ -446,11 +446,11 @@ const UserInfoPage = () => {
                         className="text-4xl py-2 font-bold"
                         style={{ color: "#6645B9" }}
                       >
-                        {mergedUserTravelInfo[currentIndex].plan_destination}
+                        {mergedUserTravelInfo[currentIndex].planDestination}
                       </div>
                       <div className="text-2xl py-2 font-bold text-gray-500">
                         대한민국{" "}
-                        {mergedUserTravelInfo[currentIndex].plan_destination}
+                        {mergedUserTravelInfo[currentIndex].planDestination}
                       </div>
                     </div>
                     <div className="flex flex-col justify-between">
@@ -463,11 +463,11 @@ const UserInfoPage = () => {
                         </div>
                         <div className="text-lg">
                           {changetoKoreaDate(
-                            mergedUserTravelInfo[currentIndex].plan_start
+                            mergedUserTravelInfo[currentIndex].planStart
                           )}
                           {" ~ "}
                           {changetoKoreaDate(
-                            mergedUserTravelInfo[currentIndex].plan_end
+                            mergedUserTravelInfo[currentIndex].planEnd
                           )}
                         </div>
                         <div
@@ -478,7 +478,7 @@ const UserInfoPage = () => {
                         </div>
                         <div className="text-lg">
                           {changetoKoreaDate(
-                            mergedUserTravelInfo[currentIndex].plan_update
+                            mergedUserTravelInfo[currentIndex].planUpdate
                           )}
                         </div>
                         <div
@@ -488,10 +488,10 @@ const UserInfoPage = () => {
                           여행기 작성일
                         </div>
                         <div>
-                          {mergedUserTravelInfo[currentIndex].diary_update && (
+                          {mergedUserTravelInfo[currentIndex].diaryUpdate && (
                             <div className="text-lg text-center cursor-pointer">
                               {changetoKoreaDate(
-                                mergedUserTravelInfo[currentIndex].diary_update
+                                mergedUserTravelInfo[currentIndex].diaryUpdate
                               )}
                             </div>
                           )}
@@ -499,13 +499,13 @@ const UserInfoPage = () => {
                       </div>
                       <div className="flex flex-row justify-between mb-8 mx-7">
                         <Link
-                          to={`/plannerEdit/${mergedUserTravelInfo[currentIndex].plan_id}`}
+                          to={`/plannerEdit/${mergedUserTravelInfo[currentIndex].planId}`}
                           style={{ backgroundColor: "#B09FCE" }}
                           className="text-white  text-lg w-1/3 h-12 p-2 rounded shadow-md select-none"
                         >
                           일정 조회
                         </Link>
-                        {mergedUserTravelInfo[currentIndex].diary_update ? (
+                        {mergedUserTravelInfo[currentIndex].diaryUpdate ? (
                           <Link
                             to={`/TravelPostDetailPage/${mergedUserTravelInfo[currentIndex].id}`}
                             style={{ backgroundColor: "#B09FCE" }}
@@ -515,7 +515,7 @@ const UserInfoPage = () => {
                           </Link>
                         ) : (
                           <Link
-                            to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].plan_id}`}
+                            to={`/TravelWritePage/${mergedUserTravelInfo[currentIndex].planId}`}
                             style={{ backgroundColor: "#B09FCE" }}
                             className="text-white  text-lg w-1/3 h-12 p-2 mx-4 rounded shadow-md select-none"
                           >

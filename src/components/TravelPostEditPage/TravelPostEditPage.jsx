@@ -5,18 +5,18 @@ import { useParams, useNavigate } from "react-router-dom";
 const TravelPostEdit = () => {
   const navigate = useNavigate();
   const [selectImages, setSelectImages] = useState([]);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [post, setPost] = useState({
-    id: '',
-    username: '',
-    plan_id: '',
-    title: '',
-    content: '',
-    image: '',
-    destination: '',
-    created_at: '',
-    updated_at: '',
+    id: "",
+    username: "",
+    planId: "",
+    title: "",
+    content: "",
+    image: "",
+    destination: "",
+    createdAt: "",
+    updatedAt: "",
   });
 
   //디테일 페이지에서 가져온 사진 배열
@@ -47,7 +47,9 @@ const TravelPostEdit = () => {
     const reader = new FileReader();
     reader.onload = () => {
       const imageUrl = reader.result;
-      setSelectImages((prevImages) => [...prevImages, imageUrl].filter(Boolean));
+      setSelectImages((prevImages) =>
+        [...prevImages, imageUrl].filter(Boolean)
+      );
     };
     reader.readAsDataURL(file);
   };
@@ -72,7 +74,13 @@ const TravelPostEdit = () => {
     const fetchPostDetailData = async () => {
       try {
         if (postId) {
-          const getPostResponse = await axios.get(`http://localhost:3000/diaries/${postId}`);
+          const apiUrl =
+            import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+              ? import.meta.env.VITE_APP_API_DEV_URL
+              : import.meta.env.VITE_APP_API_PROD_URL;
+          const getPostResponse = await axios.get(
+            `${apiUrl}/diaries/${postId}`
+          );
 
           setPost({
             ...getPostResponse.data,
@@ -94,7 +102,7 @@ const TravelPostEdit = () => {
 
     try {
       if (selectImages.length === 0) {
-        alert('이미지를 등록해주세요.');
+        alert("이미지를 등록해주세요.");
         return;
       }
 
@@ -102,17 +110,23 @@ const TravelPostEdit = () => {
       for (let i = 0; i < selectImages.length; i++) {
         const imageFile = await fetch(selectImages[i])
           .then((response) => response.blob())
-          .then((blob) => new File([blob], `image${i + 1}.png`, { type: 'image/png' }));
-        formData.append('image', imageFile);
+          .then(
+            (blob) =>
+              new File([blob], `image${i + 1}.png`, { type: "image/png" })
+          );
+        formData.append("image", imageFile);
       }
 
       // formData.append("title", title); // title 추가
       // formData.append("content", content); // content 추가
-
-      const url = `http://localhost:3000/mypage/diary/${postId}`;
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      const url = `${apiUrl}/diaries/${postId}`;
       const header = {
         headers: {
-          'content-type': 'multipart/form-data',
+          "content-type": "multipart/form-data",
         },
         withCredentials: true,
       };
@@ -125,19 +139,22 @@ const TravelPostEdit = () => {
       for (const key in body) {
         formData.append(key, body[key]);
       }
-      
+
       const response = await axios.put(url, formData, header);
 
-      alert('여행기 수정이 완료되었습니다.');
+      alert("여행기 수정이 완료되었습니다.");
       navigate(`/TravelPostDetailPage/${postId}`);
     } catch (error) {
-      console.log('API 호출 중 오류가 발생했습니다:', error);
+      console.log("API 호출 중 오류가 발생했습니다:", error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex justify-center items-center p-16" style={{ height: 'calc(100vh - 7rem)' }}>
+      <div
+        className="flex justify-center items-center p-16"
+        style={{ height: "calc(100vh - 7rem)" }}
+      >
         <div className="grid grid-cols-2 gap-4 w-4/5 h-full">
           <div style={{ width: "100%", height: "100%", margin: "2%" }}>
             <a
@@ -154,17 +171,17 @@ const TravelPostEdit = () => {
             </a>
             <div
               className="grid grid-cols-2 grid-rows-2 w-5/6 h-5/6 my-6 justify-items-end items-end"
-              style={{ height: 'calc(100% - 5.5rem)' }}
+              style={{ height: "calc(100% - 5.5rem)" }}
             >
               {[...Array(4)].map((_, index) => (
                 <div
                   key={index}
                   className={`imageBox w-full flex justify-center items-center mb-3 h-0 relative cursor-pointer overflow-hidden rounded-2xl
-                ${selectImages[index] ? '' : 'emptyImage'}`}
+                ${selectImages[index] ? "" : "emptyImage"}`}
                   style={{
-                    width: 'calc(95% - 1rem)',
-                    paddingBottom: '100%',
-                    backgroundColor: '#DCDCDC',
+                    width: "calc(95% - 1rem)",
+                    paddingBottom: "100%",
+                    backgroundColor: "#DCDCDC",
                   }}
                   onClick={() => handleImageClick(index)}
                 >
@@ -179,7 +196,7 @@ const TravelPostEdit = () => {
                         src="/assets/deletIcon.webp"
                         onClick={() => handleImageDelete(index)}
                         className="absolute bottom-0 right-0 object-cover w-1/6"
-                        style={{ transform: 'translate(-30%, -30%)' }}
+                        style={{ transform: "translate(-30%, -30%)" }}
                       />
                     </div>
                   )}
@@ -204,37 +221,46 @@ const TravelPostEdit = () => {
               ))}
             </div>
           </div>
-          <div className="flex flex-col justify-between items-end w-full h-full" style={{ margin: '2%' }}>
+          <div
+            className="flex flex-col justify-between items-end w-full h-full"
+            style={{ margin: "2%" }}
+          >
             <div className="flex flex-col mt-6 w-full h-full">
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full h-1/6 ">
                 {/* <div className="py-2 px-4 text-lg font-normal justify-self-center "></div>
                 <div className="py-2 px-4 text-right">토글</div> */}
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full border-b border-gray-300 h-1/6">
-                <div className="py-4 px-4 text-lg font-normal justify-self-center select-none">지역</div>
+                <div className="py-4 px-4 text-lg font-normal justify-self-center select-none">
+                  지역
+                </div>
                 <div className="py-2 px-4 select-none">{post.destination}</div>
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full border-b border-gray-300 h-1/6">
-                <div className="p-4 text-lg font-normal justify-self-center select-none">제목</div>
+                <div className="p-4 text-lg font-normal justify-self-center select-none">
+                  제목
+                </div>
                 <div className="h-full p-4">
                   <input
                     type="text"
                     onChange={handleTittleChange}
                     value={title}
                     placeholder="제목을 입력해주세요."
-                    style={{ border: '1px solid #B09FCE' }}
+                    style={{ border: "1px solid #B09FCE" }}
                     className="w-full h-full text-lg px-4 py-2  hide-input-focus outline-none"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full h-full">
-                <div className="py-2 px-4 text-lg font-normal justify-self-center select-none">본문</div>
+                <div className="py-2 px-4 text-lg font-normal justify-self-center select-none">
+                  본문
+                </div>
                 <div className="h-full p-4">
                   <textarea
                     onChange={handleContentChange}
                     value={content} //임시
                     placeholder="본문 내용을 입력해주세요."
-                    style={{ border: '1px solid #B09FCE' }}
+                    style={{ border: "1px solid #B09FCE" }}
                     className="w-full h-full text-lg px-4 py-2  hide-input-focus outline-none"
                   />
                 </div>

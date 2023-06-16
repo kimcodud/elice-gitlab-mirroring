@@ -14,7 +14,7 @@ const Footer = () => {
         }}
       >
         <div style={{ color: "#845ec2", fontWeight: "700" }}>
-          무엇을 써야 있어보일까
+          starRoad와 함께 여행을 떠나보세요!
         </div>
         <div style={{ color: "#845ec2", fontWeight: "500" }}>
           <a href="https://kdt-gitlab.elice.io/sw_track/class_04/web_2_project/team12/frontend">

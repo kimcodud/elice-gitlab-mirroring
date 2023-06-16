@@ -20,12 +20,12 @@ function TravelBoard() {
 
   const sortPosts = (posts, sortKey) => {
     const sortedPosts = [...posts];
-    if (sortKey === "created_at") {
-      sortedPosts.sort((a, b) => a.created_at.localeCompare(b.created_at));
+    if (sortKey === "createdAt") {
+      sortedPosts.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
     } else if (sortKey === "title") {
       sortedPosts.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortKey === "updated_at") {
-      sortedPosts.sort((a, b) => b.updated_at.localeCompare(a.updated_at));
+    } else if (sortKey === "updatedAt") {
+      sortedPosts.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     }
     return sortedPosts;
   };
@@ -46,7 +46,11 @@ function TravelBoard() {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const getResponse = await axios.get("http://localhost:3000/diaries/");
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const getResponse = await axios.get(`${apiUrl}/diaries/`);
         const postData = getResponse.data;
         setPosts(postData);
       } catch (error) {
@@ -159,9 +163,9 @@ function TravelBoard() {
           className="border border-gray-300 rounded p-2"
         >
           <option value="기본값">정렬 기준</option>
-          <option value="created_at">등록일순</option>
+          <option value="createdAt">등록일순</option>
           <option value="title">제목</option>
-          <option value="updated_at">최신순</option>
+          <option value="updatedAt">최신순</option>
         </select>
       </div>
 
