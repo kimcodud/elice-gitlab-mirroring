@@ -20,7 +20,11 @@ const Router = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const getUserData = async () => {
-    const result = await axios.get("http://localhost:3000/mypage", {
+    const apiUrl =
+      import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+        ? import.meta.env.VITE_APP_API_DEV_URL
+        : import.meta.env.VITE_APP_API_PROD_URL;
+    const result = await axios.get(`${apiUrl}/mypage`, {
       withCredentials: true,
     });
     if (result.data.userData.role === "ADMIN") {
@@ -69,7 +73,7 @@ const Router = () => {
           />
           <Route path="/plannerMap/:id" element={<PlannerMap />} />
           <Route path="/plannerMap" element={<PlannerMap />} />
-          <Route path="/plannerEdit/:id" element={<PlannerEditPage />} />
+          <Route path="/travelPlan/:id" element={<PlannerEditPage />} />
         </>
       )}
       {isAdmin && <Route path="/admin" element={<AdminPage />} />}

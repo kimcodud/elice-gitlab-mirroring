@@ -46,24 +46,25 @@ const Header = () => {
     }
   };
   return (
-    <header className="h-20">
+    <header className="h-18">
       <div style={{}}>
         <nav
-          className="flex justify-start h-20 items-center text-center"
+          className="flex justify-start h-14 items-center text-center"
           style={{ fontSize: "1.2rem", alignItems: "center" }}
         >
           <Link to="/">
             <img
               src="/assets/starRoad_2.png"
-              className="ml-6 mr-48 h-24 w-18 -mt-0"
+              className="ml-6 mr-48 h-24 w-18 mt-2"
             ></img>
-          </Link>
-          <Link to="/plannerMap/:id" className="text-zinc-400 ml-auto p-3">
-            일정만들기(임시)
           </Link>
 
           {role === "ADMIN" && (
-            <Link to="/admin" className="text-violet-600 font-bold ml-auto p-3">
+            <Link
+              to="/admin"
+              className="text-violet-600 font-bold p-3"
+              style={{ marginLeft: "65%" }}
+            >
               ADMIN
             </Link>
           )}

@@ -121,7 +121,7 @@ const MainPageComponent = () => {
               </Link>
               <Link
                 className="mt-8 inline-block w-1/3 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
-                to={`/plannerMap/${item.id}`}
+                to={"/travelBoard"}
                 onClick={closeModal}
               >
                 여행기
@@ -194,7 +194,8 @@ const MainPageComponent = () => {
             </button>
           </div>
           <img
-            src="/assets/main2.webp"
+            src="/assets/main123.jpg
+            "
             className="mainImg"
             style={{ marginBottom: "10rem" }}
           />
@@ -208,7 +209,7 @@ const MainPageComponent = () => {
             className=""
             style={{
               width: "80%",
-              height: "20rem",
+              height: "25rem",
               objectFit: "cover",
               margin: "auto",
               boxShadow: "1px 4px 4px black",

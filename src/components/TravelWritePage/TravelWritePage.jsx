@@ -8,7 +8,7 @@ const TravelWrite = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userTravelInfo, setUserTravelInfo] = useState({
-    plan_id: "",
+    planId: "",
     username: "",
     destination: "",
   });
@@ -17,17 +17,18 @@ const TravelWrite = () => {
   useEffect(() => {
     const fetchUserTravelData = async () => {
       try {
-        const getPostResponse = await axios.get(
-          `http://localhost:3000/travels/${postId}`,
-          {
-            params: {
-              plan_id: userTravelInfo.plan_id,
-              username: userTravelInfo.username,
-              destination: userTravelInfo.destination,
-            },
-            withCredentials: true,
-          }
-        );
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const getPostResponse = await axios.get(`${apiUrl}/travels/${postId}`, {
+          params: {
+            planId: userTravelInfo.planId,
+            username: userTravelInfo.username,
+            destination: userTravelInfo.destination,
+          },
+          withCredentials: true,
+        });
         console.log(getPostResponse);
         setUserTravelInfo(getPostResponse.data.travelPlanData);
       } catch (error) {
@@ -105,7 +106,11 @@ const TravelWrite = () => {
       }
 
       //formData.append("image", selectImages);
-      const url = `http://localhost:3000/mypage/diary/${postId}`;
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      const url = `${apiUrl}/mypage/diaries/${postId}`;
       const header = {
         headers: {
           "content-type": "multipart/form-data",

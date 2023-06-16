@@ -3,8 +3,8 @@ import axios from "axios";
 
 const AdminPageComponent = () => {
   const [image, setImage] = useState(null);
-  const [name_en, setNameEn] = useState("");
-  const [name_ko, setNameKo] = useState("");
+  const [nameEn, setNameEn] = useState("");
+  const [nameKo, setNameKo] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [introduction, setIntroduction] = useState("");
@@ -51,8 +51,8 @@ const AdminPageComponent = () => {
         withCredentials: true,
       };
       const body = {
-        nameEn: name_en,
-        nameKo: name_ko,
+        nameEn: nameEn,
+        nameKo: nameKo,
         introduction: introduction,
         latitude: latitude,
         longitude: longitude,
@@ -103,7 +103,7 @@ const AdminPageComponent = () => {
           <input
             type="text"
             id="nameEn"
-            value={name_en}
+            value={nameEn}
             onChange={handleNameEnChange}
             className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
@@ -118,7 +118,7 @@ const AdminPageComponent = () => {
           <input
             type="text"
             id="nameKo"
-            value={name_ko}
+            value={nameKo}
             onChange={handleNameKoChange}
             className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
