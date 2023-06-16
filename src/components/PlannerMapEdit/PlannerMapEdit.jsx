@@ -65,7 +65,6 @@ function PlannerMapEdit() {
 
   useEffect(() => {
     fetchData();
-    console.log(list);
     setIsAll(true);
   }, [id]);
 
@@ -86,7 +85,6 @@ function PlannerMapEdit() {
       return null;
     }
   };
-  // console.log(list.dates.flatMap((date) => date.locations));
 
   const handleClickAll = () => {
     setIsAll(true);
@@ -99,11 +97,6 @@ function PlannerMapEdit() {
   };
 
   useEffect(() => console.log(dateIndex), [dateIndex]);
-
-  // const getList = (list) => {
-  //   setList(list);
-  //   console.log('list', list);
-  // };
 
   const attachMapSdkScript = () => {
     const script = document.createElement('script');
@@ -133,7 +126,6 @@ function PlannerMapEdit() {
 
   useEffect(() => {
     if (list && map) {
-      // 이전에 표시된 마커 및 경로 삭제
       markers?.forEach((marker) => marker.setMap(null));
       polyline?.setMap(null);
 
@@ -154,7 +146,7 @@ function PlannerMapEdit() {
         });
 
         const infowindow = new window.kakao.maps.InfoWindow({
-          content: position.location,
+          content: `<div style="padding:5px;z-index:1;font-weight:300;">${position.location}</div>`,
         });
 
         window.kakao.maps.event.addListener(marker, 'mouseover', () => {
@@ -201,219 +193,238 @@ function PlannerMapEdit() {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        alignItems: 'center',
         marginTop: '16px',
       }}
     >
       <div>
-        <a
-          href="/mypage"
-          className="flex flex-row items-center w-full h-1/12 mb-3"
-          style={{ cursor: 'pointer' }}
+        <div style={{ display: 'flex' }}>
+          <a
+            href="/mypage"
+            className="flex flex-row items-center w-full h-1/12 mb-3"
+            style={{ cursor: 'pointer' }}
+          >
+            <img
+              src="/assets/goBackIcon.webp"
+              className="w-6 h-6 mr-6"
+              alt="go back to mypage"
+            />
+            <span className="text-2xl">마이페이지</span>
+          </a>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#E9EBED',
+            filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+            padding: '20px',
+            borderRadius: '4px',
+          }}
         >
-          <img
-            src="/assets/goBackIcon.webp"
-            className="w-6 h-6 mr-6"
-            alt="go back to mypage"
-          />
-          <span className="text-2xl">마이페이지</span>
-        </a>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <div>
-          <div>
-            <div
-              className="rounded"
-              style={{
-                height: '322px',
-                backgroundColor: '#E9EBED',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div>
               <div
+                className="rounded"
                 style={{
-                  width: '300px',
-                  height: '77px',
-                  fontWeight: 700,
-                  fontSize: '30px',
-                  color: '#6645B9',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <div>{list.destination}</div>
-              </div>
-              <div
-                style={{
-                  width: '300px',
-                  height: '77px',
-                  fontWeight: 700,
-                  fontSize: '30px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <div>{datesToRender.length} Day</div>
-              </div>
-              <div
-                style={{
-                  width: '300px',
-                  height: '50px',
-                  fontWeight: 700,
-                  fontSize: '20px',
-                  color: '#6C6C6C',
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <div>
-                  {formattedStartDate} ~ {formattedEndDate}
-                </div>
-              </div>
-              <div
-                style={{
-                  width: '300px',
-                  height: '50px',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    width: '30px',
-                    height: '30px',
-                    backgroundColor: '#6F50BD',
-                    borderRadius: '50%',
-                  }}
-                ></div>
-                <div
-                  style={{
-                    color: '#6C6C6C',
-                    fontWeight: 700,
-                    fontSize: '20px',
-                    paddingLeft: '20px',
-                  }}
-                >
-                  {allLocation.length} places
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-100">
-              <div
-                style={{
+                  height: '322px',
                   display: 'flex',
                   flexDirection: 'column',
-                  overflow: 'auto',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <div className="bg-gray-100">
+                <div
+                  style={{
+                    width: '300px',
+                    height: '77px',
+                    fontWeight: 700,
+                    fontSize: '30px',
+                    color: '#6645B9',
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.25)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div>{list.destination}</div>
+                </div>
+                <div
+                  style={{
+                    width: '300px',
+                    height: '77px',
+                    fontWeight: 700,
+                    fontSize: '30px',
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.25)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div>{datesToRender.length} Day</div>
+                </div>
+                <div
+                  style={{
+                    width: '300px',
+                    height: '50px',
+                    fontWeight: 700,
+                    fontSize: '20px',
+                    color: '#6C6C6C',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <div>
+                    {formattedStartDate} ~ {formattedEndDate}
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: '300px',
+                    height: '50px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
                   <div
                     style={{
-                      width: '322px',
+                      width: '30px',
+                      height: '30px',
+                      backgroundColor: '#FFD700',
+                      borderRadius: '50%',
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      color: '#6C6C6C',
+                      fontWeight: 700,
+                      fontSize: '20px',
+                      paddingLeft: '20px',
+                    }}
+                  >
+                    {allLocation.length} places
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: '10px',
+                  borderRadius: '4px',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'auto',
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        width: '322px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '168px',
+                          height: '48px',
+                          fontWeight: 700,
+                          fontSize: '20px',
+                          marginBottom: '10px',
+                        }}
+                      >
+                        여행 장소
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        width: '322px',
+                        height: '0px',
+                        border: '3px solid #6645B9',
+                        opacity: '0.5',
+                      }}
+                    ></div>
+                  </div>
+                  <div
+                    style={{
                       display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginTop: '10px',
                     }}
                   >
                     <div
                       style={{
                         display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '168px',
-                        height: '48px',
-                        color: '#6C6C6C',
-                        fontWeight: 700,
-                        fontSize: '20px',
-                        marginBottom: '10px',
+                        flexDirection: 'column',
+                        paddingTop: '20px',
                       }}
                     >
-                      선택목록
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      width: '322px',
-                      height: '0px',
-                      border: ' 1px solid #6645B9',
-                    }}
-                  ></div>
-                </div>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      paddingTop: '20px',
-                    }}
-                  >
-                    <button
-                      className={`w-16 h-10 font-bold mb-7 rounded ${
-                        isAll
-                          ? 'bg-[#B09FCE] text-[#E9EBED]'
-                          : 'bg-[#E9EBED] text-[#B09FCE]'
-                      }  hover:bg-[#6645B9] `}
-                      onClick={handleClickAll}
-                    >
-                      전체
-                    </button>
-
-                    {datesToRender.map((item, index) => (
                       <button
                         className={`w-16 h-10 font-bold mb-7 rounded ${
                           isAll
-                            ? 'bg-[#E9EBED] text-[#B09FCE]'
-                            : 'bg-[#B09FCE] text-[#E9EBED]'
+                            ? 'bg-[#B09FCE] text-[#E9EBED]'
+                            : 'bg-[#E9EBED] text-[#B09FCE]'
                         }  hover:bg-[#6645B9] `}
-                        key={index}
-                        onClick={() => handleClickDay(index + 1)}
+                        onClick={handleClickAll}
                       >
-                        DAY {index + 1}
+                        전체
                       </button>
-                    ))}
-                  </div>
-                  <div>
-                    {list && (
-                      <DestinationList
-                        isAll={isAll}
-                        list={list}
-                        // getList={getList}
-                        // dateList={dateList}
-                        dateIndex={dateIndex}
-                      />
-                    )}
+
+                      {datesToRender.map((item, index) => (
+                        <button
+                          className={`w-16 h-10 font-bold mb-7 rounded ${
+                            isAll
+                              ? 'bg-[#E9EBED] text-[#B09FCE]'
+                              : 'bg-[#B09FCE] text-[#E9EBED]'
+                          }  hover:bg-[#6645B9] `}
+                          key={index}
+                          onClick={() => handleClickDay(index + 1)}
+                        >
+                          DAY {index + 1}
+                        </button>
+                      ))}
+                    </div>
+                    <div>
+                      {list && (
+                        <DestinationList
+                          isAll={isAll}
+                          list={list}
+                          dateIndex={dateIndex}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          style={{ width: '1300px', display: 'flex', justifyContent: 'center' }}
-        >
           <div
-            id="map"
-            className="rounded"
             style={{
-              width: '1200px',
-              height: '1000px',
-              border: '5px solid #6645B9',
+              marginLeft: '20px',
+              display: 'flex',
+              justifyContent: 'center',
             }}
-          ></div>
+          >
+            <div
+              id="map"
+              className="rounded"
+              style={{
+                width: '1000px',
+                height: '1000px',
+                border: '5px solid #6645B9',
+              }}
+            ></div>
+          </div>
         </div>
       </div>
     </div>
