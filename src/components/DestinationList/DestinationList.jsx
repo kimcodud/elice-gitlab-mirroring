@@ -24,7 +24,7 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
                 alignItems: 'center',
               }}
             >
-              <div className="w-60 flex justify-center bg-gray-100 font-bold text-xl">
+              <div className="w-60 flex justify-center font-bold text-xl">
                 Day {index + 1}
               </div>
             </div>
@@ -71,23 +71,29 @@ function DestinationList({ getList, list, isAll, dateIndex }) {
               .filter((date, index) => index === dateIndex - 1)
               .map((date) =>
                 date.locations.map((location, index) => (
-                  <li
-                    key={index}
-                    style={{
-                      fontWeight: 700,
-                      fontSize: '15px',
-                      width: '247px',
-                      height: '74px',
-                      filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
-                      marginBottom: '10px',
-                      backgroundColor: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {location.location}
-                  </li>
+                  <div>
+                    <div className="w-60 flex justify-center font-bold text-xl">
+                      Day {dateIndex}
+                    </div>
+                    <li
+                      key={index}
+                      className="rounded"
+                      style={{
+                        fontWeight: 700,
+                        fontSize: '15px',
+                        width: '247px',
+                        height: '74px',
+                        filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))',
+                        marginBottom: '10px',
+                        backgroundColor: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {location.location}
+                    </li>
+                  </div>
                 ))
               )}
         </ul>

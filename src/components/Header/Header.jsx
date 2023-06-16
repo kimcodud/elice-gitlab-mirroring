@@ -26,7 +26,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // console.log(localStorage.getItem("isLogin"));
     if (localStorage.getItem("isLogin") === "1") {
       getUserData();
     }
@@ -63,7 +62,7 @@ const Header = () => {
             <Link
               to="/admin"
               className="text-violet-600 font-bold p-3"
-              style={{ marginLeft: "65%" }}
+              style={{ marginLeft: "60%" }}
             >
               ADMIN
             </Link>

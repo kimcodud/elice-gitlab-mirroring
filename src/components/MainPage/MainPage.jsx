@@ -20,10 +20,12 @@ const MainPageComponent = () => {
 
   const images = [
     "/assets/main2.webp",
-    "/assets/main.webp",
-    "/assets/seoul.webp",
     "/assets/busan.webp",
     "/assets/seoul2.webp",
+    "/assets/youngwol.webp",
+    "/assets/jeonju.jpg",
+    "/assets/busan3.webp",
+    "/assets/gangwon2.webp",
   ]; // 임시 데이터
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -55,14 +57,12 @@ const MainPageComponent = () => {
         ? import.meta.env.VITE_APP_API_DEV_URL
         : import.meta.env.VITE_APP_API_PROD_URL;
     const result = await axios.get(`${apiUrl}/destinations`);
-    console.log(result.data.data.destinations);
     setDestination(result.data.data.destinations);
   };
 
   const { openModal } = useModalStore();
   const { closeModal } = useModalStore();
   const openInfoModal = (item) => {
-    console.log(item);
     const introduction = JSON.stringify(item.introduction);
     const introductionText = introduction.replace(/"/g, "");
     openModal({
@@ -106,21 +106,21 @@ const MainPageComponent = () => {
                 </span>
 
                 <span
-                  className="mt-24 block text-base font-medium"
+                  className="mt-16 block text-base font-medium"
                   style={{ textAlign: "left", height: "6rem" }}
                 >
                   {introductionText}
                 </span>
               </h2>
               <Link
-                className="mt-16 inline-block w-1/3 mr-20 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
+                className="mt-16 inline-block w-1/3 mr-20  bg-violet-400 hover:bg-violet-500 py-4 text-sm font-bold uppercase tracking-widest text-white"
                 to={`/plannerMap/${item.id}`}
                 onClick={closeModal}
               >
                 일정 만들기
               </Link>
               <Link
-                className="mt-8 inline-block w-1/3 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
+                className="mt-8 inline-block w-1/3 bg-violet-400 hover:bg-violet-500 py-4 text-sm font-bold uppercase tracking-widest text-white"
                 to={"/travelBoard"}
                 onClick={closeModal}
               >
@@ -202,35 +202,42 @@ const MainPageComponent = () => {
         </div>
       </div>
       <div className="relative">
-        <Link to="/travelBoard">
-          <img
-            src={images[currentIndex]}
-            alt="Slide"
-            className=""
-            style={{
-              width: "80%",
-              height: "25rem",
-              objectFit: "cover",
-              margin: "auto",
-              boxShadow: "1px 4px 4px black",
-              borderRadius: "4px",
-            }}
-          />
-        </Link>
-        <button
-          onClick={previousSlide}
-          className="absolute top-1/2 transform -translate-y-1/2 "
-          style={{ marginLeft: "12%" }}
+        <div
+          style={{
+            width: "",
+          }}
         >
-          <img src="/assets/prev.webp" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute top-1/2 transform -translate-y-1/2 "
-          style={{ marginLeft: "85%" }}
-        >
-          <img src="/assets/next.webp" />
-        </button>
+          <Link to="/travelBoard">
+            <img
+              src={images[currentIndex]}
+              alt="Slide"
+              className=""
+              style={{
+                width: "80%",
+                height: "28rem",
+                objectFit: "cover",
+                margin: "auto",
+                boxShadow: "1px 4px 4px black",
+                borderRadius: "4px",
+              }}
+            />
+          </Link>
+
+          <button
+            onClick={previousSlide}
+            className="absolute top-1/2 transform -translate-y-1/2 "
+            style={{ marginLeft: "12%" }}
+          >
+            <img src="/assets/prev.webp" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute top-1/2 transform -translate-y-1/2 "
+            style={{ marginLeft: "84%" }}
+          >
+            <img src="/assets/next.webp" />
+          </button>
+        </div>
       </div>
       <div
         ref={movePoint}
@@ -292,6 +299,7 @@ const MainPageComponent = () => {
         style={{
           justifyContent: "center",
           display: "flex",
+          marginBottom: "5%",
         }}
       >
         맨 위로 올라가기

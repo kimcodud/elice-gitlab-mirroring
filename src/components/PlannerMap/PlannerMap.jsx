@@ -9,7 +9,7 @@ import {
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PlannerMapContext = createContext({
   onSelectPlace: () => {},
@@ -19,7 +19,6 @@ const PlannerMapContext = createContext({
   selectedPlanDate: {},
   handleDeleteSelectedPlanDate: () => {},
 });
-
 export const usePlannerMapContext = () => {
   const context = useContext(PlannerMapContext);
   // context API는 더 상위에서 사용 못함 (예외 처리)
@@ -49,6 +48,7 @@ const SearchMap = () => {
   const [destination, setDestination] = useState("");
 
   const { id } = useParams();
+  const navigate = useNavigate();
   const getDestination = async () => {
     const apiUrl =
       import.meta.env.VITE_APP_SERVER_MODE === "DEV"
@@ -355,7 +355,11 @@ const SearchMap = () => {
       const result = await axios.post(`${apiUrl}/travels`, planData, {
         withCredentials: true,
       });
-      console.log(result);
+      console.log(result.status);
+      if (result.status === 201) {
+        alert("일정 생성이 완료되었습니다!");
+        navigate("/mypage");
+      }
     } catch (error) {
       console.log(error);
     }

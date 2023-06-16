@@ -47,7 +47,6 @@ function SignUpPageComponent() {
           username: user.userId,
           password: user.password,
         });
-        console.log(response.data);
         navicate("/login");
         alert("회원가입을 축하합니다");
       }
@@ -57,7 +56,7 @@ function SignUpPageComponent() {
   };
 
   return (
-    <form className="max-w-md mx-auto mt-4 ">
+    <form className="max-w-md mx-auto mt-36">
       <div className="mb-10">
         <h1 className="text-5xl text-center text-slate-600">SIGN UP</h1>
         <h6 className="text-xs text-center text-slate-400">
@@ -136,7 +135,7 @@ function SignUpPageComponent() {
       <div className="flex items-center justify-center mt-5">
         <button
           type="submit"
-          className="px-32 py-2 mt-16 text-white rounded bg-violet-400"
+          className="px-32 py-2 mt-10 h-14 text-white rounded bg-violet-400"
           onClick={handleSubmit}
         >
           여행 시작하기

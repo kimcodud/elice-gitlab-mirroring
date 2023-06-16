@@ -35,7 +35,8 @@ const TravelWrite = () => {
         console.log(error);
       }
     };
-    console.log({ postId });
+    //console.log(getPostResponse);
+    //console.log({ postId });
     fetchUserTravelData();
   }, []);
 
@@ -190,6 +191,7 @@ const TravelWrite = () => {
                       <input
                         id={`file-input-${index}`}
                         type="file"
+                        
                         className="hidden"
                         onChange={(event) => handleImageUpload(event, index)}
                         onClick={(event) => event.stopPropagation()}
@@ -220,7 +222,8 @@ const TravelWrite = () => {
                   지역
                 </div>
                 <div className="py-2 px-4 select-none">
-                  {userTravelInfo.destination}
+                  {userTravelInfo.destination &&
+                    JSON.parse(userTravelInfo.destination).nameKo}
                 </div>
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full border-b border-gray-300 h-1/6">

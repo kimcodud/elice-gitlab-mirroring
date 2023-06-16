@@ -33,7 +33,6 @@ const UserInfoPage = () => {
       diaryUpdate: correspondingInfo ? correspondingInfo.updatedAt : "",
     };
   });
-
   const travelPlanCount = userTravelPlan.length;
   const travelInfoCount = userTravelInfo.length;
 
@@ -187,6 +186,7 @@ const UserInfoPage = () => {
       console.log(error);
     }
   };
+  console.log(mergedUserTravelInfo[0]);
 
   const UserInfoUpdateModalContent = () => {
     const [user, setUser] = useState({
@@ -347,7 +347,6 @@ const UserInfoPage = () => {
             style={{ backgroundColor: "#B09FCE", cursor: "pointer" }}
             type="submit"
             value="저장"
-            onClick={closeModal}
           />
         </div>
       </form>
@@ -437,7 +436,11 @@ const UserInfoPage = () => {
                     <div className="flex items-center justify-center p-5">
                       <img
                         className="h-full"
-                        src="/assets/main.jpg"
+                        src={
+                          JSON.parse(
+                            mergedUserTravelInfo[currentIndex].planDestination
+                          ).image
+                        }
                         alt="여행지 이미지"
                       />
                     </div>
@@ -446,11 +449,19 @@ const UserInfoPage = () => {
                         className="text-4xl py-2 font-bold"
                         style={{ color: "#6645B9" }}
                       >
-                        {mergedUserTravelInfo[currentIndex].planDestination}
+                        {
+                          JSON.parse(
+                            mergedUserTravelInfo[currentIndex].planDestination
+                          ).nameEn
+                        }
                       </div>
                       <div className="text-2xl py-2 font-bold text-gray-500">
-                        대한민국{" "}
-                        {mergedUserTravelInfo[currentIndex].planDestination}
+                        대한민국
+                        {
+                          JSON.parse(
+                            mergedUserTravelInfo[currentIndex].planDestination
+                          ).nameKo
+                        }
                       </div>
                     </div>
                     <div className="flex flex-col justify-between">

@@ -70,33 +70,6 @@ const TravelPostEdit = () => {
     setContent(e.target.value);
   };
 
-  useEffect(() => {
-    const fetchPostDetailData = async () => {
-      try {
-        if (postId) {
-          const apiUrl =
-            import.meta.env.VITE_APP_SERVER_MODE === "DEV"
-              ? import.meta.env.VITE_APP_API_DEV_URL
-              : import.meta.env.VITE_APP_API_PROD_URL;
-          const getPostResponse = await axios.get(
-            `${apiUrl}/diaries/${postId}`
-          );
-
-          setPost({
-            ...getPostResponse.data,
-            image: Array.isArray(getPostResponse.data.image)
-              ? getPostResponse.data.image
-              : [getPostResponse.data.image],
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchPostDetailData();
-  }, [postId]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -123,7 +96,7 @@ const TravelPostEdit = () => {
         import.meta.env.VITE_APP_SERVER_MODE === "DEV"
           ? import.meta.env.VITE_APP_API_DEV_URL
           : import.meta.env.VITE_APP_API_PROD_URL;
-      const url = `${apiUrl}/diaries/${postId}`;
+      const url = `${apiUrl}/mypage/diaries/${postId}`;
       const header = {
         headers: {
           "content-type": "multipart/form-data",
@@ -231,10 +204,13 @@ const TravelPostEdit = () => {
                 <div className="py-2 px-4 text-right">토글</div> */}
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full border-b border-gray-300 h-1/6">
-                <div className="py-4 px-4 text-lg font-normal justify-self-center select-none">
+                {/* <div className="py-4 px-4 text-lg font-normal justify-self-center select-none">
                   지역
                 </div>
-                <div className="py-2 px-4 select-none">{post.destination}</div>
+                <div className="py-2 px-4 select-none">
+                  {userTravelInfo.destination &&
+                    JSON.parse(userTravelInfo.destination).nameKo}
+                </div> */}
               </div>
               <div className="grid grid-cols-[10rem,1fr] justify-center items-center w-full border-b border-gray-300 h-1/6">
                 <div className="p-4 text-lg font-normal justify-self-center select-none">
