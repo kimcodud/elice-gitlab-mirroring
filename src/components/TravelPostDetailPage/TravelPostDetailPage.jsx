@@ -67,7 +67,7 @@ function TravelPostDetail(props) {
     // 댓글 조회
     const [commentBoard, setCommentBoard] = useState([]);
     const [page, setPage] = useState(1);
-
+    // 댓글 조회
     const fetchComment = async () => {
       try {
         const getCommentResponse = await axios.get(
@@ -77,10 +77,15 @@ function TravelPostDetail(props) {
           }
         );
 
-        setCommentBoard((prevCommentBoard) => [
-          ...prevCommentBoard,
-          ...getCommentResponse.data.comments,
-        ]);
+        if (page === 1) {
+          setCommentBoard(getCommentResponse.data.comments);
+        } else {
+          setCommentBoard((prevCommentBoard) => [
+            ...prevCommentBoard,
+            ...getCommentResponse.data.comments,
+          ]);
+        }
+
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.log(error);
@@ -88,18 +93,89 @@ function TravelPostDetail(props) {
     };
 
     useEffect(() => {
-      fetchComment(); 
+      fetchComment(); // 초기 렌더링 시 댓글 가져오기
     }, [postId]);
 
     const [ref, inView] = useInView();
 
     useEffect(() => {
+      // inView가 true 일때만 실행한다.
       if (inView) {
-        console.log(inView, "무한 스크롤 요청");
-        fetchComment();
+        fetchComment(); // 무한 스크롤 시 댓글 가져오기
       }
     }, [inView]);
     console.log(commentBoard);
+
+    //댓글 수정
+    const [edittingComment, setEdittingComment] = useState(false);
+    const [editCommentValue, setEditCommentValue] = useState("");
+    const handleEditCommentClick = (commentId) => {
+      setCommentBoard((prevCommentBoard) =>
+        prevCommentBoard.map((comment) => {
+          if (comment.id === commentId) {
+            return {
+              ...comment,
+              editing: true,
+            };
+          }
+          return comment;
+        })
+      );
+    };
+
+    const handleEditCommentInputChange = (e, commentId) => {
+      setCommentBoard((prevCommentBoard) =>
+        prevCommentBoard.map((comment) => {
+          if (comment.id === commentId) {
+            return {
+              ...comment,
+              editCommentValue: e.target.value,
+            };
+          }
+          return comment;
+        })
+      );
+    };
+
+    const handleEnterPress = (e, commentId) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleEditCommentSubmit(commentId);
+      }
+    };
+
+    const handleEditCommentSubmit = async (commentId) => {
+      try {
+        const commentToUpdate = commentBoard.find(
+          (comment) => comment.id === commentId
+        );
+        const editCommentResponse = await axios.put(
+          `http://localhost:3000/comments/${commentId}`,
+          {
+            comment: commentToUpdate.editCommentValue,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        setCommentBoard((prevCommentBoard) =>
+          prevCommentBoard.map((comment) => {
+            if (comment.id === commentId) {
+              return {
+                ...comment,
+                editing: false,
+                comment: editCommentResponse.data,
+              };
+            }
+            return comment;
+          })
+        );
+        alert("댓글이 수정되었습니다.");
+      } catch (error) {
+        console.log(error);
+        alert("본인이 작성한 댓글이 아닙니다.\n수정할 수 없습니다.");
+      }
+    };
 
     return (
       <div className="w-full h-full flex flex-col justify-center items-center">
@@ -121,7 +197,21 @@ function TravelPostDetail(props) {
             <div className="flex flex-row justify-between w-full h-full ">
               <div className="m-0">
                 <span className="pr-2">{comment.username}</span>
-                <span className="text-gray-400"></span>
+                {comment.editing ? (
+                  <button
+                    onClick={() => handleEditCommentSubmit(comment.id)}
+                    className="text-gray-400 text-xs"
+                  >
+                    완료
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleEditCommentClick(comment.id)}
+                    className="text-gray-400 text-xs"
+                  >
+                    수정
+                  </button>
+                )}
               </div>
               <button
                 onClick={async () => {
@@ -150,9 +240,19 @@ function TravelPostDetail(props) {
                 />
               </button>
             </div>
-            <div className="flex flex-row items-start w-full h-full">
-              {comment.comment}
-            </div>
+            {comment.editing ? (
+              <input
+                type="text"
+                value={comment.editCommentValue}
+                onChange={(e) => handleEditCommentInputChange(e, comment.id)}
+                onKeyDown={(e) => handleEnterPress(e, comment.id)}
+                className="hide-input-focus outline-none flex flex-row items-start w-full h-4/5 py-1 px-2"
+              />
+            ) : (
+              <div className="flex flex-row items-start w-full h-full">
+                {comment.comment}
+              </div>
+            )}
           </div>
         ))}
         <div ref={ref}>댓글이 더 이상 없습니다.</div>
