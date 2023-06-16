@@ -22,7 +22,11 @@ function PlannerMapEdit() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/travels/${id}`, {
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === 'DEV'
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      const response = await axios.get(`${apiUrl}/travels/${id}`, {
         withCredentials: true,
       });
       const { data } = response;
@@ -31,12 +35,6 @@ function PlannerMapEdit() {
       const endDate = data.travelPlanData.endDate;
       const destination = data.travelPlanData.destination;
       const dates = data.travelPlanData.dates;
-
-      // console.log('Start Date:', startDate);
-      // console.log('End Date:', endDate);
-      // console.log('Destination:', destination);
-      // console.log('Dates:', dates);
-      // console.log('response', response.data.travelPlanData);
 
       console.log(response.data.travelPlanData);
       setList(response.data.travelPlanData);
@@ -202,10 +200,25 @@ function PlannerMapEdit() {
     <div
       style={{
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         marginTop: '16px',
       }}
     >
+      <div>
+        <a
+          href="/mypage"
+          className="flex flex-row items-center w-full h-1/12 mb-3"
+          style={{ cursor: 'pointer' }}
+        >
+          <img
+            src="/assets/goBackIcon.webp"
+            className="w-6 h-6 mr-6"
+            alt="go back to mypage"
+          />
+          <span className="text-2xl">마이페이지</span>
+        </a>
+      </div>
       <div
         style={{
           display: 'flex',
@@ -213,7 +226,7 @@ function PlannerMapEdit() {
         }}
       >
         <div>
-          <div style={{ width: '330px' }}>
+          <div>
             <div
               className="rounded"
               style={{
@@ -305,7 +318,7 @@ function PlannerMapEdit() {
                   overflow: 'auto',
                 }}
               >
-                <div className="bg-[gray 100]">
+                <div className="bg-gray-100">
                   <div
                     style={{
                       width: '322px',
