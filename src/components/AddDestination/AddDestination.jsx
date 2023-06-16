@@ -20,6 +20,8 @@ const AddDestination = (props) => {
     usePlannerMapContext();
 
   const clickPlaces = Object.values(selectedPlanDate);
+  const clickPlacesKeys = Object.keys(selectedPlanDate);
+
   if (clickPlaces.length > 0 && clickPlaces[0][0] !== undefined) {
     console.log(
       "AddDestination",
@@ -28,31 +30,6 @@ const AddDestination = (props) => {
 
     // setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
   }
-
-  // const renderPlaces = () => {
-  //   return clickPlaces.map((_, idx) => (
-  //     <div
-  //       className="info box-sizing: border-box h-20 w-60 p-4 border-2 shadow-lg rounded"
-  //       style={{ marginLeft: "10px" }}
-  //       key={idx}
-  //     >
-  //       <div className="font-bold text-sm">
-  //         {clickPlaces[0][clickPlaces[0].length - 1].place_name}
-  //       </div>
-  //       <div style={{ display: "flex ", justifyContent: "right" }}>
-  //         <span className="text-xs">
-  //           {clickPlaces[0][clickPlaces[0].length - 1].category_group_name}
-  //         </span>
-  //         <img
-  //           src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-  //           alt="remove icon"
-  //           className="cursor-pointer"
-  //           onClick={() => handleDeleteSelectedPlanDate()}
-  //         />
-  //       </div>
-  //     </div>
-  //   ));
-  // };
 
   useEffect(() => {
     console.log("AddDestination", selectedPlanDate);
@@ -64,117 +41,99 @@ const AddDestination = (props) => {
   };
 
   const handleClickAll = () => {
-    setIsAll(true);
-    setShowDayList(false);
+    // setIsAll(true);
+    // setShowDayList(false);
+    clickPlaces.map((a) => {
+      return (
+        <div>
+          <div className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded">
+            <div className="font-bold text-sm">{a.place_name}</div>
+            <div>
+              <span className="text-xs">{a.category_group_name}</span>
+              <img
+                src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
+                alt="remove icon"
+                className="cursor-pointer"
+                onClick={() => handleDeleteSelectedPlanDate()}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    });
   };
 
-  const handleClickDay = () => {
-    setShowDayList(true);
-    setIsAll(false);
-  };
+  // const handleClickDay = () => {
+  //   setShowDayList(true);
+  //   setIsAll(false);
+  // };
 
   if (selectedDates.length > 0) {
     return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div>
         <div
           className="flex flex-col items-center mt-4"
           style={{
-            height: "300px",
+            height: "400px",
             whiteSpace: "nowrap",
             overflow: "auto",
           }}
         >
           {/* 첫 번째 요소 */}
-          <button
-            className="px-3 py-2 rounded bg-purple-500 text-white"
-            onClick={handleClickAll}
-          >
-            전체
-          </button>
-          {selectedDates.map((date, index, selectedPlaces) => (
-            <button
-              className="w-14 h-8 rounded mt-2"
-              style={{
-                backgroundColor: "#E9EBED",
-                color: "#B09FCE",
-              }}
-              key={index}
-              data={selectedPlaces}
-              onClick={() => handleClickDateButton(date)}
-            >
-              DAY {index + 1}
-            </button>
-          ))}
-        </div>
-        <div>
-          {/* 두 번째 요소 */}
-          <div
-            className="flex flex-col items-center mt-4"
-            style={{
-              height: "300px",
-              whiteSpace: "nowrap",
-              overflow: "auto",
-            }}
-          >
-            {clickPlaces.map((el) => {
-              console.log("------------------------", el);
-              el.map((_, idx) => {
-                <div
-                  className="info box-sizing: border-box h-20 w-60 p-4 border-2 shadow-lg rounded"
-                  style={{ marginLeft: "10px" }}
-                  key={idx}
-                >
-                  <div className="font-bold text-sm">
-                    {clickPlaces[0][clickPlaces[0].length - 1].place_name}
-                  </div>
-                  <div
+          {selectedDates.map((date, index, selectedPlaces) => {
+            console.log(selectedPlanDate, date);
+            return (
+              <div>
+                <div>
+                  <button
+                    className="w-40 h-8 rounded mt-4"
                     style={{
-                      display: "flex ",
-                      justifyContent: "space-between",
+                      backgroundColor: "#E9EBED",
+                      color: "#B09FCE",
                     }}
+                    key={index}
+                    data={selectedPlaces}
+                    onClick={() => handleClickDateButton(date)}
                   >
-                    <span className="text-xs mt-3">
-                      {
-                        clickPlaces[0][clickPlaces[0].length - 1]
-                          .category_group_name
-                      }
-                    </span>
-                    <img
-                      src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-                      alt="remove icon"
-                      className="cursor-pointer mt-2"
-                      onClick={() => handleDeleteSelectedPlanDate()}
-                    />
-                  </div>
-                </div>;
-              });
-            })}
-          </div>
-          {/* {clickPlaces.map((_, idx) => (
-            <div
-              className="info box-sizing: border-box h-20 w-60 p-4 border-2 shadow-lg rounded"
-              style={{ marginLeft: "10px" }}
-              key={idx}
-            >
-              <div className="font-bold text-sm">
-                {clickPlaces[0][clickPlaces[0].length - 1].place_name}
+                    DAY {index + 1}
+                  </button>
+                </div>
+                <div>
+                  {selectedPlanDate &&
+                    selectedPlanDate[
+                      `${date.year}-${date.month}-${date.date}`
+                    ] &&
+                    selectedPlanDate[
+                      `${date.year}-${date.month}-${date.date}`
+                    ].map((a) => {
+                      return (
+                        <div className="info box-sizing: border-box h-13 w-50 p-4 border-2 shadow-lg rounded mt-3">
+                          <div className="font-bold text-sm">
+                            {a.place_name}
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <span className="text-xs">
+                              {a.category_group_name}
+                            </span>
+                            <img
+                              src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
+                              alt="remove icon"
+                              className="cursor-pointer"
+                              onClick={() => handleDeleteSelectedPlanDate()}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
               </div>
-              <div style={{ display: "flex ", justifyContent: "right" }}>
-                <span className="text-xs">
-                  {
-                    clickPlaces[0][clickPlaces[0].length - 1]
-                      .category_group_name
-                  }
-                </span>
-                <img
-                  src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-                  alt="remove icon"
-                  className="cursor-pointer"
-                  onClick={() => handleDeleteSelectedPlanDate()}
-                />
-              </div>
-            </div>
-          ))} */}
+            );
+          })}
         </div>
       </div>
     );
