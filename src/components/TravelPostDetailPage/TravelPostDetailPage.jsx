@@ -81,7 +81,6 @@ function TravelPostDetail(props) {
             withCredentials: true,
           } //예외처리
         );
-        //console.log("ㅇㅇ", getCommentResponse.data.comments);
         if (page === 1) {
           setCommentBoard(getCommentResponse.data.comments);
         } else {

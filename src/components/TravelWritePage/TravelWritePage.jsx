@@ -29,14 +29,11 @@ const TravelWrite = () => {
           },
           withCredentials: true,
         });
-        console.log(getPostResponse);
         setUserTravelInfo(getPostResponse.data.travelPlanData);
       } catch (error) {
         console.log(error);
       }
     };
-    //console.log(getPostResponse);
-    //console.log({ postId });
     fetchUserTravelData();
   }, []);
 
@@ -191,7 +188,6 @@ const TravelWrite = () => {
                       <input
                         id={`file-input-${index}`}
                         type="file"
-                        
                         className="hidden"
                         onChange={(event) => handleImageUpload(event, index)}
                         onClick={(event) => event.stopPropagation()}

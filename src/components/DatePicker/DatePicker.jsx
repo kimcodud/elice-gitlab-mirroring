@@ -14,9 +14,7 @@ const DatePicker = ({
   const [showAllDates, setShowAllDates] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
 
-  const handleClickDate = (date) => {
-    console.log("Clicked date:", date);
-  };
+  const handleClickDate = (date) => {};
 
   // 전체 날짜를 보여주는 함수
   const handleShowAllDates = () => {
@@ -132,7 +130,6 @@ const DatePicker = ({
 
         // 시작일부터 완료일까지의 날짜 목록 생성
         const dates = getDatesBetween(selectedStartDate, date);
-        // console.log("시작일부터 완료일까지 날짜 목록:", dates);
         setDates(dates);
       } else {
         //선택한 날짜가 시작일보다 빠른 경우 시작일 초기화

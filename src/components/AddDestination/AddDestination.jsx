@@ -11,7 +11,7 @@ const AddDestination = (props) => {
   const clickPlacesKeys = Object.keys(selectedPlanDate);
 
   useEffect(() => {
-    console.log("AddDestination", selectedPlanDate);
+    // console.log("AddDestination", selectedPlanDate);
   }, [selectedPlanDate]);
 
   const handleClickDateButton = (date) => {
