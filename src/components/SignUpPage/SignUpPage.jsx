@@ -47,7 +47,6 @@ function SignUpPageComponent() {
           username: user.userId,
           password: user.password,
         });
-        console.log(response.data);
         navicate("/login");
         alert("회원가입을 축하합니다");
       }

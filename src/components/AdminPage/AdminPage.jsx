@@ -31,7 +31,6 @@ const AdminPageComponent = () => {
   const handleIntroductionChange = (e) => {
     setIntroduction(e.target.value);
   };
-  console.log(import.meta.env.VITE_APP_API_DEV_URL);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // FormData 객체를 사용하여 이미지와 텍스트 데이터를 전송
@@ -68,7 +67,7 @@ const AdminPageComponent = () => {
         alert("여행지 등록 성공!");
         location.reload();
       } else {
-        console.log("등록에 실패했습니다.");
+        alert("등록에 실패했습니다.");
       }
     } catch (error) {
       console.log("API 호출 중 오류가 발생했습니다:", error);

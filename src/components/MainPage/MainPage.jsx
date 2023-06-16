@@ -57,14 +57,12 @@ const MainPageComponent = () => {
         ? import.meta.env.VITE_APP_API_DEV_URL
         : import.meta.env.VITE_APP_API_PROD_URL;
     const result = await axios.get(`${apiUrl}/destinations`);
-    console.log(result.data.data.destinations);
     setDestination(result.data.data.destinations);
   };
 
   const { openModal } = useModalStore();
   const { closeModal } = useModalStore();
   const openInfoModal = (item) => {
-    console.log(item);
     const introduction = JSON.stringify(item.introduction);
     const introductionText = introduction.replace(/"/g, "");
     openModal({

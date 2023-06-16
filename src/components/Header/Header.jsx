@@ -26,7 +26,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    // console.log(localStorage.getItem("isLogin"));
     if (localStorage.getItem("isLogin") === "1") {
       getUserData();
     }

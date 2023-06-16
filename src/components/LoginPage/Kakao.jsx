@@ -13,7 +13,6 @@ const Kakao = () => {
 
     window.location.href = url;
 
-    console.log("로그인 성공:", response);
     const apiUrl =
       import.meta.env.VITE_APP_SERVER_MODE === "DEV"
         ? import.meta.env.VITE_APP_API_DEV_URL
@@ -23,11 +22,11 @@ const Kakao = () => {
       .post(`${apiUrl}/auth/kakao/callback`, { code: response.code })
       .then((response) => {
         // 백엔드에서 처리된 결과를 확인하고 필요한 로직을 추가합니다.
-        console.log("백엔드 응답:", response.data);
+        // console.log("백엔드 응답:", response.data);
       })
       .catch((error) => {
         // 에러 처리 로직
-        console.error("API 요청 에러:", error.response);
+        // console.error("API 요청 에러:", error.response);
       });
   };
 

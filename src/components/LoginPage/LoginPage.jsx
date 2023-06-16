@@ -36,7 +36,6 @@ const LoginPageComponent = () => {
       }
     } catch (error) {
       alert(error.response.data.error.message);
-      console.log(error.response.data.error);
     }
   };
 
