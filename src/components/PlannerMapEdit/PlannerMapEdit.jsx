@@ -7,13 +7,16 @@ function PlannerMapEdit() {
   const [list, setList] = useState([]);
 
   const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState(null);
   const [polyline, setPolyline] = useState(null);
 
   const [isAll, setIsAll] = useState(true);
   const [dateIndex, setDateIndex] = useState();
 
   const [allLocation, setAllLocation] = useState([]);
+
+  const [formattedStartDate, setFormattedStartDate] = useState('');
+  const [formattedEndDate, setFormattedEndDate] = useState('');
 
   const { id } = useParams();
 
@@ -24,8 +27,8 @@ function PlannerMapEdit() {
       });
       const { data } = response;
 
-      const startDate = data.travelPlanData.start_date;
-      const endDate = data.travelPlanData.end_date;
+      const startDate = data.travelPlanData.startDate;
+      const endDate = data.travelPlanData.endDate;
       const destination = data.travelPlanData.destination;
       const dates = data.travelPlanData.dates;
 
@@ -35,8 +38,28 @@ function PlannerMapEdit() {
       // console.log('Dates:', dates);
       // console.log('response', response.data.travelPlanData);
 
-      console.log(response.data);
+      console.log(response.data.travelPlanData);
       setList(response.data.travelPlanData);
+
+      if (startDate) {
+        const date = new Date(startDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        setFormattedStartDate(formattedDate);
+      }
+
+      if (endDate) {
+        const date = new Date(endDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        setFormattedEndDate(formattedDate);
+      }
+
+      attachMapSdkScript();
     } catch (error) {
       console.log(error);
     }
@@ -45,6 +68,7 @@ function PlannerMapEdit() {
   useEffect(() => {
     fetchData();
     console.log(list);
+    setIsAll(true);
   }, [id]);
 
   useEffect(() => {
@@ -56,14 +80,15 @@ function PlannerMapEdit() {
 
   const whereToShow = () => {
     if (isAll) {
-      return list.dates.flatMap((date) => date.locations);
+      return allLocation;
     } else if (dateIndex !== null) {
-      const selectedDate = list.dates[dateIndex - 1];
+      const selectedDate = datesToRender[dateIndex - 1];
       return selectedDate ? selectedDate.locations : null;
     } else {
       return null;
     }
   };
+  // console.log(list.dates.flatMap((date) => date.locations));
 
   const handleClickAll = () => {
     setIsAll(true);
@@ -75,7 +100,7 @@ function PlannerMapEdit() {
     setDateIndex(index);
   };
 
-  // useEffect(() => console.log(dateIndex), [dateIndex]);
+  useEffect(() => console.log(dateIndex), [dateIndex]);
 
   // const getList = (list) => {
   //   setList(list);
@@ -109,64 +134,62 @@ function PlannerMapEdit() {
   }, []);
 
   useEffect(() => {
-    if (list.length > 0) {
-      if (map) {
-        // 이전에 표시된 마커 및 경로 삭제
-        markers.forEach((marker) => marker.setMap(null));
-        if (polyline) polyline.setMap(null);
+    if (list && map) {
+      // 이전에 표시된 마커 및 경로 삭제
+      markers?.forEach((marker) => marker.setMap(null));
+      polyline?.setMap(null);
 
-        const newMarkers = [];
-        const linePath = [];
+      const newMarkers = [];
+      const linePath = [];
 
-        const locationsToDisplay = whereToShow();
+      const locationsToDisplay = whereToShow();
 
-        locationsToDisplay.forEach((position) => {
-          // console.log('locationsToDisplay', locationsToDisplay);
-          const latlng = new window.kakao.maps.LatLng(
-            position.lat,
-            position.lng
-          );
+      locationsToDisplay.forEach((position) => {
+        const latlng = new window.kakao.maps.LatLng(
+          position.latitude,
+          position.longitude
+        );
 
-          const marker = new window.kakao.maps.Marker({
-            map: map,
-            position: latlng,
-          });
-
-          const infowindow = new window.kakao.maps.InfoWindow({
-            content: position.location,
-          });
-
-          window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-            infowindow.open(map, marker);
-          });
-
-          window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-            infowindow.close();
-          });
-
-          newMarkers.push(marker);
-          linePath.push(latlng);
+        const marker = new window.kakao.maps.Marker({
+          map: map,
+          position: latlng,
         });
 
-        const newPolyline = new window.kakao.maps.Polyline({
-          path: linePath,
-          strokeWeight: 4,
-          strokeColor: '#9198e5',
-          strokeOpacity: 0.9,
-          strokeStyle: 'solid',
+        const infowindow = new window.kakao.maps.InfoWindow({
+          content: position.location,
         });
 
-        newPolyline.setMap(map);
-
-        setMarkers(newMarkers);
-        setPolyline(newPolyline);
-
-        const bounds = new window.kakao.maps.LatLngBounds();
-        newMarkers.forEach((marker) => {
-          bounds.extend(marker.getPosition());
+        window.kakao.maps.event.addListener(marker, 'mouseover', () => {
+          infowindow.open(map, marker);
         });
-        map.setBounds(bounds);
-      }
+
+        window.kakao.maps.event.addListener(marker, 'mouseout', () => {
+          infowindow.close();
+        });
+
+        newMarkers.push(marker);
+        linePath.push(latlng);
+      });
+
+      const newPolyline = new window.kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight: 4,
+        strokeColor: '#9198e5',
+        strokeOpacity: 0.9,
+        strokeStyle: 'solid',
+      });
+
+      newPolyline.setMap(map);
+
+      setMarkers(newMarkers);
+      setPolyline(newPolyline);
+
+      const bounds = new window.kakao.maps.LatLngBounds();
+      newMarkers.forEach((marker) => {
+        bounds.extend(marker.getPosition());
+      });
+      map.setBounds(bounds);
+      console.log('locationsToDisplay', locationsToDisplay);
     }
   }, [list, map, isAll, dateIndex]);
 
@@ -241,7 +264,7 @@ function PlannerMapEdit() {
                 }}
               >
                 <div>
-                  {list.startDate} ~ {list.endDate}
+                  {formattedStartDate} ~ {formattedEndDate}
                 </div>
               </div>
               <div
@@ -351,13 +374,15 @@ function PlannerMapEdit() {
                     ))}
                   </div>
                   <div>
-                    <DestinationList
-                      isAll={isAll}
-                      list={list}
-                      // getList={getList}
-                      // dateList={dateList}
-                      dateIndex={dateIndex}
-                    />
+                    {list && (
+                      <DestinationList
+                        isAll={isAll}
+                        list={list}
+                        // getList={getList}
+                        // dateList={dateList}
+                        dateIndex={dateIndex}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
