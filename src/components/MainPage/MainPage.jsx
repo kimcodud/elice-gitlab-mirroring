@@ -106,21 +106,21 @@ const MainPageComponent = () => {
                 </span>
 
                 <span
-                  className="mt-24 block text-base font-medium"
+                  className="mt-16 block text-base font-medium"
                   style={{ textAlign: "left", height: "6rem" }}
                 >
                   {introductionText}
                 </span>
               </h2>
               <Link
-                className="mt-16 inline-block w-1/3 mr-20 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
+                className="mt-16 inline-block w-1/3 mr-20  bg-violet-400 hover:bg-violet-500 py-4 text-sm font-bold uppercase tracking-widest text-white"
                 to={`/plannerMap/${item.id}`}
                 onClick={closeModal}
               >
                 일정 만들기
               </Link>
               <Link
-                className="mt-8 inline-block w-1/3 bg-violet-300 py-4 text-sm font-bold uppercase tracking-widest text-white"
+                className="mt-8 inline-block w-1/3 bg-violet-400 hover:bg-violet-500 py-4 text-sm font-bold uppercase tracking-widest text-white"
                 to={"/travelBoard"}
                 onClick={closeModal}
               >
