@@ -46,7 +46,11 @@ function TravelBoard() {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const getResponse = await axios.get("http://localhost:3000/diaries/");
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const getResponse = await axios.get(`${apiUrl}/diaries/`);
         const postData = getResponse.data;
         setPosts(postData);
       } catch (error) {
