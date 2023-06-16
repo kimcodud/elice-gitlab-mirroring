@@ -44,21 +44,18 @@ const SearchMap = () => {
   const [selectedDayPlaces, setSelectedDayPlaces] = useState(); //하루 장소 목록
 
   /*******************/
-  // const [selectedPlace, setSelectedPlace] = useState({});
   const [selectedDay, setSelectedDay] = useState(""); // DAY 기억하는 상태
   const [selectedPlanDate, setSelectedPlanDate] = useState({});
   const [destination, setDestination] = useState("");
 
   const { id } = useParams();
-  // console.log(id);
   const getDestination = async () => {
     const apiUrl =
       import.meta.env.VITE_APP_SERVER_MODE === "DEV"
         ? import.meta.env.VITE_APP_API_DEV_URL
         : import.meta.env.VITE_APP_API_PROD_URL;
-    const result = await axios.get(`${apiUrl}/destinations/${id}`); // 나중 수정
+    const result = await axios.get(`${apiUrl}/destinations/${id}`);
     setDestination(result.data.data.destination);
-    // console.log(result.data.data.destination);
   };
 
   // const latitude = destination.latitude;
@@ -132,7 +129,6 @@ const SearchMap = () => {
     if (status === window.kakao.maps.services.Status.OK) {
       displayMarkers(data);
       displayPagination(pagination);
-      // addPlaces(data);
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
       alert("검색 결과가 존재하지 않습니다.");
     } else if (status === window.kakao.maps.services.Status.ERROR) {
@@ -211,7 +207,6 @@ const SearchMap = () => {
 
   const getDateList = (dateList) => {
     setDateList(dateList);
-    console.log("dateList", dateList);
     const { year: startYear, month: startMonth, date: start } = dateList[0];
     const {
       year: endYear,
@@ -339,7 +334,7 @@ const SearchMap = () => {
       return {
         date,
         locations: selectedPlanDate[date].map((place) => ({
-          location: place.addressName, //수정
+          location: place.address_name,
           latitude: place.y,
           longitude: place.x,
           order: index + 1,

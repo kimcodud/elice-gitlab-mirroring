@@ -14,7 +14,6 @@ const DatePicker = ({
   const [showAllDates, setShowAllDates] = useState(false);
   const [selectedDates, setSelectedDates] = useState([]);
 
-  console.log(destination);
   const handleClickDate = (date) => {
     console.log("Clicked date:", date);
   };
@@ -178,7 +177,6 @@ const DatePicker = ({
       year: currentYear,
       month: currentMonthValue,
     });
-    // console.log('monthData', monthData);
     return (
       <div>
         <div className="flex justify-between items-center">
@@ -259,10 +257,7 @@ const DatePicker = ({
                         borderRadius: "50%",
                       };
                     } else if (isInRange) {
-                      cellStyle = {
-                        // backgroundColor: '#E9EBED',
-                        // borderRadius: '50%',
-                      };
+                      cellStyle = {};
                     }
 
                     return (

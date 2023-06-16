@@ -2,34 +2,13 @@ import { useEffect, useState } from "react";
 import { usePlannerMapContext } from "../PlannerMap/PlannerMap";
 
 const AddDestination = (props) => {
-  const {
-    selectedDates,
-    handleClickDate,
-    selectedDayPlaces,
-    setSelectedDayPlaces,
-    handleAddPlace,
-    selectedPlaces,
-    setSelectedPlaces,
-  } = props;
-
-  const [isAll, setIsAll] = useState(true);
-  const [showDayList, setShowDayList] = useState(false);
-  const [items, setItems] = useState(selectedPlaces);
+  const { selectedDates } = props;
 
   const { setSelectedDay, selectedPlanDate, handleDeleteSelectedPlanDate } =
     usePlannerMapContext();
 
   const clickPlaces = Object.values(selectedPlanDate);
   const clickPlacesKeys = Object.keys(selectedPlanDate);
-
-  if (clickPlaces.length > 0 && clickPlaces[0][0] !== undefined) {
-    console.log(
-      "AddDestination",
-      clickPlaces[0][clickPlaces[0].length - 1].place_name
-    );
-
-    // setSelectedPlaces((selectedPlaces) => [...selectedPlaces, place]);
-  }
 
   useEffect(() => {
     console.log("AddDestination", selectedPlanDate);
@@ -40,48 +19,21 @@ const AddDestination = (props) => {
     setSelectedDay(formatDate);
   };
 
-  const handleClickAll = () => {
-    // setIsAll(true);
-    // setShowDayList(false);
-    clickPlaces.map((a) => {
-      return (
-        <div>
-          <div className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded">
-            <div className="font-bold text-sm">{a.place_name}</div>
-            <div>
-              <span className="text-xs">{a.category_group_name}</span>
-              <img
-                src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
-                alt="remove icon"
-                className="cursor-pointer"
-                onClick={() => handleDeleteSelectedPlanDate()}
-              />
-            </div>
-          </div>
-        </div>
-      );
-    });
-  };
-
-  // const handleClickDay = () => {
-  //   setShowDayList(true);
-  //   setIsAll(false);
-  // };
-
   if (selectedDates.length > 0) {
     return (
       <div>
+        <h1>날짜를 선택하고 장소를 추가하세요</h1>
         <div
-          className="flex flex-col items-center mt-4"
+          className="flex flex-col items-center mt-4 drop-shadow bg-white"
           style={{
-            height: "400px",
+            width: "320px",
+            height: "300px",
             whiteSpace: "nowrap",
             overflow: "auto",
           }}
         >
           {/* 첫 번째 요소 */}
           {selectedDates.map((date, index, selectedPlaces) => {
-            console.log(selectedPlanDate, date);
             return (
               <div>
                 <div>
@@ -124,7 +76,7 @@ const AddDestination = (props) => {
                               src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
                               alt="remove icon"
                               className="cursor-pointer"
-                              onClick={() => handleDeleteSelectedPlanDate()}
+                              // onClick={() => handleDeleteSelectedPlanDate()}
                             />
                           </div>
                         </div>
