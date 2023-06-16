@@ -12,17 +12,17 @@ function TravelPostDetail(props) {
   const [post, setPost] = useState({
     id: "",
     username: "",
-    plan_id: "",
+    planId: "",
     title: "",
     content: "",
     image: "",
     destination: "",
-    created_at: "",
-    updated_at: "",
+    createdAt: "",
+    updatedAt: "",
   });
   const [travelInfo, setTravelInfo] = useState({
-    start_date: "",
-    end_date: "",
+    startDate: "",
+    endDate: "",
     username: "",
     destination: "",
     dates: [],
@@ -35,8 +35,8 @@ function TravelPostDetail(props) {
     return dateString.slice(0, -14);
   };
 
-  const travelStart = changetoKoreaDate(travelInfo.start_date);
-  const travelEnd = changetoKoreaDate(travelInfo.end_date);
+  const travelStart = changetoKoreaDate(travelInfo.startDate);
+  const travelEnd = changetoKoreaDate(travelInfo.endDate);
   const travelDayCount = travelInfo.dates.length;
   const postImageArr = post.image ? JSON.parse(post.image) : [];
 
@@ -45,10 +45,11 @@ function TravelPostDetail(props) {
   useEffect(() => {
     const fetchPostDetailData = async () => {
       try {
-        const getPostResponse = await axios.get(
-          `http://localhost:3000/diaries/${postId}`
-        );
-        //console.log(getPostResponse);
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const getPostResponse = await axios.get(`${apiUrl}/diaries/${postId}`);
 
         setPost({
           ...getPostResponse.data,
@@ -70,8 +71,12 @@ function TravelPostDetail(props) {
     // 댓글 조회
     const fetchComment = async () => {
       try {
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
         const getCommentResponse = await axios.get(
-          `http://localhost:3000/comments/diary/${postId}?page=${page}`,
+          `${apiUrl}/comments/diaries/${postId}?page=${page}`,
           {
             withCredentials: true,
           }
@@ -149,8 +154,12 @@ function TravelPostDetail(props) {
         const commentToUpdate = commentBoard.find(
           (comment) => comment.id === commentId
         );
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
         const editCommentResponse = await axios.put(
-          `http://localhost:3000/comments/${commentId}`,
+          `${apiUrl}/comments/${commentId}`,
           {
             comment: commentToUpdate.editCommentValue,
           },
@@ -216,12 +225,13 @@ function TravelPostDetail(props) {
               <button
                 onClick={async () => {
                   try {
-                    await axios.delete(
-                      `http://localhost:3000/comments/${comment.id}`,
-                      {
-                        withCredentials: true,
-                      }
-                    );
+                    const apiUrl =
+                      import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+                        ? import.meta.env.VITE_APP_API_DEV_URL
+                        : import.meta.env.VITE_APP_API_PROD_URL;
+                    await axios.delete(`${apiUrl}/comments/${comment.id}`, {
+                      withCredentials: true,
+                    });
                     window.location.reload();
                     alert("댓글이 삭제되었습니다.");
                   } catch (error) {
@@ -264,12 +274,16 @@ function TravelPostDetail(props) {
     //특정여행일정 가져오기
     const fetchTravelPlanData = async () => {
       try {
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
         const getTravelPlanResponse = await axios.get(
-          `http://localhost:3000/travels/${post.plan_id}`,
+          `${apiUrl}/travels/${post.planId}`,
           {
             params: {
-              start_date: travelInfo.start_date,
-              end_date: travelInfo.end_date,
+              startDate: travelInfo.startDate,
+              endDate: travelInfo.endDate,
               username: travelInfo.username,
               destination: travelInfo.destination,
               dates: travelInfo.dates,
@@ -283,10 +297,10 @@ function TravelPostDetail(props) {
       }
     };
 
-    if (post.plan_id) {
+    if (post.planId) {
       fetchTravelPlanData();
     }
-  }, [post.plan_id]);
+  }, [post.planId]);
 
   const ScheduleComponent = () => {
     // 일정
@@ -384,7 +398,11 @@ function TravelPostDetail(props) {
 
   const handleClickDeletPost = async () => {
     try {
-      await axios.delete(`http://localhost:3000/mypage/diary/${post.id}`, {
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      await axios.delete(`${apiUrl}/mypage/diaries/${post.id}`, {
         withCredentials: true,
       });
       alert("여행기가 삭제되었습니다.");
@@ -403,12 +421,16 @@ function TravelPostDetail(props) {
     // 댓글 달기 post
     e.preventDefault();
     try {
-      const url = `http://localhost:3000/comments`;
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      const url = `${apiUrl}/comments`;
       const header = {
         withCredentials: true,
       };
       const body = {
-        diary_id: `${postId}`,
+        diaryId: `${postId}`,
         comment: comment,
       };
       const response = await axios.post(url, body, header);
@@ -583,11 +605,10 @@ function TravelPostDetail(props) {
               </button>
             </div>
             <div className="flex flex-col">
-              {/* <div>글쓴이 : {post.username}</div> */}
               <div>
-                {changetoKoreaDate(post.created_at)}
-                {post.created_at !== post.updated_at &&
-                  ` (${changetoKoreaDate(post.created_at)})`}
+                {changetoKoreaDate(post.createdAt)}
+                {post.createdAt !== post.updatedAt &&
+                  ` (${changetoKoreaDate(post.createdAt)})`}
               </div>
               <div className="flex flex-row justify-end">
                 <Link to={`/TravelEditPage/${post.id}`}>수정</Link>
