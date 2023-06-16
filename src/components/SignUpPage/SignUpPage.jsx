@@ -135,7 +135,7 @@ function SignUpPageComponent() {
       <div className="flex items-center justify-center mt-5">
         <button
           type="submit"
-          className="px-32 py-2 mt-16 text-white rounded bg-violet-400"
+          className="px-32 py-2 mt-10 h-14 text-white rounded bg-violet-400"
           onClick={handleSubmit}
         >
           여행 시작하기
