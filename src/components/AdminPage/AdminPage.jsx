@@ -74,9 +74,6 @@ const AdminPageComponent = () => {
       console.log("API 호출 중 오류가 발생했습니다:", error);
     }
   };
-  // const deleteHandler = () => {
-  //   const result = axios.delete(`http://localhost:3000/admin/locations/${}`);
-  // }
 
   return (
     <div>

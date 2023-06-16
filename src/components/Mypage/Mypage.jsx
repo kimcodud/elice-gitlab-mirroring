@@ -65,17 +65,18 @@ const UserInfoPage = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userInfoResponse = await axios.get(
-          "http://localhost:3000/mypage/",
-          {
-            params: {
-              username: userInfo.username,
-              name: userInfo.name,
-              email: userInfo.email,
-            },
-            withCredentials: true,
-          }
-        );
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const userInfoResponse = await axios.get(`${apiUrl}/mypage/`, {
+          params: {
+            username: userInfo.username,
+            name: userInfo.name,
+            email: userInfo.email,
+          },
+          withCredentials: true,
+        });
         setUserInfo(userInfoResponse.data.userData);
       } catch (error) {
         console.log(error);
@@ -86,8 +87,12 @@ const UserInfoPage = () => {
     const fetchUserTravelInfo = async () => {
       //여행기
       try {
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
         const userTravelInfoResponse = await axios.get(
-          "http://localhost:3000/mypage/diary",
+          `${apiUrl}/mypage/diaries`,
           {
             params: {
               id: userTravelInfo.id,
@@ -105,19 +110,20 @@ const UserInfoPage = () => {
     const fetchUserTravelDate = async () => {
       //여행일정
       try {
-        const userTravelPlanResponse = await axios.get(
-          "http://localhost:3000/travels/",
-          {
-            params: {
-              plan_id: userTravelPlan.plan_id,
-              start_date: userTravelPlan.start_date,
-              end_date: userTravelPlan.end_date,
-              destination: userTravelPlan.destination,
-              updated_at: userTravelPlan.updated_at,
-            },
-            withCredentials: true,
-          }
-        );
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        const userTravelPlanResponse = await axios.get(`${apiUrl}/travels/`, {
+          params: {
+            plan_id: userTravelPlan.plan_id,
+            start_date: userTravelPlan.start_date,
+            end_date: userTravelPlan.end_date,
+            destination: userTravelPlan.destination,
+            updated_at: userTravelPlan.updated_at,
+          },
+          withCredentials: true,
+        });
         setUserTravelPlan(userTravelPlanResponse.data.travelPlanData);
       } catch (error) {
         console.log(error);
@@ -126,8 +132,12 @@ const UserInfoPage = () => {
 
     const fetchArea = async () => {
       try {
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
         const areaResponse = await axios.get(
-          `http://localhost:3000/destinations/${area.location_id}`,
+          `${apiUrl}/destinations/${area.location_id}`,
           {
             params: {
               name_en: area.name_en,
@@ -161,7 +171,11 @@ const UserInfoPage = () => {
   const handleDeleteButtonClick = async () => {
     try {
       const planIdToDelete = mergedUserTravelInfo[currentIndex].plan_id;
-      await axios.delete(`http://localhost:3000/travels/${planIdToDelete}`, {
+      const apiUrl =
+        import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+          ? import.meta.env.VITE_APP_API_DEV_URL
+          : import.meta.env.VITE_APP_API_PROD_URL;
+      await axios.delete(`${apiUrl}/travels/${planIdToDelete}`, {
         withCredentials: true,
       });
       setUserTravelPlan((prevPlan) =>
@@ -204,9 +218,12 @@ const UserInfoPage = () => {
             return;
           }
         }
-
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
         const updateResponse = await axios.put(
-          "http://localhost:3000/mypage/",
+          `${apiUrl}/mypage/`,
           {
             password: user.password,
             email: user.email,
@@ -223,7 +240,11 @@ const UserInfoPage = () => {
     };
     const handleClickDeletUser = async () => {
       try {
-        await axios.delete("http://localhost:3000/mypage/", {
+        const apiUrl =
+          import.meta.env.VITE_APP_SERVER_MODE === "DEV"
+            ? import.meta.env.VITE_APP_API_DEV_URL
+            : import.meta.env.VITE_APP_API_PROD_URL;
+        await axios.delete(`${apiUrl}/mypage/`, {
           withCredentials: true,
         });
         alert("별길과 함께하는 시간은 끝났지만 당신의 여행은 멈추지 않길!");
