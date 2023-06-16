@@ -191,6 +191,7 @@ const TravelWrite = () => {
                       <input
                         id={`file-input-${index}`}
                         type="file"
+                        
                         className="hidden"
                         onChange={(event) => handleImageUpload(event, index)}
                         onClick={(event) => event.stopPropagation()}
