@@ -144,7 +144,9 @@ const PlaceList = (props) => {
             >
               <div className="font-bold text-sm">{place.place_name}</div>
               <div style={{ display: "flex ", justifyContent: "right" }}>
-                <span className="text-xs">{place.category_group_name}</span>
+                <span className="text-xs mt-1">
+                  {place.category_group_name}
+                </span>
                 <img
                   src="https://fonts.gstatic.com/s/i/materialiconsoutlined/info/v1/24px.svg"
                   alt="info icon"
