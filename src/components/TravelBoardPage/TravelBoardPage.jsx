@@ -64,11 +64,14 @@ function TravelBoard() {
     const filtered =
       selectedFilter === "전체"
         ? posts
-        : posts.filter((post) => post.destination === selectedFilter);
+        : posts.filter((post) => {
+            const destination = JSON.parse(post.destination).nameKo;
+            return destination === selectedFilter;
+          });
     const sorted = sortPosts(filtered, selectedDropdown);
     setSortedPosts(sorted);
   }, [posts, selectedFilter, selectedDropdown]);
-
+  console.log(posts);
   return (
     <div
       className="flex flex-col justify-center items-center w-full"
@@ -176,12 +179,13 @@ function TravelBoard() {
             <div className="grid grid-cols-5 justify-items-center items-center gap-4">
               {sortedPosts.map((post) => {
                 const imageUrls = extractImageURLs(post.image);
+                const destination = JSON.parse(post.destination).nameKo;
                 const previewImage = imageUrls.length > 0 ? imageUrls[0] : "";
                 return (
                   <Link
                     to={`/TravelPostDetailPage/${post.id}`}
                     key={post.id}
-                    className={`${post.destination} ${post.created_at} ${post.updated_at} w-full h-1/2 flex justify-center items-center`}
+                    className={`${post.destination.nameKo} ${post.created_at} ${post.updated_at} w-full h-1/2 flex justify-center items-center`}
                   >
                     <div
                       style={{
@@ -198,7 +202,7 @@ function TravelBoard() {
                             : post.title}
                         </div>
                         <div className="postWriter select-none">
-                          {post.destination}
+                          {destination}
                         </div>
                       </div>
                     </div>
