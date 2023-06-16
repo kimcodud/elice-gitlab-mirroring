@@ -355,7 +355,10 @@ const SearchMap = () => {
       const result = await axios.post(`${apiUrl}/travels`, planData, {
         withCredentials: true,
       });
-      console.log(result);
+      console.log(result.status);
+      if (result.status === 201) {
+        alert("일정 생성이 완료되었습니다!");
+      }
     } catch (error) {
       console.log(error);
     }
