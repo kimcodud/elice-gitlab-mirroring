@@ -35,14 +35,10 @@ const SearchMap = () => {
   const [places, setPlaces] = useState([]);
   const [markers, setMakers] = useState([]);
 
-  const [isAll, setIsAll] = useState(true);
-  const [showDayList, setShowDayList] = useState(false);
-
   const [dateList, setDateList] = useState([]);
   const [selectedPlaces, setSelectedPlaces] = useState([]);
   const [selectedDayPlaces, setSelectedDayPlaces] = useState(); //하루 장소 목록
 
-  /*******************/
   const [selectedDay, setSelectedDay] = useState(""); // DAY 기억하는 상태
   const [selectedPlanDate, setSelectedPlanDate] = useState({});
   const [destination, setDestination] = useState("");
@@ -58,15 +54,9 @@ const SearchMap = () => {
     setDestination(result.data.data.destination);
   };
 
-  // const latitude = destination.latitude;
-  // const longitude = destination.longitude;
-
   useEffect(() => {
     getDestination();
   }, []);
-
-  // useEffect(() => {
-  // }, [selectedDay]);
 
   // 일정등록할 때 addPlanInfo 보내면 됨
   const [addPlanInfo, setAddPlanInfo] = useState({
@@ -226,8 +216,6 @@ const SearchMap = () => {
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
         onClickPlaceItem={onClickPlaceItem}
-        // selectedPlaces={selectedPlaces}
-        // setSelectedPlaces={setSelectedPlaces}
       />
     );
   }, [markers, places]);
@@ -236,8 +224,6 @@ const SearchMap = () => {
   const DatePickerComponent = useMemo(() => {
     return (
       <DatePicker
-        // selectedPlaces={selectedPlaces}
-        // setSelectedPlaces={setSelectedPlaces}
         getDateList={getDateList}
         selectedDayPlaces={selectedDayPlaces}
         setSelectedDayPlaces={setSelectedDayPlaces}
@@ -278,16 +264,6 @@ const SearchMap = () => {
       onSearch();
     }
   };
-
-  // const handleClickAll = () => {
-  //   setIsAll(true);
-  //   setShowDayList(false);
-  // };
-
-  // const handleClickDay = () => {
-  //   setShowDayList(true);
-  //   setIsAll(false);
-  // };
 
   useEffect(() => {}, [selectedPlanDate]);
 
