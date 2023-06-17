@@ -71,7 +71,6 @@ function TravelBoard() {
     const sorted = sortPosts(filtered, selectedDropdown);
     setSortedPosts(sorted);
   }, [posts, selectedFilter, selectedDropdown]);
-  console.log(posts);
   return (
     <div
       className="flex flex-col justify-center items-center w-full"

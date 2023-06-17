@@ -81,7 +81,6 @@ function TravelPostDetail(props) {
             withCredentials: true,
           } //예외처리
         );
-        console.log("ㅇㅇ", getCommentResponse.data.comments);
         if (page === 1) {
           setCommentBoard(getCommentResponse.data.comments);
         } else {
@@ -108,7 +107,6 @@ function TravelPostDetail(props) {
         fetchComment(); // 무한 스크롤 시 댓글 가져오기
       }
     }, [inView]);
-    console.log(commentBoard);
 
     //댓글 수정
     const [edittingComment, setEdittingComment] = useState(false);
@@ -186,7 +184,7 @@ function TravelPostDetail(props) {
         alert("본인이 작성한 댓글이 아닙니다.\n수정할 수 없습니다.");
       }
     };
-    console.log(comment.comment);
+
     return (
       <div className="w-full h-full flex flex-col justify-center items-center">
         {commentBoard.map((comment, index) => (

@@ -186,7 +186,6 @@ const UserInfoPage = () => {
       console.log(error);
     }
   };
-  console.log(mergedUserTravelInfo[0]);
 
   const UserInfoUpdateModalContent = () => {
     const [user, setUser] = useState({
@@ -197,7 +196,6 @@ const UserInfoPage = () => {
 
     const handleValueChange = ({ target: { value, name } }) => {
       setUser((prev) => ({ ...prev, [name]: value }));
-      console.log(user);
     };
 
     const handleSubmit = async (e) => {
@@ -231,7 +229,6 @@ const UserInfoPage = () => {
           { withCredentials: true }
         );
         setUserInfo(updateResponse.data);
-        //console.log(updateResponse);
         alert("회원정보가 수정되었습니다.");
         window.location.reload();
       } catch (error) {

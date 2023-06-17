@@ -66,7 +66,6 @@ const SearchMap = () => {
   }, []);
 
   // useEffect(() => {
-  //   console.log({ selectedDay });
   // }, [selectedDay]);
 
   // 일정등록할 때 addPlanInfo 보내면 됨
@@ -218,9 +217,7 @@ const SearchMap = () => {
     setAddPlanInfo((prev) => ({ ...prev, startDate, endDate }));
   };
 
-  const onClickPlaceItem = (item) => {
-    console.log(item);
-  };
+  const onClickPlaceItem = (item) => {};
 
   const PlaceListComponent = useMemo(() => {
     return (
@@ -292,12 +289,9 @@ const SearchMap = () => {
   //   setIsAll(false);
   // };
 
-  useEffect(() => {
-    console.log({ selectedPlanDate });
-  }, [selectedPlanDate]);
+  useEffect(() => {}, [selectedPlanDate]);
 
   const onSelectPlace = (place) => {
-    console.log({ place });
     // 1) 현재 선택된 DAY가 없으면 return;
     if (!selectedDay) return;
     // 2) 현재 선택된 DAY가 있으면,
@@ -320,7 +314,6 @@ const SearchMap = () => {
 
   // 제거 함수
   const handleDeleteSelectedPlanDate = (id) => {
-    console.log("handleDeleteSelectedPlanDate");
     if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
     const newPlaceList = selectedPlanDate[selectedDay].filter(
       (_, index, array) =>
@@ -346,7 +339,6 @@ const SearchMap = () => {
       destination,
       dates,
     };
-    console.log(planData);
     try {
       const apiUrl =
         import.meta.env.VITE_APP_SERVER_MODE === "DEV"
@@ -355,7 +347,6 @@ const SearchMap = () => {
       const result = await axios.post(`${apiUrl}/travels`, planData, {
         withCredentials: true,
       });
-      console.log(result.status);
       if (result.status === 201) {
         alert("일정 생성이 완료되었습니다!");
         navigate("/mypage");
