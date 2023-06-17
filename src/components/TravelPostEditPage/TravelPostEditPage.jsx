@@ -117,9 +117,7 @@ const TravelPostEdit = () => {
 
       alert("여행기 수정이 완료되었습니다.");
       navigate(`/TravelPostDetailPage/${postId}`);
-    } catch (error) {
-      console.log("API 호출 중 오류가 발생했습니다:", error);
-    }
+    } catch (error) {}
   };
 
   return (

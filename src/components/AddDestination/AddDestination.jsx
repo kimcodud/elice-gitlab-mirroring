@@ -10,9 +10,7 @@ const AddDestination = (props) => {
   const clickPlaces = Object.values(selectedPlanDate);
   const clickPlacesKeys = Object.keys(selectedPlanDate);
 
-  useEffect(() => {
-    // console.log("AddDestination", selectedPlanDate);
-  }, [selectedPlanDate]);
+  useEffect(() => {}, [selectedPlanDate]);
 
   const handleClickDateButton = (date) => {
     const formatDate = `${date.year}-${date.month}-${date.date}`;

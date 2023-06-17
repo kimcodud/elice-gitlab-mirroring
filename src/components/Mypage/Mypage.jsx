@@ -180,7 +180,6 @@ const UserInfoPage = () => {
       setUserTravelPlan((prevPlan) =>
         prevPlan.filter((plan) => plan.planId !== planIdToDelete)
       );
-      console.log("데이터가 성공적으로 삭제되었습니다.");
       window.location.reload();
     } catch (error) {
       console.log(error);
