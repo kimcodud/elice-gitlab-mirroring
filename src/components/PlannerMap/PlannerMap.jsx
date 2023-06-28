@@ -13,12 +13,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const PlannerMapContext = createContext({
   onSelectPlace: () => {},
-  // selectedPlace: {},
   setSelectedDay: () => {},
   selectedDay: "",
   selectedPlanDate: {},
   handleDeleteSelectedPlanDate: () => {},
 });
+
 export const usePlannerMapContext = () => {
   const context = useContext(PlannerMapContext);
   // context API는 더 상위에서 사용 못함 (예외 처리)

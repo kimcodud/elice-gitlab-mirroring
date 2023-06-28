@@ -7,11 +7,8 @@ const AddDestination = (props) => {
   const { setSelectedDay, selectedPlanDate, handleDeleteSelectedPlanDate } =
     usePlannerMapContext();
 
-  const clickPlaces = Object.values(selectedPlanDate);
-  const clickPlacesKeys = Object.keys(selectedPlanDate);
-
   useEffect(() => {
-    // console.log("AddDestination", selectedPlanDate);
+    console.log("selectedDates", selectedDates);
   }, [selectedPlanDate]);
 
   const handleClickDateButton = (date) => {
@@ -22,7 +19,7 @@ const AddDestination = (props) => {
   if (selectedDates.length > 0) {
     return (
       <div>
-        <h1>날짜를 선택하고 장소를 추가하세요</h1>
+        {/* 선택된 날짜가 있을 때 */}
         <div
           className="flex flex-col items-center mt-4 drop-shadow bg-white"
           style={{
@@ -32,10 +29,9 @@ const AddDestination = (props) => {
             overflow: "auto",
           }}
         >
-          {/* 첫 번째 요소 */}
           {selectedDates.map((date, index, selectedPlaces) => {
             return (
-              <div>
+              <div key={index}>
                 <div>
                   <button
                     className="w-40 h-8 rounded mt-4"
@@ -43,7 +39,6 @@ const AddDestination = (props) => {
                       backgroundColor: "#E9EBED",
                       color: "#B09FCE",
                     }}
-                    key={index}
                     data={selectedPlaces}
                     onClick={() => handleClickDateButton(date)}
                   >
@@ -57,11 +52,16 @@ const AddDestination = (props) => {
                     ] &&
                     selectedPlanDate[
                       `${date.year}-${date.month}-${date.date}`
-                    ].map((a) => {
+                    ].map((place) => {
                       return (
-                        <div className="info box-sizing: border-box h-13 w-50 p-4 border-2 shadow-lg rounded mt-3">
-                          <div className="font-bold text-sm">
-                            {a.place_name}
+                        <div
+                          key={place.id}
+                          className="info box-sizing: border-box h-13 w-50 p-4 border-2 shadow-lg rounded mt-3"
+                        >
+                          <div className="font-bold text-sm whitespace-normal">
+                            <p className="truncate overflow-hidden">
+                              {place.place_name}
+                            </p>
                           </div>
                           <div
                             style={{
@@ -70,13 +70,13 @@ const AddDestination = (props) => {
                             }}
                           >
                             <span className="text-xs">
-                              {a.category_group_name}
+                              {place.category_group_name}
                             </span>
                             <img
                               src="https://fonts.gstatic.com/s/i/materialiconsoutlined/remove/v1/24px.svg"
                               alt="remove icon"
                               className="cursor-pointer"
-                              // onClick={() => handleDeleteSelectedPlanDate()}
+                              onClick={() => handleDeleteSelectedPlanDate()}
                             />
                           </div>
                         </div>
@@ -89,8 +89,14 @@ const AddDestination = (props) => {
         </div>
       </div>
     );
+  } else {
+    return (
+      <div>
+        {/* 선택된 날짜가 없을 때 */}
+        <h1>날짜를 선택하고 장소를 추가하세요</h1>
+      </div>
+    );
   }
-  return null;
 };
 
 export default AddDestination;
