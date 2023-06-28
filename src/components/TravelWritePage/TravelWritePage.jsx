@@ -128,9 +128,7 @@ const TravelWrite = () => {
 
       alert("여행기 작성이 완료되었습니다.");
       navigate("/mypage");
-    } catch (error) {
-      console.log("API 호출 중 오류가 발생했습니다:", error);
-    }
+    } catch (error) {}
   };
   return (
     <form onSubmit={handleSubmit}>

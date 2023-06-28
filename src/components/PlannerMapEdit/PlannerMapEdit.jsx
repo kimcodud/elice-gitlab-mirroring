@@ -36,7 +36,6 @@ function PlannerMapEdit() {
       const destination = data.travelPlanData.destination;
       const dates = data.travelPlanData.dates;
 
-      console.log(response.data.travelPlanData);
       setList(response.data.travelPlanData);
 
       if (startDate) {
@@ -71,7 +70,6 @@ function PlannerMapEdit() {
   useEffect(() => {
     if (list && list.dates) {
       setAllLocation(list.dates.flatMap((date) => date.locations));
-      console.log(list);
     }
   }, [list]);
 
@@ -95,8 +93,6 @@ function PlannerMapEdit() {
     setIsAll(false);
     setDateIndex(index);
   };
-
-  useEffect(() => console.log(dateIndex), [dateIndex]);
 
   const attachMapSdkScript = () => {
     const script = document.createElement("script");
@@ -179,7 +175,6 @@ function PlannerMapEdit() {
         bounds.extend(marker.getPosition());
       });
       map.setBounds(bounds);
-      console.log("locationsToDisplay", locationsToDisplay);
     }
   }, [list, map, isAll, dateIndex]);
 

@@ -436,7 +436,6 @@ function TravelPostDetail(props) {
       setComment("");
       alert("댓글 작성이 완료되었습니다.");
     } catch (error) {
-      console.log("API 호출 중 오류가 발생했습니다:", error);
       alert("회원만 작성이 가능합니다.");
     }
   };
