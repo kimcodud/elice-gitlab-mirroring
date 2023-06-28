@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usePlannerMapContext } from "../PlannerMap/PlannerMap";
+import { usePlannerMapContext } from "../../Contexts/PlannerMapContext";
 
 const AddDestination = (props) => {
   const { selectedDates } = props;

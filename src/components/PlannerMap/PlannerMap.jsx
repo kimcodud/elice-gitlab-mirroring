@@ -1,42 +1,18 @@
-import {
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-  createContext,
-  useContext,
-} from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { PlannerMapContext } from "../../Contexts/PlannerMapContext";
 
-const PlannerMapContext = createContext({
-  onSelectPlace: () => {},
-  setSelectedDay: () => {},
-  selectedDay: "",
-  selectedPlanDate: {},
-  handleDeleteSelectedPlanDate: () => {},
-});
-
-export const usePlannerMapContext = () => {
-  const context = useContext(PlannerMapContext);
-  // context API는 더 상위에서 사용 못함 (예외 처리)
-  if (!context) {
-    throw new Error("PlannerMapContext를 호출할 수 없는 범위 입니다.");
-  }
-  return context;
-};
-
-const SearchMap = () => {
+const PlannerMap = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
   const [infowindow, setInfowindow] = useState();
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
   const [markers, setMakers] = useState([]);
 
-  const [dateList, setDateList] = useState([]);
-  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [, setDateList] = useState([]);
   const [selectedDayPlaces, setSelectedDayPlaces] = useState(); //하루 장소 목록
 
   const [selectedDay, setSelectedDay] = useState(""); // DAY 기억하는 상태
@@ -436,4 +412,4 @@ const SearchMap = () => {
     </PlannerMapContext.Provider>
   );
 };
-export default SearchMap;
+export default PlannerMap;

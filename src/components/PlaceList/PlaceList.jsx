@@ -3,7 +3,7 @@ import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
 import AddDestination from "../AddDestination/AddDestination";
-import { usePlannerMapContext } from "../PlannerMap/PlannerMap";
+import { usePlannerMapContext } from "../../Contexts/PlannerMapContext";
 
 const PlaceList = (props) => {
   const {
