@@ -183,7 +183,7 @@ const PlannerMap = () => {
     setAddPlanInfo((prev) => ({ ...prev, startDate, endDate }));
   };
 
-  const onClickPlaceItem = (item) => {};
+  // const onClickPlaceItem = (item) => {};
 
   const PlaceListComponent = useMemo(() => {
     return (
@@ -191,7 +191,7 @@ const PlannerMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
-        onClickPlaceItem={onClickPlaceItem}
+        // onClickPlaceItem={onClickPlaceItem}
       />
     );
   }, [markers, places]);
@@ -332,7 +332,7 @@ const PlannerMap = () => {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ marginRight: "3px" }}>
-                <div className="h-20 text-2xl font-medium flex justify-center items-center">
+                <div className="flex items-center justify-center h-20 text-2xl font-medium">
                   {destination && destination.nameKo}
                 </div>
                 {DatePickerComponent}
@@ -358,7 +358,7 @@ const PlannerMap = () => {
                 style={{ width: "100%", height: "100%", position: "absolute" }}
               ></div>
               <button
-                className="px-3 py-2 rounded bg-purple-500 text-white"
+                className="px-3 py-2 text-white bg-purple-500 rounded"
                 style={{
                   position: "absolute",
                   top: "0",
@@ -380,7 +380,7 @@ const PlannerMap = () => {
               id="keyword"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
+              className="w-full text-lg border-4 rounded shadow-sm border-indigo-500/75"
               onKeyPress={handleKeyPress}
               placeholder=" 장소를 검색해보세요"
               style={{
@@ -402,7 +402,7 @@ const PlannerMap = () => {
               </div>
               <div
                 id="pagination"
-                className="drop-shadow-md cursor-pointer"
+                className="cursor-pointer drop-shadow-md"
                 style={{ display: "flex", justifyContent: "center" }}
               />
             </div>

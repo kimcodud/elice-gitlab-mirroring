@@ -1,38 +1,20 @@
-import { useMemo, useState } from "react";
 import Modal from "../modal/modal";
 import { ModalPortal } from "../modal/ModalPortal";
 import { useModalStore } from "../../store/store";
-import AddDestination from "../AddDestination/AddDestination";
 import { usePlannerMapContext } from "../../Contexts/PlannerMapContext";
 
 const PlaceList = (props) => {
-  const {
-    places,
-    infowindow,
-    handleDisplayInfowindow,
-    onClickPlaceItem, // callback props 자식 -> 부모 컴포넌트로 props(데이터)를 끌어올림
-    selectedDayPlaces,
-    setSelectedDayPlaces,
-    renderPlaces,
-  } = props;
+  const { places, infowindow, handleDisplayInfowindow } = props;
+
   const { openModal } = useModalStore();
-  const [selectedPlaces, setSelectedPlaces] = useState([]);
 
   const { onSelectPlace } = usePlannerMapContext();
 
   // + 버튼 눌렀을 때 장소 넘겨주는 함수
   const handleAddPlace = (index) => {
     const place = places[index];
-    onClickPlaceItem(place);
     onSelectPlace(place);
   };
-
-  const AddDestinationComponents = useMemo(() => {
-    <AddDestination
-      handleAddPlace={handleAddPlace}
-      renderPlaces={renderPlaces}
-    />;
-  });
 
   return (
     <div style={{ color: "black" }}>
@@ -51,7 +33,7 @@ const PlaceList = (props) => {
             },
             title: (
               <div
-                className="subpixel-antialiased text-3xl font-bold text-purple-700"
+                className="text-3xl subpixel-antialiased font-bold text-purple-700"
                 style={{ textAlign: "left" }}
               >
                 {place.place_name}
@@ -59,7 +41,7 @@ const PlaceList = (props) => {
             ),
             content: (
               <div>
-                <p className="text-xs italic antialiased text-slate-500">
+                <p className="text-xs antialiased italic text-slate-500">
                   최고의 여행지가 되실거에요!
                 </p>
                 <div
@@ -70,7 +52,7 @@ const PlaceList = (props) => {
                     height: "100%",
                   }}
                 >
-                  <div className="text-purple-500 font-semibold">
+                  <div className="font-semibold text-purple-500">
                     <p>주소: {place.address_name}</p>
                   </div>
                   <div
@@ -92,7 +74,7 @@ const PlaceList = (props) => {
                       }}
                     />
                     <button
-                      className="rounded-md bg-purple-500/25 text-xs"
+                      className="text-xs rounded-md bg-purple-500/25"
                       onClick={() => handleAddPlace(index)}
                     >
                       일정 추가
@@ -114,12 +96,12 @@ const PlaceList = (props) => {
           >
             <span className={`markerbg marker${index + 1}`} />
             <div
-              className="info box-sizing: border-box h-15 w-50 p-4 border-2 shadow-lg rounded"
+              className="p-4 border-2 rounded shadow-lg info box-sizing: border-box h-15 w-50"
               style={{ marginLeft: "3px" }}
             >
-              <div className="font-bold text-sm">{place.place_name}</div>
+              <div className="text-sm font-bold">{place.place_name}</div>
               <div style={{ display: "flex ", justifyContent: "right" }}>
-                <span className="text-xs mt-1">
+                <span className="mt-1 text-xs">
                   {place.category_group_name}
                 </span>
                 <img

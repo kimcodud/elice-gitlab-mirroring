@@ -21,7 +21,7 @@ const AddDestination = (props) => {
       <div>
         {/* 선택된 날짜가 있을 때 */}
         <div
-          className="flex flex-col items-center mt-4 drop-shadow bg-white"
+          className="flex flex-col items-center mt-4 bg-white drop-shadow"
           style={{
             width: "320px",
             height: "300px",
@@ -34,7 +34,7 @@ const AddDestination = (props) => {
               <div key={index}>
                 <div>
                   <button
-                    className="w-40 h-8 rounded mt-4"
+                    className="w-40 h-8 mt-4 rounded"
                     style={{
                       backgroundColor: "#E9EBED",
                       color: "#B09FCE",
@@ -56,10 +56,10 @@ const AddDestination = (props) => {
                       return (
                         <div
                           key={place.id}
-                          className="info box-sizing: border-box h-13 w-50 p-4 border-2 shadow-lg rounded mt-3"
+                          className="p-4 mt-3 border-2 rounded shadow-lg info box-sizing: border-box h-13 w-50"
                         >
-                          <div className="font-bold text-sm whitespace-normal">
-                            <p className="truncate overflow-hidden">
+                          <div className="text-sm font-bold whitespace-normal">
+                            <p className="overflow-hidden truncate">
                               {place.place_name}
                             </p>
                           </div>
