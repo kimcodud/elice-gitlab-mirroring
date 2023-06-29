@@ -265,8 +265,8 @@ const PlannerMap = () => {
   };
 
   // 제거 함수
-  const handleDeleteSelectedPlanDate = (id) => {
-    if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
+  const handleDeleteSelectedPlanDate = () => {
+    // if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
     const newPlaceList = selectedPlanDate[selectedDay].filter(
       (_, index, array) =>
         index !== array.findIndex((_place) => (_place.id = id))
