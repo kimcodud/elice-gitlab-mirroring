@@ -1,24 +1,38 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-
-import MainPage from "../pages/MainPage/MainPage";
-import LoginPage from "../pages/LoginPage/LoginPage";
-import SignUpPage from "../pages/SigUpPage/SignUpPage";
-import TravelBoardPage from "../pages/TravelBoardPage/TravelBoardPage";
-import Mypage from "../pages/Mypage/Mypage";
-import TravelWritePage from "../pages/TravelWritePage/TravelWritePage";
-import TravelPostDetailPage from "../pages/TravelPostDetailPage/TravelPostDetailPage";
-import TravelPostEditPage from "../pages/TravelPostEditPage/TravelPostEditPage";
-import PlannerMap from "../components/PlannerMap/PlannerMap";
-import PlannerEditPage from "../pages/PlannerEditPage/PlannerEditPage";
-import AdminPage from "../pages/AdminPage/AdminPage";
-import PageNotFound from "../components/PageNotFound/PageNotFound";
 import { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import PageNotFound from "../components/PageNotFound/PageNotFound";
+import { Suspense, lazy } from "react";
 import axios from "axios";
 
 const Router = () => {
   const location = useLocation();
   const [isLogin, setIsLogin] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const MainPage = lazy(() => import("../pages/MainPage/MainPage"));
+  const LoginPage = lazy(() => import("../pages/MainPage/MainPage"));
+  const SignUpPage = lazy(() => import("../pages/MainPage/MainPage"));
+  const Mypage = lazy(() => import("../pages/Mypage/Mypage"));
+  const TravelWritePage = lazy(() =>
+    import("../pages/TravelWritePage/TravelWritePage")
+  );
+  const TravelPostDetailPage = lazy(() =>
+    import("../pages/TravelPostDetailPage/TravelPostDetailPage")
+  );
+  const TravelPostEditPage = lazy(() =>
+    import("../pages/TravelPostEditPage/TravelPostEditPage")
+  );
+  const PlannerMapPage = lazy(() =>
+    import("../pages/PlannerMapPage/PlannerMapPage")
+  );
+  const PlannerEditPage = lazy(() =>
+    import("../pages/PlannerEditPage/PlannerEditPage")
+  );
+  const AdminPage = lazy(() => import("../pages/AdminPage/AdminPage"));
+  const TravelBoardPage = lazy(() =>
+    import("../pages/TravelBoardPage/TravelBoardPage")
+  );
+
   const getUserData = async () => {
     const apiUrl =
       import.meta.env.VITE_APP_SERVER_MODE === "DEV"
@@ -42,44 +56,46 @@ const Router = () => {
     }
   }, [location.pathname]);
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} exact />
-      {!isLogin && (
-        <>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route
-            path="/TravelPostDetailPage/:postId"
-            element={<TravelPostDetailPage />}
-          />
-          <Route path="/travelBoard" element={<TravelBoardPage />} />
-        </>
-      )}
-      {isLogin && (
-        <>
-          <Route path="/travelBoard" element={<TravelBoardPage />} />
-          <Route path="/Mypage" element={<Mypage />} />
-          <Route
-            path="/travelWritePage/:postId"
-            element={<TravelWritePage />}
-          />
-          <Route
-            path="/travelEditPage/:postId"
-            element={<TravelPostEditPage />}
-          />
-          <Route
-            path="/TravelPostDetailPage/:postId"
-            element={<TravelPostDetailPage />}
-          />
-          <Route path="/plannerMap/:id" element={<PlannerMap />} />
-          <Route path="/plannerMap" element={<PlannerMap />} />
-          <Route path="/travelPlan/:id" element={<PlannerEditPage />} />
-        </>
-      )}
-      {isAdmin && <Route path="/admin" element={<AdminPage />} />}
+    <Suspense fallback={<div>page loading....</div>}>
+      <Routes>
+        <Route path="/" element={<MainPage />} exact />
+        {!isLogin && (
+          <>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route
+              path="/TravelPostDetailPage/:postId"
+              element={<TravelPostDetailPage />}
+            />
+            <Route path="/travelBoard" element={<TravelBoardPage />} />
+          </>
+        )}
+        {isLogin && (
+          <>
+            <Route path="/travelBoard" element={<TravelBoardPage />} />
+            <Route path="/Mypage" element={<Mypage />} />
+            <Route
+              path="/travelWritePage/:postId"
+              element={<TravelWritePage />}
+            />
+            <Route
+              path="/travelEditPage/:postId"
+              element={<TravelPostEditPage />}
+            />
+            <Route
+              path="/TravelPostDetailPage/:postId"
+              element={<TravelPostDetailPage />}
+            />
+            <Route path="/plannerMap/:id" element={<PlannerMapPage />} />
+            <Route path="/plannerMap" element={<PlannerMapPage />} />
+            <Route path="/travelPlan/:id" element={<PlannerEditPage />} />
+          </>
+        )}
+        {isAdmin && <Route path="/admin" element={<AdminPage />} />}
 
-      <Route path="*" element={<PageNotFound />}></Route>
-    </Routes>
+        <Route path="*" element={<PageNotFound />}></Route>
+      </Routes>
+    </Suspense>
   );
 };
 

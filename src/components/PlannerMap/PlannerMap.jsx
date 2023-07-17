@@ -1,42 +1,18 @@
-import {
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-  createContext,
-  useContext,
-} from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import PlaceList from "../PlaceList/PlaceList";
 import DatePicker from "../DatePicker/DatePicker";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { PlannerMapContext } from "../../Contexts/PlannerMapContext";
 
-const PlannerMapContext = createContext({
-  onSelectPlace: () => {},
-  // selectedPlace: {},
-  setSelectedDay: () => {},
-  selectedDay: "",
-  selectedPlanDate: {},
-  handleDeleteSelectedPlanDate: () => {},
-});
-export const usePlannerMapContext = () => {
-  const context = useContext(PlannerMapContext);
-  // context API는 더 상위에서 사용 못함 (예외 처리)
-  if (!context) {
-    throw new Error("PlannerMapContext를 호출할 수 없는 범위 입니다.");
-  }
-  return context;
-};
-
-const SearchMap = () => {
+const PlannerMap = () => {
   const [kakaoMap, setKakaoMap] = useState(null);
   const [infowindow, setInfowindow] = useState();
   const [keyword, setKeyword] = useState("");
   const [places, setPlaces] = useState([]);
   const [markers, setMakers] = useState([]);
 
-  const [dateList, setDateList] = useState([]);
-  const [selectedPlaces, setSelectedPlaces] = useState([]);
+  const [, setDateList] = useState([]);
   const [selectedDayPlaces, setSelectedDayPlaces] = useState(); //하루 장소 목록
 
   const [selectedDay, setSelectedDay] = useState(""); // DAY 기억하는 상태
@@ -207,7 +183,7 @@ const SearchMap = () => {
     setAddPlanInfo((prev) => ({ ...prev, startDate, endDate }));
   };
 
-  const onClickPlaceItem = (item) => {};
+  // const onClickPlaceItem = (item) => {};
 
   const PlaceListComponent = useMemo(() => {
     return (
@@ -215,7 +191,7 @@ const SearchMap = () => {
         places={places}
         infowindow={infowindow}
         handleDisplayInfowindow={handleDisplayInfowindow}
-        onClickPlaceItem={onClickPlaceItem}
+        // onClickPlaceItem={onClickPlaceItem}
       />
     );
   }, [markers, places]);
@@ -289,8 +265,8 @@ const SearchMap = () => {
   };
 
   // 제거 함수
-  const handleDeleteSelectedPlanDate = (id) => {
-    if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
+  const handleDeleteSelectedPlanDate = () => {
+    // if (!selectedPlanDate || Object.keys(selectedPlanDate)) return;
     const newPlaceList = selectedPlanDate[selectedDay].filter(
       (_, index, array) =>
         index !== array.findIndex((_place) => (_place.id = id))
@@ -356,7 +332,7 @@ const SearchMap = () => {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ marginRight: "3px" }}>
-                <div className="h-20 text-2xl font-medium flex justify-center items-center">
+                <div className="flex items-center justify-center h-20 text-2xl font-medium">
                   {destination && destination.nameKo}
                 </div>
                 {DatePickerComponent}
@@ -382,7 +358,7 @@ const SearchMap = () => {
                 style={{ width: "100%", height: "100%", position: "absolute" }}
               ></div>
               <button
-                className="px-3 py-2 rounded bg-purple-500 text-white"
+                className="px-3 py-2 text-white bg-purple-500 rounded"
                 style={{
                   position: "absolute",
                   top: "0",
@@ -404,7 +380,7 @@ const SearchMap = () => {
               id="keyword"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              className="border-4 border-indigo-500/75 rounded shadow-sm w-full text-lg"
+              className="w-full text-lg border-4 rounded shadow-sm border-indigo-500/75"
               onKeyPress={handleKeyPress}
               placeholder=" 장소를 검색해보세요"
               style={{
@@ -426,7 +402,7 @@ const SearchMap = () => {
               </div>
               <div
                 id="pagination"
-                className="drop-shadow-md cursor-pointer"
+                className="cursor-pointer drop-shadow-md"
                 style={{ display: "flex", justifyContent: "center" }}
               />
             </div>
@@ -436,4 +412,4 @@ const SearchMap = () => {
     </PlannerMapContext.Provider>
   );
 };
-export default SearchMap;
+export default PlannerMap;
